@@ -66,7 +66,54 @@ footer{background:#142d55;color:white;text-align:center;padding:28px;line-height
 <section class="info" id="registration">
 <h2>Online Student Registration</h2>
 <p>Online Admission Registration Facility</p>
-<p>Student Registration Form will be available here.</p>
+<form id="studentRegistrationForm">
+  <h2>Student Registration Form</h2>
+
+  <label>Student Name *</label>
+  <input type="text" name="student_name" required>
+
+  <label>Father Name *</label>
+  <input type="text" name="father_name" required>
+
+  <label>Mother Name</label>
+  <input type="text" name="mother_name">
+
+  <label>Mobile Number *</label>
+  <input type="tel" name="mobile" required>
+
+  <label>Email</label>
+  <input type="email" name="email">
+
+  <label>Course Name *</label>
+  <select name="course_name" required>
+    <option value="">Select Course</option>
+    <option>Diploma in Computer Repairing & Networking</option>
+    <option>Diploma in Computer Application</option>
+    <option>Diploma in Graphics Designing</option>
+    <option>Advance Diploma in Computer Application</option>
+    <option>Advance Diploma in Website Developing</option>
+    <option>Diploma in Mobile Repairing</option>
+    <option>Advance Diploma in Computer Teacher Training Course</option>
+    <option>Diploma in Financial Accounting (Tally)</option>
+    <option>Diploma in Audio & Video Mixing</option>
+    <option>Advance Diploma in Multimedia & Animation</option>
+    <option>Diploma in Digital Marketing</option>
+  </select>
+
+  <label>Course Code</label>
+  <input type="text" name="course_code">
+
+  <label>Qualification</label>
+  <input type="text" name="qualification">
+
+  <label>Date of Birth</label>
+  <input type="date" name="dob">
+
+  <label>Upload Photo</label>
+  <input type="file" name="photo" accept="image/*">
+
+  <button type="submit">Submit Registration</button>
+</form>
 <a class="btn" href="mailto:academymastercomputer@gmail.com?subject=Student%20Registration%20Enquiry">Registration Enquiry</a>
 </section>
 
