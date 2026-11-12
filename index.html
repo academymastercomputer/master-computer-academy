@@ -136,6 +136,47 @@ footer{background:#142d55;color:white;text-align:center;padding:28px;line-height
 <p>Other Courses Also Available</p>
 <p>© 2026 Master Computer Academy. All Rights Reserved.</p>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
+const SUPABASE_URL = "https://qzzrmmefdpckwblicaod.supabase.co";
+const SUPABASE_KEY = "sb_publishable_fdBsDqavTxcWkYQJJxfMdg_R_5b-596";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const form = document.getElementById("studentRegistrationForm");
+
+if (form) {
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const fd = new FormData(form);
+    const value = (name) => (fd.get(name) || "").toString().trim();
+
+    const { error } = await supabaseClient.from("students").insert({
+      student_name: value("student_name"),
+      father_name: value("father_name"),
+      mother_name: value("mother_name") || null,
+      mobile: value("mobile"),
+      email: value("email") || null,
+      course_name: value("course_name"),
+      course_code: value("course_code") || null,
+      qualification: value("qualification") || null,
+      dob: value("dob") || null,
+      photo_path: null
+    });
+
+    if (error) {
+      alert("Registration failed: " + error.message);
+    } else {
+      alert("Registration submitted successfully!");
+      form.reset();
+    }
+  });
+}
+</script>
 </body>
 </html>
