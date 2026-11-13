@@ -132,7 +132,8 @@ if (!profile || profile.role !== "admin") {
     await db.auth.signOut();
     message.textContent = "Admin access denied.";
     return;
-  }
+}  
+}
 
   document.getElementById("login").style.display = "none";
   document.getElementById("dashboard").style.display = "block";
