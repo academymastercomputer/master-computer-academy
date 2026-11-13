@@ -80,6 +80,7 @@ th { background: #eee; }
 <th>Mobile</th>
 <th>Course</th>
 <th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="studentList"></tbody>
@@ -142,7 +143,7 @@ if (!profile || profile.role !== "admin") {
 async function loadStudents() {
   const { data, error } = await db
     .from("students")
-    .select("student_name, father_name, mobile, course_name, status")
+    .select("id, student_name, father_name, mobile, course_name, status")
     .order("created_at", { ascending: false });
 
   const list = document.getElementById("studentList");
@@ -168,12 +169,46 @@ async function loadStudents() {
       tr.appendChild(td);
     });
 
+    const actionTd = document.createElement("td");
+    const statusSelect = document.createElement("select");
+
+    ["New", "Approved", "Rejected"].forEach(status => {
+      const option = document.createElement("option");
+      option.value = status;
+      option.textContent = status;
+      statusSelect.appendChild(option);
+    });
+
+    statusSelect.value = student.status || "New";
+
+    statusSelect.onchange = async () => {
+      const oldStatus = student.status;
+      const newStatus = statusSelect.value;
+      statusSelect.disabled = true;
+
+      const { error } = await db
+        .from("students")
+        .update({ status: newStatus })
+        .eq("id", student.id);
+
+      if (error) {
+        message.textContent = "Status Update Failed: " + error.message;
+        statusSelect.value = oldStatus || "New";
+      } else {
+        student.status = newStatus;
+        message.textContent = "Student Status Updated Successfully!";
+      }
+
+      statusSelect.disabled = false;
+    };
+
+    actionTd.appendChild(statusSelect);
+    tr.appendChild(actionTd);
     list.appendChild(tr);
   });
 
   message.textContent = "Total Students: " + data.length;
 }
-
 document.getElementById("refresh").onclick = loadStudents;
 
 document.getElementById("logout").onclick = async () => {
