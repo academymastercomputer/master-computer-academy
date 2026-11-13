@@ -80,6 +80,7 @@ th { background: #eee; }
 <th>Mobile</th>
 <th>Course</th>
 <th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="studentList"></tbody>
@@ -103,75 +104,27 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   message.textContent = "Checking login...";
 
-  const { data, error } = await db.auth.signInWithPassword({
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value
-  });
+.from("students")
+      .update({ status: newStatus })
+      .eq("id", student.id);
 
-  if (error) {
-    message.textContent = error.message;
-    return;
-  }
+    if (error) {
+      message.textContent = "Status Update Failed: " + error.message;
+      statusSelect.value = oldStatus || "New";
+    } else {
+      student.status = newStatus;
+      message.textContent = "Student Status Updated Successfully!";
+    }
 
-  const { data: profile, error: profileError } = await db
-    .from("profiles")
-    .select("role")
-    .eq("id", data.user.id)
-    .single();
+    statusSelect.disabled = false;
+  };
 
- if (profileError) {
-  message.textContent = "Profile Error: " + profileError.message;
-  return;
-}
-
-if (!profile || profile.role !== "admin") {
-  message.textContent =
-    "Admin role not found. Role: " + (profile?.role || "NULL");
-  return;
-}
-  
-  document.getElementById("login").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
-  document.getElementById("welcome").textContent =
-    "Welcome, " + (profile.fullname || "Admin");
-
-  message.textContent = "";
-  loadStudents();
+  actionTd.appendChild(statusSelect);
+  tr.appendChild(actionTd);
+  list.appendChild(tr);
 });
 
-async function loadStudents() {
-  const { data, error } = await db
-    .from("students")
-    .select("student_name, father_name, mobile, course_name, status")
-    .order("created_at", { ascending: false });
-
-  const list = document.getElementById("studentList");
-  list.replaceChildren();
-
-  if (error) {
-    message.textContent = "Unable to load students: " + error.message;
-    return;
-  }
-
-  data.forEach(student => {
-    const tr = document.createElement("tr");
-
-    [
-      student.student_name,
-      student.father_name,
-      student.mobile,
-      student.course_name,
-      student.status
-    ].forEach(value => {
-      const td = document.createElement("td");
-      td.textContent = value || "-";
-      tr.appendChild(td);
-    });
-
-    list.appendChild(tr);
-  });
-
-  message.textContent = "Total Students: " + data.length;
+message.textContent = "Total Students: " + data.length;
 }
 
 document.getElementById("refresh").onclick = loadStudents;
