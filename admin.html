@@ -185,6 +185,26 @@ viewBtn.onclick = () => {
 };
 
 actionTd.appendChild(viewBtn);
+    const { error } = await db
+    .from("students")
+    .update({
+      student_name: newName,
+      father_name: newFather,
+      mobile: newMobile,
+      email: newEmail,
+      course_name: newCourse
+    })
+    .eq("id", student.id);
+
+  if (error) {
+    alert("Update Failed: " + error.message);
+  } else {
+    alert("Student Details Updated Successfully!");
+    loadStudents();
+  }
+};
+
+actionTd.appendChild(editBtn);
     const statusSelect = document.createElement("select");
 
     ["New", "Approved", "Rejected"].forEach(status => {
