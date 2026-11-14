@@ -170,6 +170,21 @@ async function loadStudents() {
     });
 
     const actionTd = document.createElement("td");
+    const viewBtn = document.createElement("button");
+viewBtn.textContent = "View";
+
+viewBtn.onclick = () => {
+  alert(
+    "Student Name: " + student.student_name +
+    "\nFather Name: " + student.father_name +
+    "\nMother Name: " + (student.mother_name || "") +
+    "\nMobile: " + student.mobile +
+    "\nEmail: " + (student.email || "") +
+    "\nCourse: " + student.course_name
+  );
+};
+
+actionTd.appendChild(viewBtn);
     const statusSelect = document.createElement("select");
 
     ["New", "Approved", "Rejected"].forEach(status => {
