@@ -90,6 +90,7 @@ th { background: #eee; }
 </div>
 
 <script>
+<script>
 const SUPABASE_URL = "https://qzzrmmefdpckwblicaod.supabase.co";
 const SUPABASE_KEY = "sb_publishable_fdBsDqavTxcWkYQJJxfMdg_R_5b-596";
 
@@ -100,8 +101,10 @@ const db = window.supabase.createClient(
 
 const message = document.getElementById("message");
 
+// ADMIN LOGIN
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
+
   message.textContent = "Checking login...";
 
   const { data, error } = await db.auth.signInWithPassword({
@@ -116,34 +119,34 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
   const { data: profile, error: profileError } = await db
     .from("profiles")
-    .select("role")
+    .select("role, fullname")
     .eq("id", data.user.id)
     .single();
 
- if (profileError) {
-  message.textContent = "Profile Error: " + profileError.message;
-  return;
-}
+  if (profileError || !profile || profile.role !== "admin") {
+    message.textContent = "Admin access denied.";
+    await db.auth.signOut();
+    return;
+  }
 
-if (!profile || profile.role !== "admin") {
-  message.textContent =
-    "Admin role not found. Role: " + (profile?.role || "NULL");
-  return;
-}
-  
   document.getElementById("login").style.display = "none";
   document.getElementById("dashboard").style.display = "block";
+
   document.getElementById("welcome").textContent =
     "Welcome, " + (profile.fullname || "Admin");
 
   message.textContent = "";
+
   loadStudents();
 });
 
+
+// LOAD STUDENTS
 async function loadStudents() {
+
   const { data, error } = await db
     .from("students")
-    .select("id, student_name, father_name, mobile, course_name, status")
+    .select("id, student_name, father_name, mother_name, mobile, email, course_name, status")
     .order("created_at", { ascending: false });
 
   const list = document.getElementById("studentList");
@@ -155,6 +158,7 @@ async function loadStudents() {
   }
 
   data.forEach(student => {
+
     const tr = document.createElement("tr");
 
     [
@@ -169,26 +173,80 @@ async function loadStudents() {
       tr.appendChild(td);
     });
 
-    const { error } = await db
-    .from("students")
-    .update({
-      student_name: newName,
-      father_name: newFather,
-      mobile: newMobile,
-      email: newEmail,
-      course_name: newCourse
-    })
-    .eq("id", student.id);
+    const actionTd = document.createElement("td");
 
-  if (error) {
-    alert("Update Failed: " + error.message);
-  } else {
-    alert("Student Details Updated Successfully!");
-    loadStudents();
-  }
-};
 
-actionTd.appendChild(editBtn);
+    // VIEW BUTTON
+    const viewBtn = document.createElement("button");
+    viewBtn.textContent = "View";
+    viewBtn.style.background = "blue";
+
+    viewBtn.onclick = () => {
+      alert(
+        "Student Name: " + student.student_name +
+        "\nFather Name: " + student.father_name +
+        "\nMother Name: " + (student.mother_name || "") +
+        "\nMobile: " + student.mobile +
+        "\nEmail: " + (student.email || "") +
+        "\nCourse: " + student.course_name +
+        "\nStatus: " + student.status
+      );
+    };
+
+    actionTd.appendChild(viewBtn);
+
+
+    // EDIT BUTTON
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.style.background = "green";
+
+    editBtn.onclick = async () => {
+
+      const newName = prompt("Student Name:", student.student_name);
+      if (newName === null) return;
+
+      const newFather = prompt("Father Name:", student.father_name);
+      if (newFather === null) return;
+
+      const newMobile = prompt("Mobile Number:", student.mobile);
+      if (newMobile === null) return;
+
+      const newEmail = prompt("Email:", student.email || "");
+      if (newEmail === null) return;
+
+      const newCourse = prompt("Course:", student.course_name);
+      if (newCourse === null) return;
+
+      if (!newName.trim() || !newFather.trim() || !newMobile.trim() || !newCourse.trim()) {
+        alert("Please fill all required details.");
+        return;
+      }
+
+      const { error } = await db
+        .from("students")
+        .update({
+          student_name: newName.trim(),
+          father_name: newFather.trim(),
+          mobile: newMobile.trim(),
+          email: newEmail.trim(),
+          course_name: newCourse.trim()
+        })
+        .eq("id", student.id);
+
+      if (error) {
+        alert("Update Failed: " + error.message);
+      } else {
+        alert("Student Details Updated Successfully!");
+        loadStudents();
+      }
+    };
+
+    actionTd.appendChild(editBtn);
+
+
+    // STATUS DROPDOWN
+    const statusSelect = document.createElement("select");
 
     ["New", "Approved", "Rejected"].forEach(status => {
       const option = document.createElement("option");
@@ -200,8 +258,10 @@ actionTd.appendChild(editBtn);
     statusSelect.value = student.status || "New";
 
     statusSelect.onchange = async () => {
+
       const oldStatus = student.status;
       const newStatus = statusSelect.value;
+
       statusSelect.disabled = true;
 
       const { error } = await db
@@ -221,47 +281,54 @@ actionTd.appendChild(editBtn);
     };
 
     actionTd.appendChild(statusSelect);
+
+
+    // DELETE BUTTON
     const deleteBtn = document.createElement("button");
-deleteBtn.textContent = "Delete";
-deleteBtn.style.background = "red";
-deleteBtn.style.color = "white";
-deleteBtn.style.padding = "6px 12px";
-deleteBtn.style.marginLeft = "8px";
-deleteBtn.style.border = "none";
-deleteBtn.style.cursor = "pointer";
+    deleteBtn.textContent = "Delete";
+    deleteBtn.style.background = "red";
 
-deleteBtn.onclick = async () => {
-  if (!confirm("Are you sure you want to delete this student?")) {
-    return;
-  }
+    deleteBtn.onclick = async () => {
 
-  const { error } = await db
-    .from("students")
-    .delete()
-    .eq("id", student.id);
+      if (!confirm("Are you sure you want to delete this student?")) {
+        return;
+      }
 
-  if (error) {
-    alert("Delete failed: " + error.message);
-    return;
-  }
+      const { error } = await db
+        .from("students")
+        .delete()
+        .eq("id", student.id);
 
-  alert("Student Deleted Successfully!");
-  loadStudents();
-};
+      if (error) {
+        alert("Delete failed: " + error.message);
+        return;
+      }
 
-actionTd.appendChild(deleteBtn);
+      alert("Student Deleted Successfully!");
+      loadStudents();
+    };
+
+    actionTd.appendChild(deleteBtn);
+
     tr.appendChild(actionTd);
     list.appendChild(tr);
+
   });
 
   message.textContent = "Total Students: " + data.length;
 }
+
+
+// REFRESH
 document.getElementById("refresh").onclick = loadStudents;
 
+
+// LOGOUT
 document.getElementById("logout").onclick = async () => {
   await db.auth.signOut();
   location.reload();
 };
+
 </script>
 
 </body>
