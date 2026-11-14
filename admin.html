@@ -118,7 +118,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
   const { data: profile, error: profileError } = await db
     .from("profiles")
-    .select("role, fullname")
+    .select("role, full_name")
     .eq("id", data.user.id)
     .single();
 
