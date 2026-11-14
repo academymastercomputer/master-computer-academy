@@ -169,22 +169,6 @@ async function loadStudents() {
       tr.appendChild(td);
     });
 
-    const actionTd = document.createElement("td");
-    const viewBtn = document.createElement("button");
-viewBtn.textContent = "View";
-
-viewBtn.onclick = () => {
-  alert(
-    "Student Name: " + student.student_name +
-    "\nFather Name: " + student.father_name +
-    "\nMother Name: " + (student.mother_name || "") +
-    "\nMobile: " + student.mobile +
-    "\nEmail: " + (student.email || "") +
-    "\nCourse: " + student.course_name
-  );
-};
-
-actionTd.appendChild(viewBtn);
     const { error } = await db
     .from("students")
     .update({
@@ -205,7 +189,6 @@ actionTd.appendChild(viewBtn);
 };
 
 actionTd.appendChild(editBtn);
-    const statusSelect = document.createElement("select");
 
     ["New", "Approved", "Rejected"].forEach(status => {
       const option = document.createElement("option");
