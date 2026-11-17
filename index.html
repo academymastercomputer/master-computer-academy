@@ -148,7 +148,7 @@ const supabaseClient = window.supabase.createClient(
 );
 
 const form = document.getElementById("studentRegistrationForm");
-
+console.log("Supabase role:", await supabaseClient.auth.getSession());
 if (form) {
   form.addEventListener("submit", async function(event) {
     event.preventDefault();
