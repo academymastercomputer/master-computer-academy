@@ -165,8 +165,10 @@ if (form) {
       course_name: value("course_name"),
       course_code: value("course_code") || null,
       qualification: value("qualification") || null,
-      dob: value("dob") || null,
-      photo_path: null
+       dob: value("dob") || null,
+      photo_path: null,
+      status: "New",
+      branch_id: null
     });
 
     if (error) {
