@@ -4,179 +4,156 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master Computer Academy - Branch Dashboard</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f3f6fb;
-  color:#26334a;
-}
-header{
-  background:#142d55;
-  color:white;
-  padding:20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#26334a}
+header{background:#142d55;color:white;padding:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
 header h2{margin:0;color:white}
-button{
-  background:#1766a5;
-  color:white;
-  border:0;
-  padding:11px 20px;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:bold;
-}
+button{background:#1766a5;color:white;border:0;padding:11px 18px;border-radius:6px;cursor:pointer;font-weight:bold}
 button:hover{opacity:.9}
+button:disabled{opacity:.5;cursor:not-allowed}
 .logout{background:#d92332}
-.container{
-  max-width:1100px;
-  margin:30px auto;
-  padding:15px;
-}
-.box{
-  background:white;
-  padding:25px;
-  border-radius:10px;
-  box-shadow:0 3px 12px #0001;
-  margin-bottom:20px;
-}
-.login-box{
-  max-width:420px;
-  margin:60px auto;
-}
+.container{max-width:1100px;margin:30px auto;padding:15px}
+.box{background:white;padding:25px;border-radius:10px;box-shadow:0 3px 12px #0001;margin-bottom:20px}
+.login-box{max-width:420px;margin:60px auto}
 h2{color:#173c68}
-label{
-  display:block;
-  margin-top:15px;
-  font-weight:bold;
-}
-input{
-  width:100%;
-  padding:12px;
-  margin-top:7px;
-  border:1px solid #ccd3df;
-  border-radius:6px;
-}
+label{display:block;margin-top:15px;font-weight:bold}
+input{width:100%;padding:12px;margin-top:7px;border:1px solid #ccd3df;border-radius:6px}
 .login-box button{width:100%;margin-top:20px}
 .message{margin-top:15px;color:#d92332}
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:15px;
-}
-.card{
-  background:white;
-  padding:22px;
-  border-radius:9px;
-  box-shadow:0 3px 12px #0001;
-  border-left:4px solid #1766a5;
-}
+.success{color:#16833b}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}
+.card{background:white;padding:22px;border-radius:9px;box-shadow:0 3px 12px #0001;border-left:4px solid #1766a5}
 .card h3{font-size:15px;color:#59677c}
 .card p{font-size:28px;font-weight:bold;margin:10px 0}
 .table-wrap{overflow-x:auto}
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:750px;
-}
-th,td{
-  padding:12px;
-  border-bottom:1px solid #e5e9f0;
-  text-align:left;
-}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:12px;border-bottom:1px solid #e5e9f0;text-align:left}
 th{background:#eaf2fc;color:#173c68}
 .status{font-weight:bold}
-#dashboard{display:none}
-#loginSection{display:none}
+.edit-btn{background:#16834b;padding:8px 14px}
+.cancel-btn{background:#687588;margin-left:8px}
+#dashboard,#loginSection,#editSection{display:none}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:5px 18px}
+.form-actions{margin-top:22px}
+#editMessage{margin-top:15px}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h2>MASTER COMPUTER ACADEMY</h2>
-  <button class="logout" id="logoutBtn" style="display:none">
-    Logout
-  </button>
+<h2>MASTER COMPUTER ACADEMY</h2>
+<button class="logout" id="logoutBtn" style="display:none">Logout</button>
 </header>
 
 <div class="container">
 
 <section id="loginSection" class="box login-box">
-  <h2>Branch Login</h2>
-  <p>Login to your Branch Dashboard</p>
-
-  <form id="loginForm">
-    <label>Email Address</label>
-    <input type="email" id="email" required>
-
-    <label>Password</label>
-    <input type="password" id="password" required>
-
-    <button type="submit" id="loginBtn">Login</button>
-  </form>
-
-  <p class="message" id="loginMessage"></p>
+<h2>Branch Login</h2>
+<p>Login to your Branch Dashboard</p>
+<form id="loginForm">
+<label>Email Address</label>
+<input type="email" id="email" required>
+<label>Password</label>
+<input type="password" id="password" required>
+<button type="submit" id="loginBtn">Login</button>
+</form>
+<p class="message" id="loginMessage"></p>
 </section>
 
 <section id="dashboard">
-  <div class="box">
-    <h2>Welcome to Branch Dashboard</h2>
-    <p>Main Branch - Student Management</p>
-    <button onclick="loadStudents()">Refresh Students</button>
-    <p id="dashboardMessage"></p>
-  </div>
 
-  <div class="cards">
-    <div class="card">
-      <h3>Total Students</h3>
-      <p id="totalCount">0</p>
-    </div>
-    <div class="card">
-      <h3>New Students</h3>
-      <p id="newCount">0</p>
-    </div>
-    <div class="card">
-      <h3>Approved Students</h3>
-      <p id="approvedCount">0</p>
-    </div>
-    <div class="card">
-      <h3>Rejected Students</h3>
-      <p id="rejectedCount">0</p>
-    </div>
-  </div>
+<div class="box">
+<h2>Welcome to Branch Dashboard</h2>
+<p>Main Branch - Student Management</p>
+<button onclick="loadStudents()">Refresh Students</button>
+<p id="dashboardMessage"></p>
+</div>
 
-  <div class="box" style="margin-top:25px">
-    <h2>Student Registrations</h2>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Student Name</th>
-            <th>Father Name</th>
-            <th>Mobile</th>
-            <th>Course</th>
-            <th>Status</th>
-            <th>Registration Date</th>
-          </tr>
-        </thead>
-        <tbody id="studentRows">
-          <tr><td colspan="6">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+<div class="cards">
+<div class="card"><h3>Total Students</h3><p id="totalCount">0</p></div>
+<div class="card"><h3>New Students</h3><p id="newCount">0</p></div>
+<div class="card"><h3>Approved Students</h3><p id="approvedCount">0</p></div>
+<div class="card"><h3>Rejected Students</h3><p id="rejectedCount">0</p></div>
+</div>
+
+<div class="box" style="margin-top:25px">
+<h2>Student Registrations</h2>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Student Name</th>
+<th>Father Name</th>
+<th>Mobile</th>
+<th>Course</th>
+<th>Status</th>
+<th>Registration Date</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="studentRows">
+<tr><td colspan="7">Loading...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<section id="editSection" class="box">
+<h2>Edit Student Details</h2>
+<form id="editForm">
+<div class="form-grid">
+
+<div>
+<label>Student Name</label>
+<input id="editStudentName" required>
+</div>
+
+<div>
+<label>Father Name</label>
+<input id="editFatherName">
+</div>
+
+<div>
+<label>Mother Name</label>
+<input id="editMotherName">
+</div>
+
+<div>
+<label>Mobile Number</label>
+<input id="editMobile">
+</div>
+
+<div>
+<label>Email</label>
+<input type="email" id="editEmail">
+</div>
+
+<div>
+<label>Course Name</label>
+<input id="editCourse">
+</div>
+
+<div>
+<label>Qualification</label>
+<input id="editQualification">
+</div>
+
+</div>
+
+<div class="form-actions">
+<button type="submit" id="saveBtn">Update Student</button>
+<button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+</div>
+
+<p id="editMessage"></p>
+</form>
 </section>
 
+</section>
 </div>
 
 <script>
@@ -187,162 +164,285 @@ const SUPABASE_KEY =
 "sb_publishable_fdBsDqavTxcWkYQJJxfMdg_R_5b-596";
 
 const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
 const loginSection = document.getElementById("loginSection");
 const dashboard = document.getElementById("dashboard");
+const editSection = document.getElementById("editSection");
 const logoutBtn = document.getElementById("logoutBtn");
 const loginMessage = document.getElementById("loginMessage");
 const dashboardMessage = document.getElementById("dashboardMessage");
 
+let currentStudents = [];
+let editingStudentId = null;
+
 function showLogin(){
-  loginSection.style.display = "block";
-  dashboard.style.display = "none";
-  logoutBtn.style.display = "none";
+loginSection.style.display = "block";
+dashboard.style.display = "none";
+editSection.style.display = "none";
+logoutBtn.style.display = "none";
 }
 
 function showDashboard(){
-  loginSection.style.display = "none";
-  dashboard.style.display = "block";
-  logoutBtn.style.display = "inline-block";
+loginSection.style.display = "none";
+dashboard.style.display = "block";
+logoutBtn.style.display = "inline-block";
 }
 
 function escapeHTML(value){
-  return String(value ?? "").replace(/[&<>"']/g, function(char){
-    return {
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#39;"
-    }[char];
-  });
+return String(value ?? "").replace(/[&<>"']/g,function(char){
+return {
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+}[char];
+});
 }
 
 document.getElementById("loginForm")
-.addEventListener("submit", async function(event){
+.addEventListener("submit",async function(event){
 
-  event.preventDefault();
+event.preventDefault();
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+const email = document.getElementById("email").value.trim();
+const password = document.getElementById("password").value;
+const loginBtn = document.getElementById("loginBtn");
 
-  const loginBtn = document.getElementById("loginBtn");
-  loginBtn.disabled = true;
-  loginBtn.textContent = "Please wait...";
-  loginMessage.textContent = "";
+loginBtn.disabled = true;
+loginBtn.textContent = "Please wait...";
+loginMessage.textContent = "";
 
-  const {data,error} = await db.auth.signInWithPassword({
-    email:email,
-    password:password
-  });
+const {data,error} = await db.auth.signInWithPassword({
+email:email,
+password:password
+});
 
-  loginBtn.disabled = false;
-  loginBtn.textContent = "Login";
+loginBtn.disabled = false;
+loginBtn.textContent = "Login";
 
-  if(error){
-    loginMessage.textContent = error.message;
-    return;
-  }
+if(error){
+loginMessage.textContent = error.message;
+return;
+}
 
-  showDashboard();
-  await loadStudents();
+showDashboard();
+await loadStudents();
 });
 
 async function loadStudents(){
 
-  dashboardMessage.textContent = "Loading students...";
+dashboardMessage.textContent = "Loading students...";
 
-  const {data,error} = await db
-    .from("students")
-    .select(`
-      student_name,
-      father_name,
-      mobile,
-      course_name,
-      status,
-      created_at
-    `)
-    .order("created_at",{ascending:false});
+const {data,error} = await db
+.from("students")
+.select(`
+id,
+student_name,
+father_name,
+mother_name,
+mobile,
+email,
+course_name,
+qualification,
+status,
+created_at
+`)
+.order("created_at",{ascending:false});
 
-  if(error){
-    dashboardMessage.textContent =
-      "Error loading students: " + error.message;
-    return;
-  }
-
-  const students = data || [];
-
-  document.getElementById("totalCount").textContent =
-    students.length;
-
-  document.getElementById("newCount").textContent =
-    students.filter(s => s.status === "New").length;
-
-  document.getElementById("approvedCount").textContent =
-    students.filter(s => s.status === "Approved").length;
-
-  document.getElementById("rejectedCount").textContent =
-    students.filter(s => s.status === "Rejected").length;
-
-  const rows = document.getElementById("studentRows");
-
-  if(students.length === 0){
-    rows.innerHTML =
-      '<tr><td colspan="6">No students found.</td></tr>';
-  }else{
-    rows.innerHTML = students.map(s => `
-      <tr>
-        <td>${escapeHTML(s.student_name)}</td>
-        <td>${escapeHTML(s.father_name)}</td>
-        <td>${escapeHTML(s.mobile)}</td>
-        <td>${escapeHTML(s.course_name)}</td>
-        <td class="status">${escapeHTML(s.status)}</td>
-        <td>${s.created_at
-          ? escapeHTML(new Date(s.created_at).toLocaleDateString("en-IN"))
-          : "-"}</td>
-      </tr>
-    `).join("");
-  }
-
-  dashboardMessage.textContent =
-    "Student records loaded successfully.";
+if(error){
+dashboardMessage.textContent =
+"Error loading students: " + error.message;
+return;
 }
+
+currentStudents = data || [];
+
+document.getElementById("totalCount").textContent =
+currentStudents.length;
+
+document.getElementById("newCount").textContent =
+currentStudents.filter(s=>s.status==="New").length;
+
+document.getElementById("approvedCount").textContent =
+currentStudents.filter(s=>s.status==="Approved").length;
+
+document.getElementById("rejectedCount").textContent =
+currentStudents.filter(s=>s.status==="Rejected").length;
+
+const rows = document.getElementById("studentRows");
+
+if(currentStudents.length===0){
+rows.innerHTML='<tr><td colspan="7">No students found.</td></tr>';
+}else{
+rows.innerHTML=currentStudents.map(s=>`
+<tr>
+<td>${escapeHTML(s.student_name)}</td>
+<td>${escapeHTML(s.father_name)}</td>
+<td>${escapeHTML(s.mobile)}</td>
+<td>${escapeHTML(s.course_name)}</td>
+<td class="status">${escapeHTML(s.status)}</td>
+<td>${s.created_at
+?escapeHTML(new Date(s.created_at).toLocaleDateString("en-IN"))
+:"-"}</td>
+<td>
+<button class="edit-btn" data-edit-id="${escapeHTML(s.id)}">
+Edit
+</button>
+</td>
+</tr>
+`).join("");
+}
+
+dashboardMessage.textContent =
+"Student records loaded successfully.";
+}
+
+document.getElementById("studentRows")
+.addEventListener("click",function(event){
+
+const button = event.target.closest("[data-edit-id]");
+if(!button)return;
+
+const student = currentStudents.find(
+s=>String(s.id)===button.dataset.editId
+);
+
+if(!student)return;
+
+editingStudentId = student.id;
+
+document.getElementById("editStudentName").value =
+student.student_name || "";
+
+document.getElementById("editFatherName").value =
+student.father_name || "";
+
+document.getElementById("editMotherName").value =
+student.mother_name || "";
+
+document.getElementById("editMobile").value =
+student.mobile || "";
+
+document.getElementById("editEmail").value =
+student.email || "";
+
+document.getElementById("editCourse").value =
+student.course_name || "";
+
+document.getElementById("editQualification").value =
+student.qualification || "";
+
+document.getElementById("editMessage").textContent = "";
+document.getElementById("editMessage").className = "";
+
+editSection.style.display = "block";
+editSection.scrollIntoView({behavior:"smooth"});
+});
+
+document.getElementById("editForm")
+.addEventListener("submit",async function(event){
+
+event.preventDefault();
+
+if(!editingStudentId)return;
+
+const saveBtn = document.getElementById("saveBtn");
+const editMessage = document.getElementById("editMessage");
+
+saveBtn.disabled = true;
+saveBtn.textContent = "Updating...";
+editMessage.textContent = "";
+
+const updatedDetails = {
+student_name:document.getElementById("editStudentName").value.trim(),
+father_name:document.getElementById("editFatherName").value.trim(),
+mother_name:document.getElementById("editMotherName").value.trim(),
+mobile:document.getElementById("editMobile").value.trim(),
+email:document.getElementById("editEmail").value.trim(),
+course_name:document.getElementById("editCourse").value.trim(),
+qualification:document.getElementById("editQualification").value.trim()
+};
+
+const {data,error} = await db
+.from("students")
+.update(updatedDetails)
+.eq("id",editingStudentId)
+.select("id");
+
+saveBtn.disabled = false;
+saveBtn.textContent = "Update Student";
+
+if(error){
+editMessage.textContent = "Update failed: " + error.message;
+return;
+}
+
+if(!data || data.length===0){
+editMessage.textContent =
+"No record was updated. Please check Branch permissions.";
+return;
+}
+
+editMessage.textContent = "Student details updated successfully!";
+editMessage.className = "success";
+
+editingStudentId = null;
+
+await loadStudents();
+
+setTimeout(()=>{
+editSection.style.display = "none";
+},1200);
+});
+
+document.getElementById("cancelBtn")
+.addEventListener("click",function(){
+
+editingStudentId = null;
+document.getElementById("editForm").reset();
+document.getElementById("editMessage").textContent = "";
+editSection.style.display = "none";
+});
 
 logoutBtn.addEventListener("click",async function(){
 
-  const {error} = await db.auth.signOut();
+const {error} = await db.auth.signOut();
 
-  if(error){
-    alert("Logout failed: " + error.message);
-    return;
-  }
+if(error){
+alert("Logout failed: " + error.message);
+return;
+}
 
-  document.getElementById("loginForm").reset();
-  loginMessage.textContent = "";
-  dashboardMessage.textContent = "";
+document.getElementById("loginForm").reset();
+document.getElementById("editForm").reset();
+loginMessage.textContent = "";
+dashboardMessage.textContent = "";
+currentStudents = [];
+editingStudentId = null;
 
-  showLogin();
+showLogin();
 });
 
 async function checkSession(){
 
-  const {data,error} = await db.auth.getSession();
+const {data,error} = await db.auth.getSession();
 
-  if(error){
-    showLogin();
-    loginMessage.textContent = error.message;
-    return;
-  }
+if(error){
+showLogin();
+loginMessage.textContent = error.message;
+return;
+}
 
-  if(data.session){
-    showDashboard();
-    await loadStudents();
-  }else{
-    showLogin();
-  }
+if(data.session){
+showDashboard();
+await loadStudents();
+}else{
+showLogin();
+}
 }
 
 checkSession();
