@@ -66,6 +66,36 @@ th { background: #eee; }
 
 <div id="dashboard">
 <h3>Admin Dashboard</h3>
+  <hr>
+
+<h3>Branch Management</h3>
+
+<h4>Add New Branch</h4>
+
+<input type="text" id="branchName" placeholder="Branch Name">
+
+<input type="text" id="branchCode" placeholder="Branch Code">
+
+<button id="addBranch">Add Branch</button>
+
+<p id="branchMessage"></p>
+
+<h4>All Branches</h4>
+
+<div style="overflow-x:auto">
+<table>
+<thead>
+<tr>
+<th>Branch Name</th>
+<th>Branch Code</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="branchList"></tbody>
+</table>
+</div>
+
+<hr>
 <p id="welcome"></p>
 <button id="refresh">Refresh Students</button>
 <button id="logout">Logout</button>
@@ -132,14 +162,108 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   document.getElementById("dashboard").style.display = "block";
 
   document.getElementById("welcome").textContent =
-    "Welcome, " + (profile.fullname || "Admin");
+    "Welcome, " + (profile.full_name || "Admin");
 
   message.textContent = "";
 
   loadStudents();
+  loadBranches();
 });
 
+// BRANCH MANAGEMENT
 
+async function loadBranches() {
+  const { data, error } = await db
+    .from("branches")
+    .select("id, name, code")
+    .order("name");
+
+  const list = document.getElementById("branchList");
+  list.replaceChildren();
+
+  if (error) {
+    document.getElementById("branchMessage").textContent =
+      "Unable to load branches: " + error.message;
+    return;
+  }
+
+  data.forEach(branch => {
+    const tr = document.createElement("tr");
+
+    const nameTd = document.createElement("td");
+    nameTd.textContent = branch.name;
+
+    const codeTd = document.createElement("td");
+    codeTd.textContent = branch.code;
+
+    const actionTd = document.createElement("td");
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+
+    editBtn.onclick = async () => {
+      const newName = prompt("Branch Name:", branch.name);
+      if (newName === null) return;
+
+      const newCode = prompt("Branch Code:", branch.code);
+      if (newCode === null) return;
+
+      if (!newName.trim() || !newCode.trim()) {
+        alert("Please enter Branch Name and Code.");
+        return;
+      }
+
+      const { error } = await db
+        .from("branches")
+        .update({
+          name: newName.trim(),
+          code: newCode.trim().toLowerCase()
+        })
+        .eq("id", branch.id);
+
+      if (error) {
+        alert("Update Failed: " + error.message);
+      } else {
+        alert("Branch Updated Successfully!");
+        loadBranches();
+      }
+    };
+
+    actionTd.appendChild(editBtn);
+    tr.append(nameTd, codeTd, actionTd);
+    list.appendChild(tr);
+  });
+}
+
+
+// ADD NEW BRANCH
+
+document.getElementById("addBranch").onclick = async () => {
+  const name = document.getElementById("branchName").value.trim();
+  const code = document.getElementById("branchCode").value.trim().toLowerCase();
+
+  const branchMessage = document.getElementById("branchMessage");
+
+  if (!name || !code) {
+    branchMessage.textContent = "Please enter Branch Name and Code.";
+    return;
+  }
+
+  const { error } = await db
+    .from("branches")
+    .insert([{ name: name, code: code }]);
+
+  if (error) {
+    branchMessage.textContent = "Add Branch Failed: " + error.message;
+    return;
+  }
+
+  document.getElementById("branchName").value = "";
+  document.getElementById("branchCode").value = "";
+
+  branchMessage.textContent = "Branch Added Successfully!";
+  loadBranches();
+};
 // LOAD STUDENTS
 async function loadStudents() {
 
