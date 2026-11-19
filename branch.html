@@ -261,7 +261,20 @@ return;
 }
 
 currentStudents = data || [];
+await Promise.all(currentStudents.map(async (s) => {
+  s.photoUrl = null;
 
+  if (s.photo_path) {
+    const { data: photoData, error: photoError } = await db
+      .storage
+      .from("student-photos")
+      .createSignedUrl(s.photo_path, 3600);
+
+    if (!photoError && photoData) {
+      s.photoUrl = photoData.signedUrl;
+    }
+  }
+}));
 document.getElementById("totalCount").textContent =
 currentStudents.length;
 
