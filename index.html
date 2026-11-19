@@ -148,31 +148,66 @@ const supabaseClient = window.supabase.createClient(
 );
 
 const form = document.getElementById("studentRegistrationForm");
-supabaseClient.auth.getSession().then(({ data, error }) => {
-  console.log("Supabase session:", data.session);
-  console.log("Session error:", error);
-});
+
 if (form) {
   form.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const fd = new FormData(form);
-    const value = (name) => (fd.get(name) || "").toString().trim();
+    const value = (name) =>
+      (fd.get(name) || "").toString().trim();
 
-    const { error } = await supabaseClient.from("students").insert({
-      student_name: value("student_name"),
-      father_name: value("father_name"),
-      mother_name: value("mother_name") || null,
-      mobile: value("mobile"),
-      email: value("email") || null,
-      course_name: value("course_name"),
-      course_code: value("course_code") || null,
-      qualification: value("qualification") || null,
-       dob: value("dob") || null,
-      photo_path: null,
-      status: "New",
-      branch_id: "f947e881-aaa7-44ed-8329-1320632b7f5e"
-    });
+    const photoFile = fd.get("photo");
+    let photoPath = null;
+
+    // Photo upload
+    if (photoFile && photoFile.size > 0) {
+
+      if (!["image/jpeg", "image/png", "image/webp"].includes(photoFile.type)) {
+        alert("Please upload JPG, PNG or WEBP photo.");
+        return;
+      }
+
+      if (photoFile.size > 5 * 1024 * 1024) {
+        alert("Photo size must be less than 5 MB.");
+        return;
+      }
+
+      const extension = photoFile.name.split(".").pop().toLowerCase();
+      photoPath = crypto.randomUUID() + "." + extension;
+
+      const { error: uploadError } = await supabaseClient
+        .storage
+        .from("student-photos")
+        .upload(photoPath, photoFile, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: photoFile.type
+        });
+
+      if (uploadError) {
+        alert("Photo upload failed: " + uploadError.message);
+        return;
+      }
+    }
+
+    // Save student details
+    const { error } = await supabaseClient
+      .from("students")
+      .insert({
+        student_name: value("student_name"),
+        father_name: value("father_name"),
+        mother_name: value("mother_name") || null,
+        mobile: value("mobile"),
+        email: value("email") || null,
+        course_name: value("course_name"),
+        course_code: value("course_code") || null,
+        qualification: value("qualification") || null,
+        dob: value("dob") || null,
+        photo_path: photoPath,
+        status: "New",
+        branch_id: "f947e881-aaa7-44ed-8329-1320632b7f5e"
+      });
 
     if (error) {
       alert("Registration failed: " + error.message);
@@ -182,6 +217,3 @@ if (form) {
     }
   });
 }
-</script>
-</body>
-</html>
