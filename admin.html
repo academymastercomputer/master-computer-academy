@@ -281,13 +281,10 @@ async function loadStudents() {
     return;
   }
 
-  data.forEach(student => {
+  for (const student of data) {
 
     const tr = document.createElement("tr");
-
-    [
-      [
-  const photoCell = document.createElement("td");
+const photoCell = document.createElement("td");
 
 if (student.photo_path) {
   const { data: photoData, error: photoError } = await db
@@ -464,7 +461,7 @@ tr.appendChild(photoCell);
     tr.appendChild(actionTd);
     list.appendChild(tr);
 
-  });
+   }
 
   message.textContent = "Total Students: " + data.length;
 }
