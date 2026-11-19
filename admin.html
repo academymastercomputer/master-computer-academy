@@ -105,6 +105,7 @@ th { background: #eee; }
 <table>
 <thead>
 <tr>
+<th>Photo</th>
 <th>Name</th>
 <th>Father Name</th>
 <th>Mobile</th>
@@ -269,7 +270,7 @@ async function loadStudents() {
 
   const { data, error } = await db
     .from("students")
-    .select("id, student_name, father_name, mother_name, mobile, email, course_name, status")
+    .select("id, student_name, father_name, mother_name, mobile, email, course_name, status, photo_path")
     .order("created_at", { ascending: false });
 
   const list = document.getElementById("studentList");
