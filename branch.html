@@ -86,6 +86,7 @@ th{background:#eaf2fc;color:#173c68}
 <table>
 <thead>
 <tr>
+<th>Photo</th>
 <th>Student Name</th>
 <th>Father Name</th>
 <th>Mobile</th>
@@ -294,6 +295,11 @@ rows.innerHTML='<tr><td colspan="7">No students found.</td></tr>';
 }else{
 rows.innerHTML=currentStudents.map(s=>`
 <tr>
+<td>
+${s.photoUrl
+  ? `<img src="${s.photoUrl}" width="50" height="50" style="object-fit:cover;border-radius:5px;">`
+  : "No Photo"}
+</td>
 <td>${escapeHTML(s.student_name)}</td>
 <td>${escapeHTML(s.father_name)}</td>
 <td>${escapeHTML(s.mobile)}</td>
