@@ -286,12 +286,39 @@ async function loadStudents() {
     const tr = document.createElement("tr");
 
     [
-      student.student_name,
-      student.father_name,
-      student.mobile,
-      student.course_name,
-      student.status
-    ].forEach(value => {
+      [
+  const photoCell = document.createElement("td");
+
+if (student.photo_path) {
+  const { data: photoData, error: photoError } = await db
+    .storage
+    .from("student-photos")
+    .createSignedUrl(student.photo_path, 3600);
+
+  if (photoData && !photoError) {
+    const img = document.createElement("img");
+    img.src = photoData.signedUrl;
+    img.width = 50;
+    img.height = 50;
+    img.style.objectFit = "cover";
+    img.style.borderRadius = "5px";
+    photoCell.appendChild(img);
+  } else {
+    photoCell.textContent = "No Photo";
+  }
+} else {
+  photoCell.textContent = "No Photo";
+}
+
+tr.appendChild(photoCell);
+
+[
+  student.student_name,
+  student.father_name,
+  student.mobile,
+  student.course_name,
+  student.status
+].forEach(value => {
       const td = document.createElement("td");
       td.textContent = value || "-";
       tr.appendChild(td);
