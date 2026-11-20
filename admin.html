@@ -51,7 +51,7 @@ th { background: #eee; }
 <body>
 
 <div class="container">
-<h2>Master Computer Academy</h2>
+<h2 id="mainHeading">Master Computer Academy</h2>
 <h3>Login</h3>
 
 <div id="login">
@@ -176,8 +176,15 @@ if (currentProfile.role === "branch") {
   document.getElementById("login").style.display = "none";
   document.getElementById("dashboard").style.display = "block";
 
-  document.getElementById("welcome").textContent =
-    "Welcome, " + (profile.full_name || "Admin");
+  if (currentProfile.role === "branch") {
+  document.getElementById("mainHeading").textContent =
+    "Welcome to Master Computer Academy " + currentProfile.full_name;
+} else {
+  document.getElementById("mainHeading").textContent =
+    "Master Computer Academy";
+}
+
+document.getElementById("welcome").style.display = "none";
 
   message.textContent = "";
 
