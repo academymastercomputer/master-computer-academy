@@ -103,26 +103,33 @@ th { background: #eee; }
 
 <h3>Student Registrations</h3>
  <div style="background:#e3f2fd; padding:15px; border-radius:8px;">
-    <h4>Total Students</h4>
-    <h2 id="totalStudents">0</h2>
-  </div>
-
-  <div style="background:#e8f5e9; padding:15px; border-radius:8px;">
-    <h4>Approved</h4>
-    <h2 id="approvedStudents">0</h2>
-  </div>
-
-  <div style="background:#fff3e0; padding:15px; border-radius:8px;">
-    <h4>New</h4>
-    <h2 id="newStudents">0</h2>
-  </div>
-
-  <div style="background:#ffebee; padding:15px; border-radius:8px;">
-    <h4>Rejected</h4>
-    <h2 id="rejectedStudents">0</h2>
-  </div>
-
-</div>
+<table style="width:100%; border-collapse:collapse; margin:15px 0;">
+  <thead>
+    <tr style="background:#b00000; color:white;">
+      <th style="padding:12px;">Details</th>
+      <th style="padding:12px;">Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Total Students</td>
+      <td id="totalStudents">0</td>
+    </tr>
+    <tr>
+      <td>Approved</td>
+      <td id="approvedStudents">0</td>
+    </tr>
+    <tr>
+      <td>New</td>
+      <td id="newStudents">0</td>
+    </tr>
+    <tr>
+      <td>Rejected</td>
+      <td id="rejectedStudents">0</td>
+    </tr>
+  </tbody>
+</table>
+ </div>
 <div style="overflow-x:auto">
 <table>
 <thead>
