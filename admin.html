@@ -329,18 +329,94 @@ tr.appendChild(photoCell);
     viewBtn.textContent = "View";
     viewBtn.style.background = "blue";
 
-    viewBtn.onclick = () => {
-      alert(
-        "Student Name: " + student.student_name +
-        "\nFather Name: " + student.father_name +
-        "\nMother Name: " + (student.mother_name || "") +
-        "\nMobile: " + student.mobile +
-        "\nEmail: " + (student.email || "") +
-        "\nCourse: " + student.course_name +
-        "\nStatus: " + student.status
-      );
-    };
+    viewBtn.onclick = async () => {
 
+  let photoUrl = null;
+
+  if (student.photo_path) {
+    const { data, error } = await db
+      .storage
+      .from("student-photos")
+      .createSignedUrl(student.photo_path, 3600);
+
+    if (error) {
+      alert("Photo loading failed: " + error.message);
+    } else {
+      photoUrl = data.signedUrl;
+    }
+  }
+
+  const modal = document.createElement("div");
+
+  modal.style.cssText = `
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    padding:20px;
+  `;
+
+  const box = document.createElement("div");
+
+  box.style.cssText = `
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:12px;
+    max-width:450px;
+    width:100%;
+    max-height:90vh;
+    overflow:auto;
+  `;
+
+  if (photoUrl) {
+    const img = document.createElement("img");
+    img.src = photoUrl;
+    img.style.cssText = `
+      width:130px;
+      height:130px;
+      object-fit:cover;
+      border-radius:10px;
+      display:block;
+      margin:0 auto 15px;
+    `;
+    box.appendChild(img);
+  } else {
+    const noPhoto = document.createElement("p");
+    noPhoto.textContent = "No Student Photo Available";
+    box.appendChild(noPhoto);
+  }
+
+  const details = document.createElement("pre");
+
+  details.style.cssText = `
+    white-space:pre-wrap;
+    font-family:Arial;
+    line-height:1.7;
+  `;
+
+  details.textContent =
+    "Student Name: " + student.student_name +
+    "\nFather Name: " + student.father_name +
+    "\nMother Name: " + (student.mother_name || "") +
+    "\nMobile: " + student.mobile +
+    "\nEmail: " + (student.email || "") +
+    "\nCourse: " + student.course_name +
+    "\nStatus: " + student.status;
+
+  box.appendChild(details);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.textContent = "Close";
+  closeBtn.onclick = () => modal.remove();
+
+  box.appendChild(closeBtn);
+  modal.appendChild(box);
+  document.body.appendChild(modal);
+};
     actionTd.appendChild(viewBtn);
 
 
