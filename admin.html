@@ -154,20 +154,22 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     .eq("id", data.user.id)
     .single();
 
-  if (
+ if (
   profileError ||
   !profile ||
   !["admin", "branch"].includes(profile.role) ||
   (profile.role === "branch" && !profile.branch_id)
 ) {
-    currentProfile = profile;
-    if (currentProfile.role === "branch") {
+  message.textContent = "Admin access denied.";
+  await db.auth.signOut();
+  return;
+}
+
+currentProfile = profile;
+
+if (currentProfile.role === "branch") {
   document.getElementById("branchManagementSection").style.display = "none";
 }
-    message.textContent = "Admin access denied.";
-    await db.auth.signOut();
-    return;
-  }
 
   document.getElementById("login").style.display = "none";
   document.getElementById("dashboard").style.display = "block";
