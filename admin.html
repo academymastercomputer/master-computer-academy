@@ -6,46 +6,152 @@
 <title>Master Computer Academy - Admin</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+/* MAIN PAGE */
 body {
   font-family: Arial, sans-serif;
-  background: #f3f4f6;
+  background: #f4f5f7;
   margin: 0;
   padding: 20px;
+  color: #333;
 }
+
+/* MAIN CONTAINER */
 .container {
-  max-width: 1000px;
-  margin: 30px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
+  max-width: 1200px;
+  margin: 25px auto;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
 }
-h2 { color: #b00000; }
-input, button {
+
+/* HEADINGS */
+h2 {
+  color: #b00000;
+  font-weight: 700;
+}
+
+h3 {
+  color: #b00000;
+  font-size: 21px;
+  border-bottom: 2px solid #eeeeee;
+  padding-bottom: 10px;
+}
+
+h4 {
+  color: #444;
+}
+
+/* INPUT FIELDS */
+input, select, textarea {
   width: 100%;
   padding: 12px;
   margin: 8px 0;
   box-sizing: border-box;
+  border: 1px solid #d5d5d5;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 14px;
 }
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #b00000;
+  box-shadow: 0 0 4px rgba(176,0,0,0.2);
+}
+
+/* BUTTONS */
 button {
   background: #b00000;
   color: white;
-  border: 0;
+  border: none;
+  padding: 11px 18px;
+  margin: 6px 3px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: 0.2s;
+  width: auto;
 }
+
+button:hover {
+  background: #850000;
+}
+
+/* TABLES */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 18px;
+  background: white;
 }
+
 th, td {
-  border: 1px solid #ddd;
-  padding: 10px;
+  border: 1px solid #e2e2e2;
+  padding: 11px;
   text-align: left;
+  font-size: 14px;
 }
-th { background: #b00000 !important; color: white !important; }
-#dashboard { display: none; }
-#message { color: #b00000; }
+
+th {
+  background: #b00000 !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+td {
+  color: #333;
+}
+
+tr:nth-child(even) {
+  background: #fafafa;
+}
+
+/* BRANCH MANAGEMENT */
+#branchManagementSection {
+  border: 1px solid #f0df8a;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* DASHBOARD */
+#dashboard {
+  display: none;
+}
+
+/* LOGIN MESSAGE */
+#message {
+  color: #b00000;
+  font-weight: 600;
+}
+
+/* HORIZONTAL LINE */
+hr {
+  border: 0;
+  border-top: 1px solid #e5e5e5;
+  margin: 20px 0;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 600px) {
+  body {
+    padding: 8px;
+  }
+
+  .container {
+    padding: 14px;
+    margin: 10px auto;
+  }
+
+  th, td {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  button {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+}
 </style>
 </head>
 <body>
