@@ -106,6 +106,7 @@ th { background: #eee; }
 <table>
 <thead>
 <tr>
+<th>S.No.</th>
 <th>Photo</th>
 <th>Name</th>
 <th>Father Name</th>
@@ -310,9 +311,13 @@ const { data, error } = await query
     return;
   }
 
+  let serialNumber = 1;
   for (const student of data) {
 
     const tr = document.createElement("tr");
+    const serialCell = document.createElement("td");
+serialCell.textContent = serialNumber++;
+tr.appendChild(serialCell);
 const photoCell = document.createElement("td");
 
 if (student.photo_path) {
