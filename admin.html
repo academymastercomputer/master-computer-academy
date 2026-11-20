@@ -67,7 +67,7 @@ th { background: #eee; }
 <div id="dashboard">
 <h3>Admin Dashboard</h3>
   <hr>
-
+<div id="branchManagementSection">
 <h3>Branch Management</h3>
 
 <h4>Add New Branch</h4>
@@ -94,7 +94,8 @@ th { background: #eee; }
 <tbody id="branchList"></tbody>
 </table>
 </div>
-
+</div>
+  
 <hr>
 <p id="welcome"></p>
 <button id="refresh">Refresh Students</button>
@@ -130,7 +131,7 @@ const db = window.supabase.createClient(
 );
 
 const message = document.getElementById("message");
-
+let currentProfile = null;
 // ADMIN LOGIN
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -149,11 +150,20 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
   const { data: profile, error: profileError } = await db
     .from("profiles")
-    .select("role, full_name")
+    .select("role, full_name, branch_id")
     .eq("id", data.user.id)
     .single();
 
-  if (profileError || !profile || profile.role !== "admin") {
+  if (
+  profileError ||
+  !profile ||
+  !["admin", "branch"].includes(profile.role) ||
+  (profile.role === "branch" && !profile.branch_id)
+) {
+    currentProfile = profile;
+    if (currentProfile.role === "branch") {
+  document.getElementById("branchManagementSection").style.display = "none";
+}
     message.textContent = "Admin access denied.";
     await db.auth.signOut();
     return;
@@ -168,7 +178,9 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   message.textContent = "";
 
   loadStudents();
+ if (currentProfile.role === "admin") {
   loadBranches();
+}
 });
 
 // BRANCH MANAGEMENT
@@ -268,10 +280,16 @@ document.getElementById("addBranch").onclick = async () => {
 // LOAD STUDENTS
 async function loadStudents() {
 
-  const { data, error } = await db
-    .from("students")
-    .select("id, student_name, father_name, mother_name, mobile, email, course_name, status, photo_path")
-    .order("created_at", { ascending: false });
+  let query = db
+  .from("students")
+  .select("id, student_name, father_name, mother_name, mobile, email, course_name, status, photo_path");
+
+if (currentProfile?.role === "branch") {
+  query = query.eq("branch_id", currentProfile.branch_id);
+}
+
+const { data, error } = await query
+  .order("created_at", { ascending: false });
 
   const list = document.getElementById("studentList");
   list.replaceChildren();
