@@ -52,7 +52,7 @@ th { background: #eee; }
 
 <div class="container">
 <h2>Master Computer Academy</h2>
-<h3>Admin Login</h3>
+<h3>Login</h3>
 
 <div id="login">
 <form id="loginForm">
@@ -65,7 +65,7 @@ th { background: #eee; }
 <p id="message"></p>
 
 <div id="dashboard">
-<h3>Admin Dashboard</h3>
+<h3 id="dashboardTitle">Dashboard</h3>
   <hr>
 <div id="branchManagementSection">
 <h3>Branch Management</h3>
@@ -166,6 +166,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 }
 
 currentProfile = profile;
+  document.getElementById("dashboardTitle").textContent =
+  currentProfile.role === "admin" ? "Admin Dashboard" : "Branch Dashboard";
 
 if (currentProfile.role === "branch") {
   document.getElementById("branchManagementSection").style.display = "none";
