@@ -152,7 +152,7 @@ const form = document.getElementById("studentRegistrationForm");
 if (form) {
   form.addEventListener("submit", async function(event) {
     event.preventDefault();
-
+    console.log("Registration Submit Started");
     const fd = new FormData(form);
     const value = (name) =>
       (fd.get(name) || "").toString().trim();
