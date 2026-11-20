@@ -420,53 +420,243 @@ tr.appendChild(photoCell);
     actionTd.appendChild(viewBtn);
 
 
-    // EDIT BUTTON
-    const editBtn = document.createElement("button");
-    editBtn.textContent = "Edit";
-    editBtn.style.background = "green";
+  // EDIT BUTTON
+const editBtn = document.createElement("button");
+editBtn.textContent = "Edit";
+editBtn.style.background = "green";
 
-    editBtn.onclick = async () => {
+editBtn.onclick = async () => {
 
-      const newName = prompt("Student Name:", student.student_name);
-      if (newName === null) return;
+  let oldPhotoPath = student.photo_path || null;
+  let newPhotoFile = null;
 
-      const newFather = prompt("Father Name:", student.father_name);
-      if (newFather === null) return;
+  const modal = document.createElement("div");
+  modal.style.cssText = `
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.7);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    padding:15px;
+  `;
 
-      const newMobile = prompt("Mobile Number:", student.mobile);
-      if (newMobile === null) return;
+  const box = document.createElement("div");
+  box.style.cssText = `
+    background:white;
+    color:black;
+    padding:20px;
+    border-radius:12px;
+    width:100%;
+    max-width:450px;
+    max-height:90vh;
+    overflow:auto;
+  `;
 
-      const newEmail = prompt("Email:", student.email || "");
-      if (newEmail === null) return;
+  const heading = document.createElement("h2");
+  heading.textContent = "Edit Student Details";
+  box.appendChild(heading);
 
-      const newCourse = prompt("Course:", student.course_name);
-      if (newCourse === null) return;
+  const photoTitle = document.createElement("p");
+  photoTitle.textContent = "Current Student Photo";
+  box.appendChild(photoTitle);
 
-      if (!newName.trim() || !newFather.trim() || !newMobile.trim() || !newCourse.trim()) {
-        alert("Please fill all required details.");
+  const img = document.createElement("img");
+  img.style.cssText = `
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:10px;
+    display:block;
+    margin-bottom:12px;
+  `;
+
+  if (oldPhotoPath) {
+    const { data, error } = await db.storage
+      .from("student-photos")
+      .createSignedUrl(oldPhotoPath, 3600);
+
+    if (!error) {
+      img.src = data.signedUrl;
+      box.appendChild(img);
+    } else {
+      photoTitle.textContent = "Current photo could not be loaded.";
+    }
+  } else {
+    photoTitle.textContent = "No current photo available.";
+  }
+
+  function makeInput(labelText, value) {
+    const label = document.createElement("label");
+    label.textContent = labelText;
+    label.style.display = "block";
+    label.style.marginTop = "12px";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = value || "";
+    input.style.cssText = `
+      width:100%;
+      padding:9px;
+      box-sizing:border-box;
+      margin-top:5px;
+    `;
+
+    box.appendChild(label);
+    box.appendChild(input);
+    return input;
+  }
+
+  const nameInput = makeInput("Student Name", student.student_name);
+  const fatherInput = makeInput("Father Name", student.father_name);
+  const mobileInput = makeInput("Mobile Number", student.mobile);
+  const emailInput = makeInput("Email", student.email);
+  const courseInput = makeInput("Course", student.course_name);
+
+  const photoLabel = document.createElement("p");
+  photoLabel.textContent = "Choose New Photo (Optional)";
+  photoLabel.style.marginTop = "15px";
+  box.appendChild(photoLabel);
+
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = "image/jpeg,image/png,image/webp";
+  box.appendChild(fileInput);
+
+  fileInput.onchange = () => {
+    newPhotoFile = fileInput.files[0] || null;
+
+    if (newPhotoFile) {
+      img.src = URL.createObjectURL(newPhotoFile);
+
+      if (!box.contains(img)) {
+        box.insertBefore(img, photoLabel);
+      }
+    }
+  };
+
+  const saveBtn = document.createElement("button");
+  saveBtn.textContent = "Save Changes";
+  saveBtn.style.cssText = `
+    background:green;
+    color:white;
+    padding:10px 15px;
+    margin-top:20px;
+    border:0;
+    cursor:pointer;
+  `;
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.style.cssText = `
+    background:gray;
+    color:white;
+    padding:10px 15px;
+    margin:20px 0 0 10px;
+    border:0;
+    cursor:pointer;
+  `;
+
+  cancelBtn.onclick = () => modal.remove();
+
+  saveBtn.onclick = async () => {
+
+    const newName = nameInput.value.trim();
+    const newFather = fatherInput.value.trim();
+    const newMobile = mobileInput.value.trim();
+    const newEmail = emailInput.value.trim();
+    const newCourse = courseInput.value.trim();
+
+    if (!newName || !newFather || !newMobile || !newCourse) {
+      alert("Please fill all required details.");
+      return;
+    }
+
+    if (newPhotoFile) {
+      if (!["image/jpeg", "image/png", "image/webp"].includes(newPhotoFile.type)) {
+        alert("Please select JPG, PNG or WEBP photo.");
         return;
       }
 
-      const { error } = await db
-        .from("students")
-        .update({
-          student_name: newName.trim(),
-          father_name: newFather.trim(),
-          mobile: newMobile.trim(),
-          email: newEmail.trim(),
-          course_name: newCourse.trim()
-        })
-        .eq("id", student.id);
-
-      if (error) {
-        alert("Update Failed: " + error.message);
-      } else {
-        alert("Student Details Updated Successfully!");
-        loadStudents();
+      if (newPhotoFile.size > 5 * 1024 * 1024) {
+        alert("Photo size must be less than 5 MB.");
+        return;
       }
-    };
+    }
 
-    actionTd.appendChild(editBtn);
+    saveBtn.disabled = true;
+    saveBtn.textContent = "Saving...";
+
+    let newPhotoPath = oldPhotoPath;
+
+    if (newPhotoFile) {
+      const extension = newPhotoFile.name.split(".").pop().toLowerCase();
+      newPhotoPath = crypto.randomUUID() + "." + extension;
+
+      const { error: uploadError } = await db.storage
+        .from("student-photos")
+        .upload(newPhotoPath, newPhotoFile, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: newPhotoFile.type
+        });
+
+      if (uploadError) {
+        alert("Photo Upload Failed: " + uploadError.message);
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Save Changes";
+        return;
+      }
+    }
+
+    const { error } = await db
+      .from("students")
+      .update({
+        student_name: newName,
+        father_name: newFather,
+        mobile: newMobile,
+        email: newEmail,
+        course_name: newCourse,
+        photo_path: newPhotoPath
+      })
+      .eq("id", student.id);
+
+    if (error) {
+      if (newPhotoFile && newPhotoPath) {
+        await db.storage.from("student-photos").remove([newPhotoPath]);
+      }
+
+      alert("Update Failed: " + error.message);
+      saveBtn.disabled = false;
+      saveBtn.textContent = "Save Changes";
+      return;
+    }
+
+    if (newPhotoFile && oldPhotoPath) {
+      const { error: deleteError } = await db.storage
+        .from("student-photos")
+        .remove([oldPhotoPath]);
+
+      if (deleteError) {
+        alert("Details updated, but old photo could not be deleted: " + deleteError.message);
+      }
+    }
+
+    URL.revokeObjectURL(img.src);
+    modal.remove();
+
+    alert("Student Details Updated Successfully!");
+    loadStudents();
+  };
+
+  box.appendChild(saveBtn);
+  box.appendChild(cancelBtn);
+  modal.appendChild(box);
+  document.body.appendChild(modal);
+};
+
+actionTd.appendChild(editBtn);
 
 
     // STATUS DROPDOWN
