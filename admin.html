@@ -102,6 +102,27 @@ th { background: #eee; }
 <button id="logout">Logout</button>
 
 <h3>Student Registrations</h3>
+ <div style="background:#e3f2fd; padding:15px; border-radius:8px;">
+    <h4>Total Students</h4>
+    <h2 id="totalStudents">0</h2>
+  </div>
+
+  <div style="background:#e8f5e9; padding:15px; border-radius:8px;">
+    <h4>Approved</h4>
+    <h2 id="approvedStudents">0</h2>
+  </div>
+
+  <div style="background:#fff3e0; padding:15px; border-radius:8px;">
+    <h4>New</h4>
+    <h2 id="newStudents">0</h2>
+  </div>
+
+  <div style="background:#ffebee; padding:15px; border-radius:8px;">
+    <h4>Rejected</h4>
+    <h2 id="rejectedStudents">0</h2>
+  </div>
+
+</div>
 <div style="overflow-x:auto">
 <table>
 <thead>
@@ -310,7 +331,18 @@ const { data, error } = await query
     message.textContent = "Unable to load students: " + error.message;
     return;
   }
+// STUDENT COUNTING
 
+document.getElementById("totalStudents").textContent = data.length;
+
+document.getElementById("approvedStudents").textContent =
+  data.filter(s => s.status === "Approved").length;
+
+document.getElementById("newStudents").textContent =
+  data.filter(s => s.status === "New").length;
+
+document.getElementById("rejectedStudents").textContent =
+  data.filter(s => s.status === "Rejected").length;
   let serialNumber = 1;
   for (const student of data) {
 
