@@ -259,6 +259,8 @@ hr {
 <tr>
 <th>S.No.</th>
 <th>Photo</th>
+<th>Enrollment No.</th>
+<th>Registration No.</th>
 <th>Name</th>
 <th>Father Name</th>
 <th>Mobile</th>
@@ -445,7 +447,7 @@ async function loadStudents() {
 
   let query = db
   .from("students")
-  .select("id, student_name, father_name, mother_name, mobile, email, course_name, status, photo_path");
+  .select("id, student_name, father_name, mother_name, mobile, email, course_name, status, photo_path, enrollment_no, registration_no");
 
 if (currentProfile?.role === "branch") {
   query = query.eq("branch_id", currentProfile.branch_id);
@@ -506,6 +508,8 @@ if (student.photo_path) {
 tr.appendChild(photoCell);
 
 [
+  student.enrollment_no,
+  student.registration_no,
   student.student_name,
   student.father_name,
   student.mobile,
