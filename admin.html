@@ -259,12 +259,12 @@ hr {
 <tr>
 <th>S.No.</th>
 <th>Photo</th>
-<th>Enrollment No.</th>
-<th>Registration No.</th>
 <th>Name</th>
 <th>Father Name</th>
 <th>Mobile</th>
 <th>Course</th>
+<th>Enrollment No.</th>
+<th>Registration No.</th>
 <th>Status</th>
 <th>Action</th>
 </tr>
@@ -508,12 +508,12 @@ if (student.photo_path) {
 tr.appendChild(photoCell);
 
 [
-  student.enrollment_no,
-  student.registration_no,
   student.student_name,
   student.father_name,
   student.mobile,
   student.course_name,
+  student.enrollment_no,
+  student.registration_no,
   student.status
 ].forEach(value => {
       const td = document.createElement("td");
