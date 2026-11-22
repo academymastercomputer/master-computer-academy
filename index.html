@@ -161,28 +161,40 @@ nav a:hover{color:var(--red)}
   font-size:18px;
   margin:10px 0;
 }
-.hero-buttons{
-  margin-top:28px;
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:12px;
 }
+
 .btn{
   display:inline-block;
-  padding:13px 24px;
-  border-radius:8px;
-  background:var(--red);
+  padding:15px 30px;
+  border-radius:10px;
+  background:linear-gradient(120deg,#e53935,#b00000);
   color:white;
-  font-weight:bold;
-  border:none;
+  font-weight:800;
+  font-size:15px;
+  border:2px solid transparent;
   cursor:pointer;
-  transition:.2s;
+  text-decoration:none;
+  transition:all .3s ease;
+  box-shadow:0 6px 18px rgba(176,0,0,.22);
+}
+
+.btn:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 24px rgba(176,0,0,.30);
 }
 .btn:hover{transform:translateY(-2px);opacity:.92}
 .btn-white{
-  background:white;
-  color:var(--dark);
+  background:linear-gradient(120deg,#ffffff,#eaf2fc);
+  color:#12345a;
+  border:2px solid #ffffff;
+  box-shadow:0 6px 18px rgba(0,0,0,.12);
+}
+
+.btn-white:hover{
+  background:#ffffff;
+  color:#e53935;
+  transform:translateY(-4px);
+  box-shadow:0 10px 24px rgba(0,0,0,.20);
 }
 .features{
   display:grid;
