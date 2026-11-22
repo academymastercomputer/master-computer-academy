@@ -462,23 +462,41 @@ editingStudentId = null;
 
 showLogin();
 });
-
 async function checkSession(){
 
-const {data,error} = await db.auth.getSession();
+  const {data,error} = await db.auth.getSession();
 
-if(error){
-showLogin();
-loginMessage.textContent = error.message;
-return;
-}
+  if(error){
+    showLogin();
+    loginMessage.textContent = error.message;
+    return;
+  }
 
-if(data.session){
-showDashboard();
-await loadStudents();
-}else{
-showLogin();
-}
+  if(data.session){
+
+    const {data: profile, error: profileError} = await db
+      .from("profiles")
+      .select("role, branch_id")
+      .eq("id", data.session.user.id)
+      .single();
+
+    if(profileError || !profile || profile.role !== "branch" || !profile.branch_id){
+      await db.auth.signOut();
+      currentBranchId = null;
+      showLogin();
+      loginMessage.textContent = "Branch account ya Branch ID nahi mili. Admin se sampark karein.";
+      return;
+    }
+
+    currentBranchId = profile.branch_id;
+
+    showDashboard();
+    await loadStudents();
+
+  }else{
+    currentBranchId = null;
+    showLogin();
+  }
 }
 
 checkSession();
