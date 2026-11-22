@@ -196,9 +196,11 @@ nav a:hover{color:var(--red)}
 section{padding:70px 7%}
 .section-heading{text-align:center;margin-bottom:38px}
 .section-heading h2{
-  color:var(--dark);
-  font-size:32px;
-  margin-bottom:8px;
+  color:#12345a;
+  font-size:34px;
+  margin-bottom:10px;
+  font-weight:800;
+  letter-spacing:.3px;
 }
 .section-heading h2 span{color:var(--red)}
 .section-heading p{color:#68758a}
@@ -384,17 +386,33 @@ section{padding:70px 7%}
   background:#eaf2fc;
   text-align:center;
 }
+
 .contact-details{
-  max-width:650px;
-  margin:auto;
-  background:white;
-  padding:28px;
-  border-radius:12px;
-  line-height:2.2;
-  box-shadow:0 4px 18px #0000000b;
+  max-width:750px;
+  margin:25px auto;
+  background:linear-gradient(145deg,#ffffff,#f4f8ff);
+  padding:35px;
+  border-radius:18px;
+  line-height:2.3;
+  color:#52647b;
+  font-size:15px;
+  box-shadow:0 10px 30px rgba(20,45,85,.10);
+  border:1px solid #e2eaf5;
+  border-top:5px solid var(--blue);
+  transition:all .3s ease;
 }
-.contact-details strong{color:var(--dark)}
-footer{
+
+.contact-details:hover{
+  transform:translateY(-5px);
+  box-shadow:0 15px 35px rgba(20,45,85,.15);
+}
+
+.contact-details strong{
+  color:#123f69;
+  font-size:20px;
+  letter-spacing:.5px;
+}
+  footer{
   background:#102447;
   color:white;
   text-align:center;
@@ -436,10 +454,28 @@ footer strong{color:#ffca42}
   #studentRegistrationForm{grid-template-columns:1fr}
   .form-group.full{grid-column:auto}
   #studentRegistrationForm button{grid-column:auto}
+
   .registration-wrap{
-  padding:25px 17px;
-  margin:20px auto;
-  border-radius:15px;
+    padding:25px 17px;
+    margin:20px auto;
+    border-radius:15px;
+  }
+
+  .contact-details{
+    padding:24px 18px;
+    font-size:14px;
+    line-height:2;
+    border-radius:14px;
+  }
+
+  .contact-details strong{
+    font-size:17px;
+  }
+}
+
+.contact-details strong{
+  font-size:17px;
+}
 }
   .whatsapp{right:12px;bottom:12px;padding:11px 15px}
 }
