@@ -178,7 +178,8 @@ const dashboardMessage = document.getElementById("dashboardMessage");
 
 let currentStudents = [];
 let editingStudentId = null;
-
+let currentBranchId = null;
+  
 function showLogin(){
 loginSection.style.display = "block";
 dashboard.style.display = "none";
@@ -224,11 +225,25 @@ password:password
 
 loginBtn.disabled = false;
 loginBtn.textContent = "Login";
-
 if(error){
-loginMessage.textContent = error.message;
-return;
+  loginMessage.textContent = error.message;
+  return;
 }
+
+// Login user ki profile aur Branch ID prapt karein
+const {data: profile, error: profileError} = await db
+  .from("profiles")
+  .select("role, branch_id")
+  .eq("id", data.user.id)
+  .single();
+
+if(profileError || !profile || profile.role !== "branch" || !profile.branch_id){
+  await db.auth.signOut();
+  loginMessage.textContent = "Branch account ya Branch ID nahi mili. Admin se sampark karein.";
+  return;
+}
+
+currentBranchId = profile.branch_id;
 
 showDashboard();
 await loadStudents();
@@ -239,21 +254,22 @@ async function loadStudents(){
 dashboardMessage.textContent = "Loading students...";
 
 const {data,error} = await db
-.from("students")
-.select(`
-id,
-student_name,
-father_name,
-mother_name,
-mobile,
-email,
-course_name,
-qualification,
-photo_path,
-status,
-created_at
-`)
-.order("created_at",{ascending:false});
+  .from("students")
+  .select(`
+    id,
+    student_name,
+    father_name,
+    mother_name,
+    mobile,
+    email,
+    course_name,
+    qualification,
+    photo_path,
+    status,
+    created_at
+  `)
+  .eq("branch_id", currentBranchId)
+  .order("created_at",{ascending:false});
 
 if(error){
 dashboardMessage.textContent =
