@@ -152,6 +152,171 @@ hr {
     font-size: 12px;
   }
 }
+
+/* ===== PROFESSIONAL ADMIN DASHBOARD THEME ===== */
+:root{
+  --brand-red:#b00020;
+  --brand-red-dark:#850018;
+  --navy:#14243b;
+  --navy-soft:#203653;
+  --page:#f3f6fb;
+  --line:#e5eaf2;
+  --muted:#64748b;
+}
+*{box-sizing:border-box}
+body{
+  font-family:Inter,Arial,sans-serif!important;
+  background:linear-gradient(135deg,#f3f6fb 0%,#edf1f7 100%)!important;
+  color:#243247!important;
+  padding:18px!important;
+}
+.container{
+  max-width:1440px!important;
+  margin:18px auto!important;
+  padding:28px!important;
+  border:1px solid #e8edf4;
+  border-radius:20px!important;
+  box-shadow:0 12px 40px rgba(20,36,59,.08)!important;
+}
+.container > div:first-child{
+  background:linear-gradient(120deg,#fff 0%,#fff7f8 100%)!important;
+  border:1px solid #f0d9de!important;
+  border-top:5px solid var(--brand-red)!important;
+  border-bottom:2px solid #e9edf4!important;
+  border-radius:18px!important;
+  padding:22px!important;
+  gap:20px!important;
+}
+.container > div:first-child img{
+  width:100px!important;height:100px!important;
+  background:#fff;border-radius:16px;padding:6px;
+  box-shadow:0 5px 18px rgba(20,36,59,.10);
+}
+.container > div:first-child h1{
+  font-size:clamp(22px,3vw,32px)!important;
+  letter-spacing:.5px!important;
+}
+h2{color:var(--navy)!important;font-size:26px!important;margin:20px 0 10px}
+h3{
+  color:var(--navy)!important;
+  font-size:20px!important;
+  border-bottom:1px solid var(--line)!important;
+  padding:0 0 12px!important;
+  margin:22px 0 16px!important;
+}
+h4{color:var(--navy)!important;font-size:15px}
+#login{
+  max-width:480px;margin:0 auto 18px;
+  padding:24px;background:#fff;border:1px solid var(--line);
+  border-radius:16px;box-shadow:0 8px 24px rgba(20,36,59,.06);
+}
+#loginForm{display:grid;gap:10px}
+input,select,textarea{
+  border:1px solid #dbe2ec!important;
+  border-radius:10px!important;
+  padding:13px 14px!important;
+  background:#fff!important;
+  color:#243247!important;
+  font-size:14px!important;
+  margin:6px 0!important;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--brand-red)!important;
+  box-shadow:0 0 0 3px rgba(176,0,32,.10)!important;
+}
+button{
+  background:var(--brand-red)!important;
+  color:#fff!important;border:0!important;
+  border-radius:9px!important;padding:11px 16px!important;
+  font-size:13px!important;font-weight:700!important;
+  box-shadow:0 3px 8px rgba(176,0,32,.13);
+  transition:transform .15s ease,background .15s ease,box-shadow .15s ease;
+}
+button:hover{
+  background:var(--brand-red-dark)!important;
+  transform:translateY(-1px);
+  box-shadow:0 5px 12px rgba(176,0,32,.18);
+}
+#refresh{background:var(--navy)!important}
+#refresh:hover{background:#0b1728!important}
+#logout{background:#64748b!important}
+#logout:hover{background:#475569!important}
+#message,#branchMessage{padding:8px 0;color:var(--brand-red);font-weight:600}
+#dashboard{margin-top:16px}
+#dashboardTitle{font-size:25px!important}
+#branchManagementSection{
+  background:#fff!important;border:1px solid #f0d9a6!important;
+  border-radius:16px!important;padding:20px!important;
+  box-shadow:0 5px 18px rgba(20,36,59,.04)!important;
+}
+#branchManagementSection h3{
+  background:#fff5d9!important;color:#805500!important;
+  border:0!important;border-left:4px solid #e5a800!important;
+  border-radius:8px!important;padding:12px 14px!important;
+}
+#branchManagementSection input{max-width:360px}
+#dashboard > div[style*="background:#e3f2fd"]{
+  background:transparent!important;padding:0!important;
+}
+#dashboard > div[style*="background:#e3f2fd"] table{
+  border-collapse:separate!important;border-spacing:12px!important;
+  margin:4px -12px 18px!important;
+}
+#dashboard > div[style*="background:#e3f2fd"] tbody tr{
+  background:#fff!important;
+  box-shadow:0 4px 16px rgba(20,36,59,.06);
+}
+#dashboard > div[style*="background:#e3f2fd"] td{
+  border:1px solid var(--line)!important;padding:17px!important;
+  font-weight:700;color:var(--navy)!important;
+}
+#dashboard > div[style*="background:#e3f2fd"] td:last-child{
+  color:var(--brand-red)!important;text-align:center;
+  font-size:19px!important;font-weight:800;
+}
+table{
+  width:100%;border-collapse:separate!important;border-spacing:0;
+  background:#fff;border-radius:12px;overflow:hidden;
+  box-shadow:0 4px 18px rgba(20,36,59,.05);
+}
+th{
+  background:var(--navy)!important;color:#fff!important;
+  border:0!important;padding:13px 12px!important;
+  white-space:nowrap;font-size:12px!important;letter-spacing:.25px;
+}
+td{
+  border:0!important;border-bottom:1px solid #edf0f5!important;
+  padding:12px!important;font-size:13px!important;vertical-align:middle;
+}
+tr:nth-child(even){background:#f8fafd!important}
+tr:hover{background:#fff5f6!important}
+td button{margin:3px!important;white-space:nowrap}
+td select{min-width:105px}
+#studentSearch{
+  width:min(100%,420px)!important;
+  margin:0 0 12px!important;
+  background:#fff!important;
+}
+#studentTableWrap{overflow-x:auto;border-radius:12px}
+#studentTableWrap table{min-width:1050px}
+#studentList img{border:2px solid #fff;box-shadow:0 2px 7px rgba(0,0,0,.15)}
+hr{border-top:1px solid var(--line)!important;margin:22px 0!important}
+@media(max-width:700px){
+  body{padding:7px!important}
+  .container{padding:14px!important;margin:6px auto!important;border-radius:14px!important}
+  .container > div:first-child{padding:14px!important}
+  .container > div:first-child img{width:76px!important;height:76px!important}
+  .container > div:first-child h1{font-size:21px!important}
+  .container > div:first-child p{font-size:12px!important}
+  h2{font-size:21px!important}
+  h3{font-size:18px!important}
+  #login{padding:16px}
+  #branchManagementSection{padding:13px!important}
+  button{padding:10px 12px!important;font-size:12px!important}
+  #dashboard > div[style*="background:#e3f2fd"] table{border-spacing:5px!important;margin:0 -5px 12px!important}
+  #dashboard > div[style*="background:#e3f2fd"] td{padding:11px!important;font-size:12px!important}
+}
+
 </style>
 </head>
 <body>
@@ -253,7 +418,8 @@ hr {
   </tbody>
 </table>
  </div>
-<div style="overflow-x:auto">
+<input type="search" id="studentSearch" placeholder="Search by student name, mobile, course or enrollment number...">
+<div id="studentTableWrap" style="overflow-x:auto">
 <table>
 <thead>
 <tr>
@@ -932,6 +1098,14 @@ actionTd.appendChild(editBtn);
   message.textContent = "Total Students: " + data.length;
 }
 
+
+// STUDENT SEARCH
+document.getElementById("studentSearch").addEventListener("input", (e) => {
+  const term = e.target.value.trim().toLowerCase();
+  document.querySelectorAll("#studentList tr").forEach(row => {
+    row.style.display = row.textContent.toLowerCase().includes(term) ? "" : "none";
+  });
+});
 
 // REFRESH
 document.getElementById("refresh").onclick = loadStudents;
