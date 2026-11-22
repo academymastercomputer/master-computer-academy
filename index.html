@@ -513,6 +513,73 @@ cursor:pointer;
   margin-top:2px;
   font-weight:600;
 }
+.contact-title{
+  text-align:center;
+  padding-bottom:22px;
+  margin-bottom:22px;
+  border-bottom:1px solid #e2eaf5;
+}
+
+.contact-title strong{
+  display:block;
+  color:#123f69;
+  font-size:22px;
+  letter-spacing:.6px;
+}
+
+.contact-title p{
+  color:#758096;
+  font-size:14px;
+  margin-top:7px;
+}
+
+.contact-item{
+  display:flex;
+  align-items:center;
+  gap:17px;
+  text-align:left;
+  padding:15px;
+  margin-bottom:12px;
+  background:#ffffff;
+  border:1px solid #e5edf7;
+  border-radius:12px;
+  transition:all .25s ease;
+}
+
+.contact-item:hover{
+  transform:translateX(5px);
+  border-color:#9bbde0;
+  box-shadow:0 5px 15px rgba(20,45,85,.08);
+}
+
+.contact-item > span{
+  width:45px;
+  height:45px;
+  min-width:45px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eaf3ff;
+  border-radius:12px;
+  font-size:22px;
+}
+
+.contact-item h4{
+  color:#123f69;
+  font-size:15px;
+  margin-bottom:4px;
+}
+
+.contact-item p{
+  color:#52647b;
+  font-size:14px;
+  line-height:1.7;
+  overflow-wrap:anywhere;
+}
+
+.contact-item:last-child{
+  margin-bottom:0;
+}
 </style>
 /* Branch Selection Premium Box */
 .registration-wrap > .form-group.full{
@@ -708,13 +775,44 @@ cursor:pointer;
   </div>
 
   <div class="contact-details">
-    <strong>MASTER COMPUTER ACADEMY</strong><br>
-    Pratap Market, Near Heena Furniture,<br>
-    Rawatbhata, Rajasthan - 323306<br>
-    Contact: 9571944905<br>
-    Email: academymastercomputer@gmail.com<br>
-    Website: mastercomputeracademy.com
+  <div class="contact-title">
+    <strong>MASTER COMPUTER ACADEMY</strong>
+    <p>We are always happy to help you!</p>
   </div>
+
+  <div class="contact-item">
+    <span>📍</span>
+    <div>
+      <h4>Our Address</h4>
+      <p>Pratap Market, Near Heena Furniture,<br>
+      Rawatbhata, Rajasthan - 323306</p>
+    </div>
+  </div>
+
+  <div class="contact-item">
+    <span>📞</span>
+    <div>
+      <h4>Contact Number</h4>
+      <p>9571944905</p>
+    </div>
+  </div>
+
+  <div class="contact-item">
+    <span>✉️</span>
+    <div>
+      <h4>Email Address</h4>
+      <p>academymastercomputer@gmail.com</p>
+    </div>
+  </div>
+
+  <div class="contact-item">
+    <span>🌐</span>
+    <div>
+      <h4>Website</h4>
+      <p>mastercomputeracademy.com</p>
+    </div>
+  </div>
+</div>
 </section>
 
 <footer>
