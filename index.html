@@ -411,6 +411,14 @@ footer strong{color:#ffca42}
 
     <form id="studentRegistrationForm">
       <div class="form-group">
+  <label>Select Branch *</label>
+  <select name="branch_id" required>
+    <option value="">Select Branch</option>
+    <option value="119cf5b1-1cca-4990-b7c3-37bd87bca92f">Rawatbhata</option>
+    <option value="f947e881-aaa7-44ed-8329-1320632b7f5e">Main Branch</option>
+  </select>
+</div>
+      <div class="form-group">
         <label>Student Name *</label>
         <input type="text" name="student_name" required>
       </div>
@@ -584,7 +592,7 @@ if (form) {
           dob: value("dob") || null,
           photo_path: photoPath,
           status: "New",
-          branch_id: "f947e881-aaa7-44ed-8329-1320632b7f5e"
+         branch_id: value("branch_id")
         });
 
       if (error) {
