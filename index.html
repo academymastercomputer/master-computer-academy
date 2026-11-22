@@ -25,16 +25,19 @@ body{
 }
 a{text-decoration:none}
 header{
-  background:white;
-  padding:12px 6%;
+  background:rgba(255,255,255,.97);
+  padding:14px 6%;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:20px;
-  box-shadow:0 3px 15px #0000000d;
+  box-shadow:0 4px 20px rgba(16,36,71,.10);
   position:sticky;
   top:0;
   z-index:100;
+  border-bottom:3px solid #1766a5;
+  backdrop-filter:blur(12px);
+  transition:all .3s ease;
 }
 .brand{
   display:flex;
