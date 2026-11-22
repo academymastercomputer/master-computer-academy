@@ -205,33 +205,45 @@ section{padding:70px 7%}
 .courses{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:22px;
+  gap:24px;
   max-width:1200px;
   margin:auto;
 }
+
 .course{
-  background:white;
-  padding:25px;
-  border-radius:13px;
-  box-shadow:0 4px 20px #0000000c;
+  background:linear-gradient(145deg,#ffffff,#f9fbff);
+  padding:28px 24px;
+  border-radius:15px;
+  box-shadow:0 6px 22px rgba(20,45,85,.08);
+  border:1px solid #e8edf5;
   border-top:4px solid var(--red);
-  transition:.25s;
-  min-height:155px;
+  transition:all .3s ease;
+  min-height:175px;
 }
+
 .course:hover{
-  transform:translateY(-5px);
-  box-shadow:0 10px 25px #00000016;
+  transform:translateY(-7px);
+  box-shadow:0 14px 30px rgba(20,45,85,.15);
+  border-top-color:var(--blue);
 }
+
 .course-icon{
-  font-size:27px;
-  margin-bottom:12px;
+  font-size:32px;
+  margin-bottom:15px;
 }
+
 .course h3{
-  font-size:16px;
+  font-size:17px;
   color:var(--dark);
   line-height:1.5;
 }
-.course p{font-size:13px;color:#758096;margin-top:8px}
+
+.course p{
+  font-size:14px;
+  color:#758096;
+  margin-top:10px;
+  line-height:1.6;
+}
 .admission{
   background:linear-gradient(120deg,#142d55,#1766a5);
   color:white;
