@@ -1110,11 +1110,10 @@ document.getElementById("studentSearch").addEventListener("input", (e) => {
 // REFRESH
 document.getElementById("refresh").onclick = loadStudents;
 
-
 // LOGOUT
 document.getElementById("logout").onclick = async () => {
   await db.auth.signOut();
-  location.reload();
+  window.location.href = "index.html";
 };
 
 </script>
