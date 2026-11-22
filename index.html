@@ -249,18 +249,25 @@ nav a:hover{color:var(--red)}
 }
 
 .feature-icon{
-  width:68px;
-  height:68px;
-  margin:0 auto 15px;
+  width:72px;
+  height:72px;
+  margin:0 auto 18px;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg,#eaf2ff,#ffffff);
-  border-radius:18px;
-  font-size:34px;
-  box-shadow:0 4px 15px rgba(23,102,165,.10);
+  background:linear-gradient(135deg,#e3efff,#ffffff);
+  border-radius:20px;
+  font-size:36px;
+  box-shadow:0 6px 18px rgba(23,102,165,.13);
+  border:1px solid #e1ebf8;
+  transition:all .3s ease;
 }
 
+.feature:hover .feature-icon{
+  transform:scale(1.08) rotate(3deg);
+  background:linear-gradient(135deg,#dcecff,#ffffff);
+  box-shadow:0 8px 22px rgba(23,102,165,.20);
+}
 .feature h3{
   color:var(--dark);
   font-size:18px;
