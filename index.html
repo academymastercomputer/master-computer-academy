@@ -272,20 +272,36 @@ section{padding:70px 7%}
 .registration-section{background:white}
 .registration-wrap{
   max-width:900px;
-  margin:auto;
-  background:#ffffff;
-  padding:35px;
-  border-radius:18px;
-  box-shadow:0 8px 30px rgba(20,45,85,.10);
-  border:1px solid #e8edf5;
+  margin:35px auto;
+  background:linear-gradient(145deg,#ffffff,#f7faff);
+  padding:38px;
+  border-radius:20px;
+  box-shadow:0 12px 35px rgba(20,45,85,.12);
+  border:1px solid #e2eaf5;
+  border-top:5px solid var(--blue);
+  position:relative;
+  overflow:hidden;
 }
 
 .registration-wrap h3{
-  color:var(--dark);
-  font-size:25px;
-  margin-bottom:25px;
+  color:#12345a;
+  font-size:27px;
+  margin-bottom:28px;
   text-align:center;
   font-weight:800;
+  letter-spacing:.4px;
+  position:relative;
+  padding-bottom:15px;
+}
+
+.registration-wrap h3::after{
+  content:"";
+  display:block;
+  width:65px;
+  height:4px;
+  background:linear-gradient(90deg,#1766a5,#45a3e8);
+  border-radius:10px;
+  margin:12px auto 0;
 }
 
 #studentRegistrationForm{
@@ -306,48 +322,57 @@ section{padding:70px 7%}
 
 .form-group label{
   font-size:14px;
-  font-weight:bold;
-  color:var(--dark);
+  font-weight:700;
+  color:#193b60;
+  letter-spacing:.2px;
+  margin-bottom:2px;
 }
 
 .form-group input,
 .form-group select{
   width:100%;
-  padding:14px;
-  border:1px solid #dce3ef;
-  border-radius:9px;
+  padding:15px;
+  border:1px solid #d9e3f0;
+  border-radius:10px;
   font-size:14px;
-  background:#f8faff;
+  color:#263b55;
+  background:#f7faff;
   outline:none;
-  transition:.25s;
+  transition:all .25s ease;
+}
+
+.form-group input:hover,
+.form-group select:hover{
+  border-color:#9bbde0;
+  background:#ffffff;
 }
 
 .form-group input:focus,
 .form-group select:focus{
-  border-color:var(--blue);
-  background:white;
-  box-shadow:0 0 0 3px rgba(23,102,165,.10);
+  border-color:#1766a5;
+  background:#ffffff;
+  box-shadow:0 0 0 4px rgba(23,102,165,.13);
+  outline:none;
 }
-
 #studentRegistrationForm button{
   grid-column:1/-1;
-  padding:15px;
-  background:linear-gradient(120deg,#d92332,#b81727);
+  padding:16px;
+  background:linear-gradient(120deg,#1766a5,#104779);
   color:white;
   border:0;
-  border-radius:9px;
+  border-radius:10px;
   font-weight:bold;
-  font-size:16px;
+  font-size:17px;
   cursor:pointer;
-  transition:.25s;
-  box-shadow:0 5px 15px rgba(217,35,50,.18);
+  transition:all .25s ease;
+  box-shadow:0 6px 18px rgba(23,102,165,.22);
 }
 
 #studentRegistrationForm button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(217,35,50,.25);
+  transform:translateY(-3px);
+  background:linear-gradient(120deg,#207cbd,#12558d);
+  box-shadow:0 10px 24px rgba(23,102,165,.30);
 }
-
 #studentRegistrationForm button:disabled{
   opacity:.6;
   cursor:wait;
@@ -411,7 +436,11 @@ footer strong{color:#ffca42}
   #studentRegistrationForm{grid-template-columns:1fr}
   .form-group.full{grid-column:auto}
   #studentRegistrationForm button{grid-column:auto}
-  .registration-wrap{padding:20px 15px}
+  .registration-wrap{
+  padding:25px 17px;
+  margin:20px auto;
+  border-radius:15px;
+}
   .whatsapp{right:12px;bottom:12px;padding:11px 15px}
 }
 </style>
