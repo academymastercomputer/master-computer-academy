@@ -443,7 +443,51 @@ footer strong{color:#ffca42}
 }
   .whatsapp{right:12px;bottom:12px;padding:11px 15px}
 }
+cursor:pointer;
+  outline:none;
+  transition:all .25s ease;
+}
+
+#branchSelect:hover{
+  border-color:#1766a5;
+  background-color:#ffffff;
+}
+
+#branchSelect:focus{
+  border-color:#1766a5;
+  background-color:#ffffff;
+  box-shadow:0 0 0 4px rgba(23,102,165,.13);
+}
+
+#branchSelect option{
+  padding:12px;
+  background:#ffffff;
+  color:#193b60;
+}
 </style>
+/* Branch Selection Premium Box */
+.registration-wrap > .form-group.full{
+  background:linear-gradient(135deg,#edf5ff,#f8fbff);
+  padding:20px;
+  border:1px solid #d8e7f7;
+  border-left:5px solid #1766a5;
+  border-radius:12px;
+  margin-bottom:25px;
+}
+
+.registration-wrap > .form-group.full label{
+  display:block;
+  font-size:15px;
+  color:#123f69;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.registration-wrap > .form-group.full select{
+  background-color:#ffffff;
+  border:1px solid #c5d9ed;
+  font-weight:700;
+}
 </head>
 
 <body>
@@ -528,7 +572,7 @@ footer strong{color:#ffca42}
   <div class="registration-wrap">
     <h3>Student Registration Form</h3>
 <div class="form-group full">
-  <label>Select Your Branch *</label>
+  <label>📍 Select Your Branch *</label>
   <select id="branchSelect" required>
     <option value="" disabled selected>Choose Your Branch</option>
     <option value="119cf5b1-1cca-4990-b7c3-37bd87bca92f">Rawatbhata</option>
