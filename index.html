@@ -1494,6 +1494,7 @@ window.openCourse = function(slug) {
    document.getElementById("courseModal").style.opacity = "1";
 document.getElementById("courseModal").style.display = "flex";
 document.getElementById("courseModal").style.zIndex = "9999999";
+  alert("Screen element: " + document.elementFromPoint(window.innerWidth/2, window.innerHeight/2).tagName);
   document.getElementById("courseModal").style.position = "fixed";
   ocument.getElementById("courseModal").style.background = "red";
   alert("Inline position: " + document.getElementById("courseModal").style.position);
