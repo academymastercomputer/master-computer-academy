@@ -1488,19 +1488,33 @@ window.openCourse = function(slug) {
     li.textContent = topic;
     syllabusList.appendChild(li);
   });
+
   document.body.appendChild(document.getElementById("courseModal"));
-  document.getElementById("courseModal").style.top = "0px";
   document.getElementById("courseModal").style.display = "flex";
-  document.getElementById("courseModal").style.background = "red";
-   document.getElementById("courseModal").style.opacity = "1";
-document.getElementById("courseModal").style.display = "flex";
-document.getElementById("courseModal").style.zIndex = "9999999";
-document.getElementById("courseModal").style.pointerEvents = "auto";
+};
+
+  document.getElementById("modalCourseTitle").textContent = course.title;
+
+  document.getElementById("modalCourseDescription").textContent = course.description;
+
+  document.getElementById("modalCourseDuration").textContent = course.duration;
+
+  const syllabusList = document.getElementById("modalCourseSyllabus");
+
+  syllabusList.innerHTML = "";
+
+  course.syllabus.forEach(function(topic) {
+    const li = document.createElement("li");
+    li.textContent = topic;
+    syllabusList.appendChild(li);
+  });
+  document.body.appendChild(document.getElementById("courseModal"));
+  document.getElementById("courseModal").style.display = "flex";
+  document.getElementById("courseModal").style.display = "flex";
 alert("Popup visibility: " + getComputedStyle(document.getElementById("courseModal")).visibility);
 alert("Popup HTML: " + document.getElementById("courseModal").innerHTML.length);
 alert("Popup top: " + document.getElementById("courseModal").getBoundingClientRect().top);
  alert("Screen element: " + document.elementFromPoint(window.innerWidth/2, window.innerHeight/2).id + " | Class: " + document.elementFromPoint(window.innerWidth/2, window.innerHeight/2).className);
-  document.getElementById("courseModal").style.position = "fixed";
   ocument.getElementById("courseModal").style.background = "red";
   alert("Inline position: " + document.getElementById("courseModal").style.position);
   alert("Computed position: " + getComputedStyle(document.getElementById("courseModal")).position);
