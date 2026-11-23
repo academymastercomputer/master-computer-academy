@@ -1491,6 +1491,7 @@ window.openCourse = function(slug) {
   });
   document.getElementById("courseModal").style.display = "flex";
   document.getElementById("courseModal").style.position = "fixed";
+  ocument.getElementById("courseModal").style.background = "red";
   alert("Inline position: " + document.getElementById("courseModal").style.position);
   alert("Computed position: " + getComputedStyle(document.getElementById("courseModal")).position);
   const m = document.getElementById("courseModal");
