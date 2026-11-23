@@ -1490,7 +1490,15 @@ window.openCourse = function(slug) {
     syllabusList.appendChild(li);
   });
   document.getElementById("courseModal").style.display = "flex";
-  alert("Popup display: " + document.getElementById("courseModal").style.display);
+  const m = document.getElementById("courseModal");
+const s = getComputedStyle(m);
+alert(
+  "Display: " + s.display +
+  "\nVisibility: " + s.visibility +
+  "\nOpacity: " + s.opacity +
+  "\nPosition: " + s.position +
+  "\nZ-index: " + s.zIndex
+);
 };
 
 
