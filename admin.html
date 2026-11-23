@@ -428,6 +428,8 @@ hr{border-top:1px solid var(--line)!important;margin:22px 0!important}
 <th>Name</th>
 <th>Father Name</th>
 <th>Mobile</th>
+<th>Date of Birth</th>
+<th>Admission Date</th>
 <th>Course</th>
 <th>Enrollment No.</th>
 <th>Registration No.</th>
@@ -613,7 +615,7 @@ async function loadStudents() {
 
   let query = db
   .from("students")
-  .select("id, student_name, father_name, mother_name, mobile, email, course_name, status, photo_path, enrollment_no, registration_no");
+  .select("id, student_name, father_name, mother_name, mobile, email, course_name, status, photo_path, enrollment_no, registration_no, dob, admission_date")
 
 if (currentProfile?.role === "branch") {
   query = query.eq("branch_id", currentProfile.branch_id);
@@ -680,7 +682,9 @@ tr.appendChild(photoCell);
   student.course_name,
   student.enrollment_no,
   student.registration_no,
-  student.status
+  student.status,
+  student.dob,
+  student.admission_date,
 ].forEach(value => {
       const td = document.createElement("td");
       td.textContent = value || "-";
