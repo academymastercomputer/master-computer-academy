@@ -1454,7 +1454,6 @@ const courseDetails = {
 
 // OPEN COURSE DETAILS
 window.openCourse = function(slug) {
-alert("Course button working!");
   const course = courseDetails[slug];
 
   if (!course) {
@@ -1477,7 +1476,7 @@ alert("Course button working!");
     li.textContent = topic;
     syllabusList.appendChild(li);
   });
-
+  alert(document.getElementById("courseModal"));
   document.getElementById("courseModal").style.display = "flex";
 
 };
