@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master Computer Academy | Learn & Grow</title>
 <meta name="description" content="Master Computer Academy - Computer Courses, Professional Training and Online Student Registration.">
-
-<style>
+   <style>
 :root{
   --red:#d92332;
   --dark:#142d55;
@@ -484,9 +483,6 @@ section{padding:70px 7%}
   opacity:.6;
   cursor:wait;
 }
-  opacity:.6;
-  cursor:wait;
-}
 .info{
   background:#eaf2fc;
   text-align:center;
@@ -746,6 +742,105 @@ cursor:pointer;
   border:1px solid #c5d9ed;
   font-weight:700;
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Computer Academy | Learn & Grow</title>
+<meta name="description" content="Master Computer Academy - Computer Courses, Professional Training and Online Student Registration.">
+ .course-modal-content{
+  background:#ffffff;
+  width:100%;
+  max-width:700px;
+  margin:auto;
+  padding:35px;
+  border-radius:18px;
+  position:relative;
+  box-shadow:0 15px 50px rgba(0,0,0,.25);
+  animation:coursePopup .3s ease;
+}
+
+@keyframes coursePopup{
+  from{opacity:0;transform:translateY(25px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.course-close{
+  position:absolute;
+  top:12px;
+  right:18px;
+  background:none;
+  border:none;
+  font-size:32px;
+  color:#52647b;
+  cursor:pointer;
+}
+
+.course-modal-content h2{
+  color:var(--red);
+  margin-bottom:15px;
+  padding-right:25px;
+}
+
+.course-modal-content h3{
+  color:var(--dark);
+  margin:22px 0 12px;
+}
+
+.course-modal-content p{
+  color:#52647b;
+  line-height:1.8;
+}
+
+.course-duration{
+  background:#eef4ff;
+  padding:14px;
+  border-radius:9px;
+  margin-top:18px;
+  color:var(--dark);
+}
+
+.course-modal-content ul{
+  padding-left:22px;
+  line-height:2;
+  color:#52647b;
+}
+
+.course-admission-btn{
+  display:inline-block;
+  margin-top:22px;
+  padding:13px 24px;
+  background:var(--red);
+  color:white;
+  text-decoration:none;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+.course-btn{
+  margin-top:15px;
+  padding:11px 20px;
+  background:var(--red);
+  color:white;
+  border:none;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:.3s;
+}
+
+.course-btn:hover,
+.course-admission-btn:hover{
+  background:var(--dark);
+}
+
+@media(max-width:600px){
+  .course-modal-content{
+    padding:25px 20px;
+  }
+}
+  <style>
 </style>
 </head>
 
@@ -1172,6 +1267,228 @@ if (form) {
     }
   });
 }
+// ======================================
+// MASTER COMPUTER ACADEMY - COURSE DETAILS
+// ======================================
+
+const courseDetails = {
+
+  "computer-repairing": {
+    title: "Diploma in Computer Repairing & Networking",
+    description: "Learn computer hardware, troubleshooting, repairing and networking.",
+    duration: "6 Months",
+    syllabus: [
+      "Computer Fundamentals",
+      "Computer Hardware & Components",
+      "PC Assembling & Disassembling",
+      "Windows Installation & Troubleshooting",
+      "Computer Repairing & Maintenance",
+      "Networking Fundamentals",
+      "LAN, WAN & Internet Setup"
+    ]
+  },
+
+  "dca": {
+    title: "Diploma in Computer Application",
+    description: "Learn essential computer applications and office productivity skills.",
+    duration: "6 Months",
+    syllabus: [
+      "Computer Fundamentals",
+      "Windows Operating System",
+      "MS Word",
+      "MS Excel",
+      "MS PowerPoint",
+      "Internet & Email",
+      "Typing Practice"
+    ]
+  },
+
+  "graphics": {
+    title: "Diploma in Graphics Designing",
+    description: "Develop creative skills in professional graphic designing.",
+    duration: "6 Months",
+    syllabus: [
+      "Design Fundamentals",
+      "Colour Theory & Typography",
+      "CorelDRAW",
+      "Adobe Photoshop",
+      "Logo & Banner Designing",
+      "Photo Editing",
+      "Print Design Projects"
+    ]
+  },
+
+  "adca": {
+    title: "Advance Diploma in Computer Application",
+    description: "Advanced training in computer applications and office tools.",
+    duration: "12 Months",
+    syllabus: [
+      "Computer Fundamentals",
+      "Windows & Operating System",
+      "MS Word Advanced",
+      "MS Excel Advanced",
+      "MS PowerPoint",
+      "Internet & Email",
+      "Database Fundamentals",
+      "Tally Fundamentals",
+      "Practical Projects"
+    ]
+  },
+
+  "website": {
+    title: "Advance Diploma in Website Developing",
+    description: "Learn to design and develop professional websites.",
+    duration: "12 Months",
+    syllabus: [
+      "Web Designing Fundamentals",
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Responsive Web Design",
+      "Bootstrap",
+      "Website Development",
+      "Domain & Hosting",
+      "Live Website Project"
+    ]
+  },
+
+  "mobile-repairing": {
+    title: "Diploma in Mobile Repairing",
+    description: "Learn mobile hardware, software and troubleshooting techniques.",
+    duration: "6 Months",
+    syllabus: [
+      "Mobile Phone Fundamentals",
+      "Mobile Hardware Components",
+      "Mobile Disassembling & Assembling",
+      "Soldering Techniques",
+      "Fault Finding & Troubleshooting",
+      "Mobile Software Installation",
+      "Practical Repairing"
+    ]
+  },
+
+  "teacher-training": {
+    title: "Advance Diploma in Computer Teacher Training Course",
+    description: "Develop computer knowledge and professional teaching skills.",
+    duration: "12 Months",
+    syllabus: [
+      "Computer Fundamentals",
+      "MS Office",
+      "Internet & Email",
+      "Computer Applications",
+      "Teaching Methodology",
+      "Lesson Planning",
+      "Classroom Management",
+      "Practical Teaching",
+      "Teaching Practice"
+    ]
+  },
+
+  "tally": {
+    title: "Diploma in Financial Accounting (Tally)",
+    description: "Learn practical accounting and financial management using Tally.",
+    duration: "6 Months",
+    syllabus: [
+      "Accounting Fundamentals",
+      "Journal & Ledger",
+      "Cash Book & Bank Book",
+      "Company Creation in Tally",
+      "Voucher Entry",
+      "GST & Taxation",
+      "Inventory Management",
+      "Financial Reports"
+    ]
+  },
+
+  "audio-video": {
+    title: "Diploma in Audio & Video Mixing",
+    description: "Learn audio editing, video editing and professional mixing.",
+    duration: "6 Months",
+    syllabus: [
+      "Audio & Video Fundamentals",
+      "Audio Recording",
+      "Audio Editing",
+      "Sound Mixing",
+      "Video Editing",
+      "Transitions & Effects",
+      "Background Music",
+      "Practical Projects"
+    ]
+  },
+
+  "multimedia": {
+    title: "Advance Diploma in Multimedia & Animation",
+    description: "Explore graphic design, multimedia production and animation.",
+    duration: "12 Months",
+    syllabus: [
+      "Multimedia Fundamentals",
+      "Graphic Designing",
+      "Adobe Photoshop",
+      "CorelDRAW",
+      "2D Animation",
+      "3D Animation Fundamentals",
+      "Video Editing",
+      "Motion Graphics",
+      "Animation Projects"
+    ]
+  },
+
+  "digital-marketing": {
+    title: "Diploma in Digital Marketing",
+    description: "Learn modern online marketing and digital promotion techniques.",
+    duration: "6 Months",
+    syllabus: [
+      "Digital Marketing Fundamentals",
+      "Search Engine Optimization (SEO)",
+      "Social Media Marketing",
+      "Google Ads Fundamentals",
+      "Content Marketing",
+      "Email Marketing",
+      "Website Analytics",
+      "Practical Marketing Projects"
+    ]
+  }
+
+};
+
+
+// OPEN COURSE DETAILS
+window.openCourse = function(slug) {
+
+  const course = courseDetails[slug];
+
+  if (!course) {
+    alert("Course details not found.");
+    return;
+  }
+
+  document.getElementById("modalCourseTitle").textContent = course.title;
+
+  document.getElementById("modalCourseDescription").textContent = course.description;
+
+  document.getElementById("modalCourseDuration").textContent = course.duration;
+
+  const syllabusList = document.getElementById("modalCourseSyllabus");
+
+  syllabusList.innerHTML = "";
+
+  course.syllabus.forEach(function(topic) {
+    const li = document.createElement("li");
+    li.textContent = topic;
+    syllabusList.appendChild(li);
+  });
+
+  document.getElementById("courseModal").style.display = "flex";
+
+};
+
+
+// CLOSE COURSE DETAILS
+window.closeCourse = function() {
+
+  document.getElementById("courseModal").style.display = "none";
+
+};
 </script>
 
 </body>
