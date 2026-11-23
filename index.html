@@ -1492,6 +1492,7 @@ window.openCourse = function(slug) {
   document.getElementById("courseModal").style.display = "flex";
   document.getElementById("courseModal").style.position = "fixed";
   alert("Inline position: " + document.getElementById("courseModal").style.position);
+  alert("Computed position: " + getComputedStyle(document.getElementById("courseModal")).position);
   const m = document.getElementById("courseModal");
 const s = getComputedStyle(m);
 alert(
