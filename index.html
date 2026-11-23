@@ -1495,6 +1495,7 @@ document.getElementById("courseModal").style.display = "flex";
 document.getElementById("courseModal").style.zIndex = "9999999";
 document.getElementById("courseModal").style.pointerEvents = "auto";
 alert("Popup visibility: " + getComputedStyle(document.getElementById("courseModal")).visibility);
+alert("Popup HTML: " + document.getElementById("courseModal").innerHTML.length);
  alert("Screen element: " + document.elementFromPoint(window.innerWidth/2, window.innerHeight/2).id + " | Class: " + document.elementFromPoint(window.innerWidth/2, window.innerHeight/2).className);
   document.getElementById("courseModal").style.position = "fixed";
   ocument.getElementById("courseModal").style.background = "red";
