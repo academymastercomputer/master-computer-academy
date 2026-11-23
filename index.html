@@ -1488,6 +1488,7 @@ window.openCourse = function(slug) {
     li.textContent = topic;
     syllabusList.appendChild(li);
   });
+  document.body.appendChild(document.getElementById("courseModal"));
   document.getElementById("courseModal").style.display = "flex";
   document.getElementById("courseModal").style.background = "red";
    document.getElementById("courseModal").style.opacity = "1";
