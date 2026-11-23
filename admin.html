@@ -679,12 +679,12 @@ tr.appendChild(photoCell);
   student.student_name,
   student.father_name,
   student.mobile,
+  student.dob,
+  student.admission_date,
   student.course_name,
   student.enrollment_no,
   student.registration_no,
-  student.status,
-  student.dob,
-  student.admission_date,
+  student.status
 ].forEach(value => {
       const td = document.createElement("td");
       td.textContent = value || "-";
