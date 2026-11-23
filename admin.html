@@ -5,93 +5,115 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master Computer Academy - Admin</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-/* ===== STUDENT TABLE PREMIUM DESIGN ===== */
+/* ===== CLEAN PROFESSIONAL STUDENT TABLE ===== */
 
 #studentTableWrap {
   overflow-x: auto !important;
   border-radius: 14px;
-  background: #fff;
 }
 
 #studentTableWrap table {
-  min-width: 1500px !important;
+  min-width: 1665px !important;
   table-layout: fixed !important;
   border-spacing: 0 !important;
 }
 
+/* Column spacing */
 #studentTableWrap th,
 #studentTableWrap td {
-  padding: 14px 12px !important;
+  padding: 13px 10px !important;
   vertical-align: middle !important;
 }
 
-/* Column widths */
+/* Compact columns */
 #studentTableWrap th:nth-child(1),
 #studentTableWrap td:nth-child(1) { width: 55px; }
 
 #studentTableWrap th:nth-child(2),
-#studentTableWrap td:nth-child(2) { width: 90px; }
+#studentTableWrap td:nth-child(2) { width: 80px; }
 
 #studentTableWrap th:nth-child(3),
-#studentTableWrap td:nth-child(3) { width: 145px; }
-
+#studentTableWrap td:nth-child(3),
 #studentTableWrap th:nth-child(4),
 #studentTableWrap td:nth-child(4) { width: 145px; }
 
 #studentTableWrap th:nth-child(5),
-#studentTableWrap td:nth-child(5) { width: 125px; }
+#studentTableWrap td:nth-child(5) { width: 120px; }
 
 #studentTableWrap th:nth-child(6),
 #studentTableWrap td:nth-child(6),
 #studentTableWrap th:nth-child(7),
-#studentTableWrap td:nth-child(7) { width: 125px; }
+#studentTableWrap td:nth-child(7) { width: 115px; }
 
+/* More space for course */
 #studentTableWrap th:nth-child(8),
-#studentTableWrap td:nth-child(8) { width: 260px; }
+#studentTableWrap td:nth-child(8) { width: 270px; }
 
 #studentTableWrap th:nth-child(9),
-#studentTableWrap td:nth-child(9),
+#studentTableWrap td:nth-child(9) { width: 145px; }
+
 #studentTableWrap th:nth-child(10),
 #studentTableWrap td:nth-child(10) { width: 150px; }
 
 #studentTableWrap th:nth-child(11),
-#studentTableWrap td:nth-child(11) { width: 115px; }
+#studentTableWrap td:nth-child(11) { width: 110px; }
 
 #studentTableWrap th:nth-child(12),
-#studentTableWrap td:nth-child(12) { width: 250px; }
+#studentTableWrap td:nth-child(12) { width: 220px; }
 
-/* Course name */
+/* Course text */
 #studentList td:nth-child(8) {
   white-space: normal !important;
   line-height: 1.6;
   word-break: normal;
 }
 
-/* Action buttons */
+/* Action buttons in one line */
 #studentList td:last-child {
-  display: flex;
-  flex-wrap: wrap;
+  display: flex !important;
+  flex-wrap: wrap !important;
   align-items: center;
   gap: 6px;
-  min-width: 250px;
+  min-width: 220px;
 }
 
 #studentList td:last-child button {
+  order: 0 !important;
+  padding: 7px 11px !important;
   margin: 0 !important;
+  font-size: 11px !important;
+  border-radius: 7px !important;
+  box-shadow: none !important;
   white-space: nowrap;
 }
 
-#studentList td:last-child select {
-  flex: 0 0 100%;
-  width: 100%;
-  margin: 4px 0 !important;
+/* View - Light Blue */
+#studentList td:last-child button:nth-of-type(1) {
+  background: #e8f1ff !important;
+  color: #2456a6 !important;
 }
 
-#studentList td:last-child button:nth-of-type(3) {
-  order: 0;
+/* Edit - Light Green */
+#studentList td:last-child button:nth-of-type(2) {
+  background: #e5f6eb !important;
+  color: #247443 !important;
 }
+
+/* Delete - Light Red */
+#studentList td:last-child button:nth-of-type(3) {
+  background: #fde9eb !important;
+  color: #b42335 !important;
+}
+
+/* Status below buttons */
 #studentList td:last-child select {
-  order: 1;
+  order: 1 !important;
+  flex: 0 0 100% !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 5px 0 0 !important;
+  padding: 8px !important;
+  font-size: 12px !important;
 }
 <style>
 /* MAIN PAGE */
