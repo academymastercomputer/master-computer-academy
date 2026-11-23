@@ -5,6 +5,94 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master Computer Academy - Admin</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+/* ===== STUDENT TABLE PREMIUM DESIGN ===== */
+
+#studentTableWrap {
+  overflow-x: auto !important;
+  border-radius: 14px;
+  background: #fff;
+}
+
+#studentTableWrap table {
+  min-width: 1500px !important;
+  table-layout: fixed !important;
+  border-spacing: 0 !important;
+}
+
+#studentTableWrap th,
+#studentTableWrap td {
+  padding: 14px 12px !important;
+  vertical-align: middle !important;
+}
+
+/* Column widths */
+#studentTableWrap th:nth-child(1),
+#studentTableWrap td:nth-child(1) { width: 55px; }
+
+#studentTableWrap th:nth-child(2),
+#studentTableWrap td:nth-child(2) { width: 90px; }
+
+#studentTableWrap th:nth-child(3),
+#studentTableWrap td:nth-child(3) { width: 145px; }
+
+#studentTableWrap th:nth-child(4),
+#studentTableWrap td:nth-child(4) { width: 145px; }
+
+#studentTableWrap th:nth-child(5),
+#studentTableWrap td:nth-child(5) { width: 125px; }
+
+#studentTableWrap th:nth-child(6),
+#studentTableWrap td:nth-child(6),
+#studentTableWrap th:nth-child(7),
+#studentTableWrap td:nth-child(7) { width: 125px; }
+
+#studentTableWrap th:nth-child(8),
+#studentTableWrap td:nth-child(8) { width: 260px; }
+
+#studentTableWrap th:nth-child(9),
+#studentTableWrap td:nth-child(9),
+#studentTableWrap th:nth-child(10),
+#studentTableWrap td:nth-child(10) { width: 150px; }
+
+#studentTableWrap th:nth-child(11),
+#studentTableWrap td:nth-child(11) { width: 115px; }
+
+#studentTableWrap th:nth-child(12),
+#studentTableWrap td:nth-child(12) { width: 250px; }
+
+/* Course name */
+#studentList td:nth-child(8) {
+  white-space: normal !important;
+  line-height: 1.6;
+  word-break: normal;
+}
+
+/* Action buttons */
+#studentList td:last-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 250px;
+}
+
+#studentList td:last-child button {
+  margin: 0 !important;
+  white-space: nowrap;
+}
+
+#studentList td:last-child select {
+  flex: 0 0 100%;
+  width: 100%;
+  margin: 4px 0 !important;
+}
+
+#studentList td:last-child button:nth-of-type(3) {
+  order: 0;
+}
+#studentList td:last-child select {
+  order: 1;
+}
 <style>
 /* MAIN PAGE */
 body {
