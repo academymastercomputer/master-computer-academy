@@ -976,7 +976,31 @@ cursor:pointer;
 </div>
   </div>
 </section>
+<!-- Course Details Popup -->
+<div id="courseModal" class="course-modal">
+  <div class="course-modal-content">
 
+    <button class="course-close" onclick="closeCourse()">&times;</button>
+
+    <h2 id="modalCourseTitle">Course Details</h2>
+
+    <p id="modalCourseDescription"></p>
+
+    <div class="course-duration">
+      <strong>Course Duration:</strong>
+      <span id="modalCourseDuration"></span>
+    </div>
+
+    <h3>Course Syllabus</h3>
+    <ul id="modalCourseSyllabus"></ul>
+
+    <a href="#registration" class="course-admission-btn"
+       onclick="closeCourse()">
+      Apply for Admission
+    </a>
+
+  </div>
+</div>
 <section class="info" id="contact">
   <div class="section-heading">
     <h2>Contact <span>Us</span></h2>
