@@ -749,7 +749,20 @@ cursor:pointer;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master Computer Academy | Learn & Grow</title>
 <meta name="description" content="Master Computer Academy - Computer Courses, Professional Training and Online Student Registration.">
- .course-modal-content{
+  .course-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.65);
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+  .course-modal-content{
   background:#ffffff;
   width:100%;
   max-width:700px;
@@ -840,7 +853,6 @@ cursor:pointer;
     padding:25px 20px;
   }
 }
-  <style>
 </style>
 </head>
 
