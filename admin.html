@@ -69,13 +69,52 @@
   word-break: normal;
 }
 
-/* Action buttons in one line */
+/* ===== STUDENT ACTION BUTTONS ===== */
+
 #studentList td:last-child {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center;
-  gap: 6px;
-  min-width: 220px;
+  display: table-cell !important;
+  white-space: nowrap !important;
+  min-width: 250px !important;
+  vertical-align: middle !important;
+}
+
+#studentList td:last-child button {
+  display: inline-block !important;
+  padding: 8px 12px !important;
+  margin: 3px !important;
+  font-size: 12px !important;
+  border-radius: 7px !important;
+  white-space: nowrap !important;
+  box-shadow: none !important;
+}
+
+/* VIEW - BLUE */
+#studentList td:last-child button:nth-of-type(1) {
+  background: #e8f1ff !important;
+  color: #2456a6 !important;
+}
+
+/* EDIT - GREEN */
+#studentList td:last-child button:nth-of-type(2) {
+  background: #e5f6eb !important;
+  color: #247443 !important;
+}
+
+/* DELETE - RED */
+#studentList td:last-child button:nth-of-type(3) {
+  background: #fde9eb !important;
+  color: #b42335 !important;
+}
+
+/* STATUS DROPDOWN */
+#studentList td:last-child select {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 8px 0 0 !important;
+  padding: 9px !important;
+  font-size: 12px !important;
+  border-radius: 7px !important;
 }
 
 #studentList td:last-child button {
