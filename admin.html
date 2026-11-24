@@ -1238,10 +1238,11 @@ statusSelect.onchange = async () => {
 
   statusSelect.disabled = true;
 
-  const { error } = await db
-    .from("students")
-    .update({ status: newStatus })
-    .eq("id", student.id);
+  const { data: updatedRows, error } = await db
+  .from("students")
+  .update({ status: newStatus })
+  .eq("id", student.id)
+  .select("id, status");
 
   if (error) {
     message.textContent = "Status Update Failed: " + error.message;
