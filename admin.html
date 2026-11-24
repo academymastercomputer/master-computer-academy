@@ -517,7 +517,27 @@ hr{border-top:1px solid var(--line)!important;margin:22px 0!important}
 <div id="dashboard">
 <h3 id="dashboardTitle">Dashboard</h3>
   <hr>
-<div id="branchManagementSection" style="background:#fff9c4; padding:20px; border-radius:10px; margin:15px 0;">
+<div id="managementHome" style="text-align:center; padding:25px;">
+
+  <button id="logout">
+  Logout
+</button>
+  <h2>Welcome to Admin Panel</h2>
+  <p>Select Management Section</p>
+
+  <button id="openStudentsManagement">
+    Students Management
+  </button>
+
+  <button id="openBranchManagement">
+    Branch Management
+  </button>
+
+</div>
+<div id="branchManagementSection" style="display:none; background:#fff9c4; padding:20px; border-radius:10px; margin:15px 0;">
+<button id="backToDashboard2">
+  Back to Dashboard
+</button>
 <h3 style="background:#ffeb3b; padding:12px; border-radius:6px;">Branch Management</h3>
 
 <h4>Add New Branch</h4>
@@ -547,9 +567,12 @@ hr{border-top:1px solid var(--line)!important;margin:22px 0!important}
 </div>
   
 <hr>
+<div id="studentsManagementSection" style="display:none;">
+<button id="backToDashboard1">
+  Back to Dashboard
+</button>
 <p id="welcome"></p>
 <button id="refresh">Refresh Students</button>
-<button id="logout">Logout</button>
 
 <h3>Student Registrations</h3>
  <div style="background:#e3f2fd; padding:15px; border-radius:8px;">
@@ -604,6 +627,7 @@ hr{border-top:1px solid var(--line)!important;margin:22px 0!important}
 </div>
 </div>
 </div>
+</div>
 
 <script>
 const SUPABASE_URL = "https://qzzrmmefdpckwblicaod.supabase.co";
@@ -650,34 +674,55 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 }
 
 currentProfile = profile;
+  document.getElementById("login").style.display = "none";
+document.getElementById("dashboard").style.display = "block";
+document.getElementById("mainHeading").textContent =
+  currentProfile.role === "branch"
+    ? "Welcome to Master Computer Academy " + currentProfile.full_name
+    : "Master Computer Academy";
+message.textContent = "";
   document.getElementById("dashboardTitle").textContent =
   currentProfile.role === "admin" ? "Admin Dashboard" : "Branch Dashboard";
+document.getElementById("managementHome").style.display = "block";
+
+document.getElementById("studentsManagementSection").style.display = "none";
+document.getElementById("branchManagementSection").style.display = "none";
 
 if (currentProfile.role === "branch") {
-  document.getElementById("branchManagementSection").style.display = "none";
-}
-
-  document.getElementById("login").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
-
-  if (currentProfile.role === "branch") {
-  document.getElementById("mainHeading").textContent =
-    "Welcome to Master Computer Academy " + currentProfile.full_name;
+  document.getElementById("openBranchManagement").style.display = "none";
 } else {
-  document.getElementById("mainHeading").textContent =
-    "Master Computer Academy";
+  document.getElementById("openBranchManagement").style.display = "inline-block";
 }
 
-document.getElementById("welcome").style.display = "none";
-
-  message.textContent = "";
-
-  loadStudents();
- if (currentProfile.role === "admin") {
-  loadBranches();
-}
 });
 
+// MANAGEMENT SCREEN NAVIGATION
+
+document.getElementById("openStudentsManagement").addEventListener("click", function () {
+  document.getElementById("managementHome").style.display = "none";
+  document.getElementById("branchManagementSection").style.display = "none";
+  document.getElementById("studentsManagementSection").style.display = "block";
+
+  loadStudents();
+});
+
+document.getElementById("openBranchManagement").addEventListener("click", function () {
+  document.getElementById("managementHome").style.display = "none";
+  document.getElementById("studentsManagementSection").style.display = "none";
+  document.getElementById("branchManagementSection").style.display = "block";
+
+  loadBranches();
+});
+
+document.getElementById("backToDashboard1").addEventListener("click", function () {
+  document.getElementById("studentsManagementSection").style.display = "none";
+  document.getElementById("managementHome").style.display = "block";
+});
+
+document.getElementById("backToDashboard2").addEventListener("click", function () {
+  document.getElementById("branchManagementSection").style.display = "none";
+  document.getElementById("managementHome").style.display = "block";
+});
 // BRANCH MANAGEMENT
 
 async function loadBranches() {
