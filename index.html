@@ -1010,6 +1010,10 @@ cursor:pointer;
         <label>Student Name *</label>
         <input type="text" name="student_name" required>
       </div>
+       <div class="form-group">
+       <label>Admission Date *</label>
+       <input type="date" name="admission_date" required>
+      </div>
 
       <div class="form-group">
         <label>Father Name *</label>
@@ -1252,6 +1256,7 @@ if (form) {
           course_code: value("course_code") || null,
           qualification: value("qualification") || null,
           dob: value("dob") || null,
+          admission_date: value("admission_date"),
           photo_path: photoPath,
           status: "New",
          branch_id: branchSelect.value
