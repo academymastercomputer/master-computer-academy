@@ -1234,8 +1234,7 @@ statusSelect.onchange = async () => {
   
   const oldStatus = student.status;
   const newStatus = statusSelect.value;
-  alert("Selected Status: " + newStatus);
-
+  
   statusSelect.disabled = true;
 
   const { data: updatedRows, error } = await db
@@ -1243,8 +1242,7 @@ statusSelect.onchange = async () => {
   .update({ status: newStatus })
   .eq("id", student.id)
   .select("id, status");
-  alert("Database Result: " + JSON.stringify({updatedRows, error}));
-
+  
   if (error) {
     message.textContent = "Status Update Failed: " + error.message;
     statusSelect.value = oldStatus || "New";
