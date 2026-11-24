@@ -1231,8 +1231,7 @@ function updateStatusColor() {
 updateStatusColor();
 
 statusSelect.onchange = async () => {
-  alert("Status change event chala!");
-
+  
   const oldStatus = student.status;
   const newStatus = statusSelect.value;
 
@@ -1243,6 +1242,7 @@ statusSelect.onchange = async () => {
   .update({ status: newStatus })
   .eq("id", student.id)
   .select("id, status");
+  alert("Database Result: " + JSON.stringify({updatedRows, error}));
 
   if (error) {
     message.textContent = "Status Update Failed: " + error.message;
