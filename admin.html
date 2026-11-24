@@ -1231,6 +1231,7 @@ function updateStatusColor() {
 updateStatusColor();
 
 statusSelect.onchange = async () => {
+  alert("Status change event chala!");
 
   const oldStatus = student.status;
   const newStatus = statusSelect.value;
