@@ -839,6 +839,9 @@ tr.appendChild(photoCell);
 
 [
   student.student_name,
+  let statusCell = null;
+
+[
   student.father_name,
   student.mobile,
   student.dob,
@@ -847,11 +850,16 @@ tr.appendChild(photoCell);
   student.enrollment_no,
   student.registration_no,
   student.status
-].forEach(value => {
-      const td = document.createElement("td");
-      td.textContent = value || "-";
-      tr.appendChild(td);
-    });
+].forEach((value, index) => {
+  const td = document.createElement("td");
+  td.textContent = value || "-";
+
+  if (index === 7) {
+    statusCell = td;
+  }
+
+  tr.appendChild(td);
+});
 
     const actionTd = document.createElement("td");
 
@@ -1249,6 +1257,7 @@ statusSelect.onchange = async () => {
   } else {
     student.status = newStatus;
     message.textContent = "Student Status Updated Successfully!";
+    statusCell.textContent = newStatus;
   }
 
   updateStatusColor();
