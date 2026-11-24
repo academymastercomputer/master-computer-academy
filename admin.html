@@ -1192,41 +1192,64 @@ actionTd.appendChild(editBtn);
 
 
     // STATUS DROPDOWN
-    const statusSelect = document.createElement("select");
+const statusSelect = document.createElement("select");
 
-    ["New", "Approved", "Rejected"].forEach(status => {
-      const option = document.createElement("option");
-      option.value = status;
-      option.textContent = status;
-      statusSelect.appendChild(option);
-    });
+["New", "Approved", "Rejected"].forEach(status => {
+  const option = document.createElement("option");
+  option.value = status;
+  option.textContent = status;
+  statusSelect.appendChild(option);
+});
 
-    statusSelect.value = student.status || "New";
+statusSelect.value = student.status || "New";
 
-    statusSelect.onchange = async () => {
+// STATUS COLOR FUNCTION
+function updateStatusColor() {
+  if (statusSelect.value === "Approved") {
+    statusSelect.style.background = "#dcfce7";
+    statusSelect.style.color = "#166534";
+    statusSelect.style.border = "1px solid #86efac";
+  } 
+  else if (statusSelect.value === "Rejected") {
+    statusSelect.style.background = "#fee2e2";
+    statusSelect.style.color = "#991b1b";
+    statusSelect.style.border = "1px solid #fca5a5";
+  } 
+  else {
+    statusSelect.style.background = "#dbeafe";
+    statusSelect.style.color = "#1e40af";
+    statusSelect.style.border = "1px solid #93c5fd";
+  }
+}
 
-      const oldStatus = student.status;
-      const newStatus = statusSelect.value;
+// APPLY INITIAL COLOR
+updateStatusColor();
 
-      statusSelect.disabled = true;
+statusSelect.onchange = async () => {
 
-      const { error } = await db
-        .from("students")
-        .update({ status: newStatus })
-        .eq("id", student.id);
+  const oldStatus = student.status;
+  const newStatus = statusSelect.value;
 
-      if (error) {
-        message.textContent = "Status Update Failed: " + error.message;
-        statusSelect.value = oldStatus || "New";
-      } else {
-        student.status = newStatus;
-        message.textContent = "Student Status Updated Successfully!";
-      }
+  statusSelect.disabled = true;
 
-      statusSelect.disabled = false;
-    };
+  const { error } = await db
+    .from("students")
+    .update({ status: newStatus })
+    .eq("id", student.id);
 
-    actionTd.appendChild(statusSelect);
+  if (error) {
+    message.textContent = "Status Update Failed: " + error.message;
+    statusSelect.value = oldStatus || "New";
+  } else {
+    student.status = newStatus;
+    message.textContent = "Student Status Updated Successfully!";
+  }
+
+  updateStatusColor();
+  statusSelect.disabled = false;
+};
+
+actionTd.appendChild(statusSelect);
 
 
     // DELETE BUTTON
