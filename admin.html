@@ -837,11 +837,10 @@ if (student.photo_path) {
 
 tr.appendChild(photoCell);
 
-[
-  student.student_name,
-  let statusCell = null;
+let statusCell = null;
 
 [
+  student.student_name,
   student.father_name,
   student.mobile,
   student.dob,
@@ -854,6 +853,12 @@ tr.appendChild(photoCell);
   const td = document.createElement("td");
   td.textContent = value || "-";
 
+  if (index === 8) {
+    statusCell = td;
+  }
+
+  tr.appendChild(td);
+});
   if (index === 7) {
     statusCell = td;
   }
