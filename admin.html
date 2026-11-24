@@ -1205,23 +1205,28 @@ statusSelect.value = student.status || "New";
 
 // STATUS COLOR FUNCTION
 function updateStatusColor() {
+  let bg, txt, border;
+
   if (statusSelect.value === "Approved") {
-    statusSelect.style.background = "#dcfce7";
-    statusSelect.style.color = "#166534";
-    statusSelect.style.border = "1px solid #86efac";
+    bg = "#dcfce7";
+    txt = "#166534";
+    border = "#86efac";
   } 
   else if (statusSelect.value === "Rejected") {
-    statusSelect.style.background = "#fee2e2";
-    statusSelect.style.color = "#991b1b";
-    statusSelect.style.border = "1px solid #fca5a5";
+    bg = "#fee2e2";
+    txt = "#991b1b";
+    border = "#fca5a5";
   } 
   else {
-    statusSelect.style.background = "#dbeafe";
-    statusSelect.style.color = "#1e40af";
-    statusSelect.style.border = "1px solid #93c5fd";
+    bg = "#dbeafe";
+    txt = "#1e40af";
+    border = "#93c5fd";
   }
-}
 
+  statusSelect.style.setProperty("background-color", bg, "important");
+  statusSelect.style.setProperty("color", txt, "important");
+  statusSelect.style.setProperty("border", "2px solid " + border, "important");
+}
 // APPLY INITIAL COLOR
 updateStatusColor();
 
