@@ -1255,7 +1255,8 @@ actionTd.appendChild(editBtn);
     };
 
     actionTd.appendChild(deleteBtn);
-
+    actionTd.insertBefore(deleteBtn, viewBtn);
+    
     tr.appendChild(actionTd);
     list.appendChild(tr);
 
