@@ -1184,6 +1184,32 @@ const supabaseClient = window.supabase.createClient(
 
 const form = document.getElementById("studentRegistrationForm");
   const branchSelect = document.getElementById("branchSelect");
+// Load all branches dynamically from Supabase
+async function loadBranches() {
+  const { data, error } = await supabaseClient
+    .from("branches")
+    .select("id, name")
+    .order("name");
+
+  if (error) {
+    console.error("Branch loading error:", error);
+    branchSelect.innerHTML =
+      '<option value="">Unable to load branches</option>';
+    return;
+  }
+
+  branchSelect.innerHTML =
+    '<option value="" disabled selected>Choose Your Branch</option>';
+
+  data.forEach((branch) => {
+    const option = document.createElement("option");
+    option.value = branch.id;
+    option.textContent = branch.name;
+    branchSelect.appendChild(option);
+  });
+}
+
+loadBranches();
 
 // Form ko shuru mein lock rakhein
 function toggleRegistrationForm(){
