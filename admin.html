@@ -316,6 +316,89 @@ hr {
   margin: 22px 0;
 }
 
+/* PROFESSIONAL BRANCH MANAGEMENT */
+
+#branchManagementSection {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+
+.branch-action-btn {
+  padding: 8px 14px;
+  border-radius: 7px;
+  font-size: 12px;
+  margin: 3px;
+}
+
+.branch-edit-btn {
+  background: #e5f6eb;
+  color: #247443;
+}
+
+.branch-login-btn {
+  background: #e8f1ff;
+  color: #2456a6;
+}
+
+.branch-id {
+  font-family: monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+#branchLoginModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.65);
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+#branchLoginModal .modal-box {
+  width: 100%;
+  max-width: 480px;
+  background: white;
+  padding: 24px;
+  border-radius: 14px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.2);
+}
+
+#branchLoginModal label {
+  display: block;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.password-row {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.password-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.password-row button {
+  white-space: nowrap;
+  margin: 7px 0;
+  background: #555;
+}
+
+.branch-save-btn {
+  background: #247443;
+}
+
+.branch-cancel-btn {
+  background: #666;
+}
 @media(max-width:700px) {
   body {
     padding: 7px;
@@ -432,18 +515,62 @@ hr {
       <div style="overflow-x:auto;">
         <table>
           <thead>
-            <tr>
-              <th>Branch Name</th>
-              <th>Branch Code</th>
-              <th>Action</th>
-            </tr>
+          <tr>
+  <th>Branch Name</th>
+  <th>Branch Code</th>
+  <th>Branch ID</th>
+  <th>Action</th>
+</tr>
           </thead>
           <tbody id="branchList"></tbody>
         </table>
       </div>
 
     </div>
+    <!-- BRANCH LOGIN SETUP MODAL -->
 
+<div id="branchLoginModal">
+  <div class="modal-box">
+
+    <h3>Branch Login Setup</h3>
+
+    <p><strong>Branch Name:</strong> <span id="loginBranchName">-</span></p>
+
+    <p><strong>Branch ID:</strong></p>
+    <div id="loginBranchId" class="branch-id"></div>
+
+    <label for="branchLoginAction">Login Action</label>
+    <select id="branchLoginAction">
+      <option value="create">Create New Login</option>
+      <option value="update">Update Existing Login</option>
+    </select>
+
+    <label for="branchLoginEmail">Login Email</label>
+    <input type="email" id="branchLoginEmail"
+           placeholder="Enter Branch Login Email">
+
+    <label for="branchLoginPassword">New Password</label>
+
+    <div class="password-row">
+      <input type="password" id="branchLoginPassword"
+             placeholder="Minimum 8 characters">
+      <button type="button" id="toggleBranchPassword">Show</button>
+    </div>
+
+    <p style="font-size:12px;color:#777;">
+      Update करते समय Password खाली छोड़ने पर पुराना Password वही रहेगा।
+    </p>
+
+    <p id="branchLoginMessage"></p>
+
+    <button type="button" id="saveBranchLogin"
+            class="branch-save-btn">Save Login</button>
+
+    <button type="button" id="closeBranchLogin"
+            class="branch-cancel-btn">Cancel</button>
+
+  </div>
+</div>
     <!-- STUDENTS MANAGEMENT -->
 
     <div id="studentsManagementSection">
@@ -535,8 +662,108 @@ const db = window.supabase.createClient(
 
 const message = document.getElementById("message");
 let currentProfile = null;
+let selectedBranchForLogin = null;
+// BRANCH LOGIN MODAL CONTROLS
 
+document.getElementById("toggleBranchPassword").addEventListener("click", function () {
+  const passwordInput = document.getElementById("branchLoginPassword");
 
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    this.textContent = "Hide";
+  } else {
+    passwordInput.type = "password";
+    this.textContent = "Show";
+  }
+});
+
+document.getElementById("closeBranchLogin").addEventListener("click", function () {
+  document.getElementById("branchLoginModal").style.display = "none";
+  document.getElementById("branchLoginPassword").value = "";
+  document.getElementById("branchLoginMessage").textContent = "";
+});
+ho gaya
+अच्छा। अब Branch Login Modal खोलने का कोड जोड़ेंगे।
+
+उसी JavaScript में, पिछले कोड के ठीक नीचे यह जोड़ दीजिए:
+
+// OPEN BRANCH LOGIN MODAL
+
+function openBranchLogin(branch) {
+  selectedBranchForLogin = branch;
+
+  document.getElementById("loginBranchName").textContent = branch.name;
+  document.getElementById("loginBranchId").textContent = branch.id;
+
+  document.getElementById("branchLoginAction").value = "create";
+  document.getElementById("branchLoginEmail").value = "";
+  document.getElementById("branchLoginPassword").value = "";
+  document.getElementById("branchLoginPassword").type = "password";
+  document.getElementById("toggleBranchPassword").textContent = "Show";
+  document.getElementById("branchLoginMessage").textContent = "";
+
+  document.getElementById("branchLoginModal").style.display = "flex";
+}
+  // SAVE BRANCH LOGIN
+
+document.getElementById("saveBranchLogin").addEventListener("click", async function () {
+  if (!selectedBranchForLogin) return;
+
+  const action = document.getElementById("branchLoginAction").value;
+  const email = document.getElementById("branchLoginEmail").value.trim();
+  const password = document.getElementById("branchLoginPassword").value;
+
+  const message = document.getElementById("branchLoginMessage");
+
+  if (!email) {
+    message.textContent = "Please enter Login Email.";
+    message.style.color = "red";
+    return;
+  }
+
+  if (action === "create" && password.length < 8) {
+    message.textContent = "Password must be at least 8 characters.";
+    message.style.color = "red";
+    return;
+  }
+
+  if (action === "update" && password && password.length < 8) {
+    message.textContent = "Password must be at least 8 characters.";
+    message.style.color = "red";
+    return;
+  }
+
+  this.disabled = true;
+  this.textContent = "Please wait...";
+  message.textContent = "";
+
+  try {
+    const { data, error } = await db.functions.invoke("branch-user-management", {
+      body: {
+        action: action,
+        branch_id: selectedBranchForLogin.id,
+        email: email,
+        password: password || undefined,
+        full_name: selectedBranchForLogin.name
+      }
+    });
+
+    if (error) throw error;
+    if (data?.error) throw new Error(data.error);
+
+    alert("Branch Login " + (action === "create" ? "Created" : "Updated") + " Successfully!");
+
+    document.getElementById("branchLoginModal").style.display = "none";
+    document.getElementById("branchLoginPassword").value = "";
+
+  } catch (err) {
+    message.textContent = err.message || "Something went wrong.";
+    message.style.color = "red";
+  } finally {
+    this.disabled = false;
+    this.textContent = "Save Login";
+  }
+});
 // ==============================
 // LOGIN
 // ==============================
@@ -666,6 +893,9 @@ async function loadBranches() {
 
     const codeTd = document.createElement("td");
     codeTd.textContent = branch.code;
+    const idTd = document.createElement("td");
+    idTd.textContent = branch.id;
+    idTd.className = "branch-id";
 
     const actionTd = document.createElement("td");
 
@@ -704,100 +934,20 @@ async function loadBranches() {
         loadBranches();
       }
     };
+      // BRANCH LOGIN SETUP
 
-    // BRANCH LOGIN SETUP
+const loginBtn = document.createElement("button");
+loginBtn.textContent = "Login Setup";
+loginBtn.className = "branch-action-btn branch-login-btn";
 
-    const loginBtn = document.createElement("button");
-    loginBtn.textContent = "Login Setup";
+loginBtn.onclick = () => {
+  openBranchLogin(branch);
+};
 
-    loginBtn.onclick = async () => {
+editBtn.className = "branch-action-btn branch-edit-btn";
 
-      const action = prompt(
-        "Choose Login Action:\n\nType CREATE for a new branch login\nType UPDATE to change an existing login"
-      );
-
-      if (action === null) return;
-
-      const selectedAction = action.trim().toLowerCase();
-
-      if (selectedAction !== "create" && selectedAction !== "update") {
-        alert("Please type CREATE or UPDATE.");
-        return;
-      }
-
-      const email = prompt("Enter Branch Login Email:");
-      if (email === null || !email.trim()) return;
-
-      let password = "";
-
-      if (selectedAction === "create") {
-
-        password = prompt("Enter New Password (minimum 8 characters):");
-
-        if (password === null) return;
-
-        if (password.length < 8) {
-          alert("Password must be at least 8 characters.");
-          return;
-        }
-
-      } else {
-
-        password = prompt(
-          "Enter New Password (leave blank to keep current password):"
-        );
-
-        if (password === null) return;
-
-        if (password && password.length < 8) {
-          alert("Password must be at least 8 characters.");
-          return;
-        }
-      }
-
-      loginBtn.disabled = true;
-      loginBtn.textContent = "Please wait...";
-
-      try {
-
-        const { data, error } = await db.functions.invoke(
-          "branch-user-management",
-          {
-            body: {
-              action: selectedAction,
-              branch_id: branch.id,
-              email: email.trim(),
-              password: password || undefined,
-              full_name: branch.name
-            }
-          }
-        );
-
-        if (error) {
-          alert("Login Setup Failed:\n" + JSON.stringify(error, null, 2));
-          return;
-        }
-
-        if (data?.error) {
-          alert("Login Setup Failed: " + data.error);
-          return;
-        }
-
-        alert(data?.message || "Branch Login Setup Successful!");
-
-      } catch (err) {
-
-        alert("Login Setup Failed: " + err.message);
-
-      } finally {
-
-        loginBtn.disabled = false;
-        loginBtn.textContent = "Login Setup";
-      }
-    };
-
-    actionTd.append(editBtn, loginBtn);
-    tr.append(nameTd, codeTd, actionTd);
+actionTd.append(editBtn, loginBtn);
+       tr.append(nameTd, codeTd, idTd, actionTd);
     list.appendChild(tr);
   });
 }
