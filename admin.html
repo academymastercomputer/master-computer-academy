@@ -815,7 +815,7 @@ async function loadBranches() {
         "branch-user-management",
         {
           body: {
-            action: "update",
+           action: selectedAction,
             branch_id: branch.id,
             email: email.trim(),
             password: password || undefined,
