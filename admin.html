@@ -4,29 +4,199 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master Computer Academy - Admin</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-/* ===== CLEAN PROFESSIONAL STUDENT TABLE ===== */
+:root {
+  --red: #b00020;
+  --red-dark: #850018;
+  --green: #247443;
+  --blue: #2456a6;
+  --light: #f5f6f8;
+  --border: #e5e7eb;
+  --text: #333;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--light);
+  color: var(--text);
+  margin: 0;
+  padding: 18px;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 18px auto;
+  padding: 25px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.07);
+}
+
+h2 {
+  color: var(--red);
+}
+
+h3 {
+  color: var(--red);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+h4 {
+  color: #444;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 7px 0;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(176,0,32,0.08);
+}
+
+button {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  margin: 4px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+button:hover {
+  background: var(--red-dark);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+}
+
+th, td {
+  border-bottom: 1px solid var(--border);
+  padding: 11px;
+  text-align: left;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+th {
+  background: var(--red);
+  color: #fff;
+  white-space: nowrap;
+}
+
+tr:nth-child(even) {
+  background: #fafafa;
+}
+
+tr:hover {
+  background: #fff5f6;
+}
+
+#login {
+  max-width: 450px;
+  margin: 20px auto;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+#loginForm {
+  display: grid;
+  gap: 8px;
+}
+
+#dashboard {
+  display: none;
+}
+
+#managementHome {
+  text-align: center;
+  padding: 25px;
+}
+
+#branchManagementSection {
+  display: none;
+  background: #fffdf5;
+  border: 1px solid #f0dfaa;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+}
+
+#studentsManagementSection {
+  display: none;
+}
+
+#branchManagementSection h3 {
+  background: #fff4cf;
+  color: #805500;
+  border-left: 4px solid #e5a800;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+#branchMessage, #message {
+  color: var(--red);
+  font-weight: 600;
+}
+
+#refresh {
+  background: #555;
+}
+
+#logout {
+  background: #777;
+}
+
+#studentSearch {
+  max-width: 430px;
+  margin: 0 0 12px;
+}
 
 #studentTableWrap {
-  overflow-x: auto !important;
-  border-radius: 14px;
+  overflow-x: auto;
+  border-radius: 12px;
 }
 
 #studentTableWrap table {
-  min-width: 1665px !important;
-  table-layout: fixed !important;
-  border-spacing: 0 !important;
+  min-width: 1900px;
+  table-layout: fixed;
+  border-spacing: 0;
 }
 
-/* Column spacing */
 #studentTableWrap th,
 #studentTableWrap td {
-  padding: 13px 10px !important;
-  vertical-align: middle !important;
+  padding: 12px 10px;
 }
 
-/* Compact columns */
 #studentTableWrap th:nth-child(1),
 #studentTableWrap td:nth-child(1) { width: 55px; }
 
@@ -46,587 +216,311 @@
 #studentTableWrap th:nth-child(7),
 #studentTableWrap td:nth-child(7) { width: 115px; }
 
-/* More space for course */
 #studentTableWrap th:nth-child(8),
-#studentTableWrap td:nth-child(8) { width: 270px; }
+#studentTableWrap td:nth-child(8) { width: 155px; }
 
 #studentTableWrap th:nth-child(9),
-#studentTableWrap td:nth-child(9) { width: 145px; }
+#studentTableWrap td:nth-child(9) { width: 110px; }
 
 #studentTableWrap th:nth-child(10),
-#studentTableWrap td:nth-child(10) { width: 150px; }
+#studentTableWrap td:nth-child(10) { width: 110px; }
 
 #studentTableWrap th:nth-child(11),
-#studentTableWrap td:nth-child(11) { width: 110px; }
+#studentTableWrap td:nth-child(11) { width: 270px; }
 
 #studentTableWrap th:nth-child(12),
-#studentTableWrap td:nth-child(12) { width: 220px; }
+#studentTableWrap td:nth-child(12) { width: 145px; }
 
-/* Course text */
-#studentList td:nth-child(8) {
-  white-space: normal !important;
-  line-height: 1.6;
-  word-break: normal;
+#studentTableWrap th:nth-child(13),
+#studentTableWrap td:nth-child(13) { width: 150px; }
+
+#studentTableWrap th:nth-child(14),
+#studentTableWrap td:nth-child(14) { width: 110px; }
+
+#studentTableWrap th:nth-child(15),
+#studentTableWrap td:nth-child(15) { width: 230px; }
+
+#studentList td:nth-child(11) {
+  white-space: normal;
+  line-height: 1.5;
 }
-
-/* ===== STUDENT ACTION BUTTONS ===== */
 
 #studentList td:last-child {
-  display: table-cell !important;
-  white-space: nowrap !important;
-  min-width: 300px !important;
-  vertical-align: middle !important;
-}
-
-#studentList td:last-child button {
-  display: inline-block !important;
-  float: none !important;
-  vertical-align: middle !important;
-}
-
-#studentList td:last-child select {
-  display: block !important;
-  clear: both !important;
-  width: 100% !important;
-  margin: 8px 0 0 !important;
-}
-
-#studentList td:last-child button {
-  display: inline-block !important;
-  padding: 8px 12px !important;
-  margin: 3px !important;
-  font-size: 12px !important;
-  border-radius: 7px !important;
-  white-space: nowrap !important;
-  box-shadow: none !important;
-}
-
-/* VIEW - BLUE */
-#studentList td:last-child button:nth-of-type(1) {
-  background: #e8f1ff !important;
-  color: #2456a6 !important;
-}
-
-/* EDIT - GREEN */
-#studentList td:last-child button:nth-of-type(2) {
-  background: #e5f6eb !important;
-  color: #247443 !important;
-}
-
-/* DELETE - RED */
-#studentList td:last-child button:nth-of-type(3) {
-  background: #fde9eb !important;
-  color: #b42335 !important;
-}
-
-/* STATUS DROPDOWN */
-#studentList td:last-child select {
-  display: block !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  margin: 8px 0 0 !important;
-  padding: 9px !important;
-  font-size: 12px !important;
-  border-radius: 7px !important;
-}
-
-#studentList td:last-child button {
-  order: 0 !important;
-  padding: 7px 11px !important;
-  margin: 0 !important;
-  font-size: 11px !important;
-  border-radius: 7px !important;
-  box-shadow: none !important;
   white-space: nowrap;
+  min-width: 230px;
 }
 
-/* View - Light Blue */
-#studentList td:last-child button:nth-of-type(1) {
-  background: #e8f1ff !important;
-  color: #2456a6 !important;
+#studentList td:last-child button {
+  padding: 7px 10px;
+  margin: 2px;
+  font-size: 11px;
+  box-shadow: none;
 }
 
-/* Edit - Light Green */
-#studentList td:last-child button:nth-of-type(2) {
-  background: #e5f6eb !important;
-  color: #247443 !important;
+.action-view {
+  background: #e8f1ff;
+  color: #2456a6;
 }
 
-/* Delete - Light Red */
-#studentList td:last-child button:nth-of-type(3) {
-  background: #fde9eb !important;
-  color: #b42335 !important;
+.action-edit {
+  background: #e5f6eb;
+  color: #247443;
 }
 
-/* Status below buttons */
+.action-delete {
+  background: #fde9eb;
+  color: #b42335;
+}
+
 #studentList td:last-child select {
-  order: 1 !important;
-  flex: 0 0 100% !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  margin: 5px 0 0 !important;
-  padding: 8px !important;
-  font-size: 12px !important;
-}
-/* MAIN PAGE */
-body {
-  font-family: Arial, sans-serif;
-  background: #f4f5f7;
-  margin: 0;
-  padding: 20px;
-  color: #333;
-}
-
-/* MAIN CONTAINER */
-.container {
-  max-width: 1200px;
-  margin: 25px auto;
-  background: #ffffff;
-  padding: 28px;
-  border-radius: 12px;
-  box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-}
-
-/* HEADINGS */
-h2 {
-  color: #b00000;
-  font-weight: 700;
-}
-
-h3 {
-  color: #b00000;
-  font-size: 21px;
-  border-bottom: 2px solid #eeeeee;
-  padding-bottom: 10px;
-}
-
-h4 {
-  color: #444;
-}
-
-/* INPUT FIELDS */
-input, select, textarea {
+  display: block;
   width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  box-sizing: border-box;
-  border: 1px solid #d5d5d5;
-  border-radius: 6px;
-  background: #fff;
-  font-size: 14px;
+  margin-top: 7px;
+  padding: 8px;
+  font-size: 12px;
 }
 
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: #b00000;
-  box-shadow: 0 0 4px rgba(176,0,0,0.2);
+#dashboard > div[style*="background:#e3f2fd"] {
+  background: transparent !important;
+  padding: 0 !important;
 }
 
-/* BUTTONS */
-button {
-  background: #b00000;
-  color: white;
-  border: none;
-  padding: 11px 18px;
-  margin: 6px 3px;
-  cursor: pointer;
-  border-radius: 6px;
-  font-weight: 600;
-  transition: 0.2s;
-  width: auto;
+#dashboard > div[style*="background:#e3f2fd"] table {
+  border-spacing: 8px;
+  border-collapse: separate;
+  margin: 5px -8px 15px;
 }
 
-button:hover {
-  background: #850000;
-}
-
-/* TABLES */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 18px;
-  background: white;
-}
-
-th, td {
-  border: 1px solid #e2e2e2;
-  padding: 11px;
-  text-align: left;
-  font-size: 14px;
-}
-
-th {
-  background: #b00000 !important;
-  color: white !important;
+#dashboard > div[style*="background:#e3f2fd"] td {
+  border: 1px solid var(--border);
+  padding: 14px;
   font-weight: 600;
 }
 
-td {
-  color: #333;
+#dashboard > div[style*="background:#e3f2fd"] td:last-child {
+  color: var(--red);
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
 }
 
-tr:nth-child(even) {
-  background: #fafafa;
+#studentList img {
+  border: 2px solid #fff;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.15);
 }
 
-/* BRANCH MANAGEMENT */
-#branchManagementSection {
-  border: 1px solid #f0df8a;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-/* DASHBOARD */
-#dashboard {
-  display: none;
-}
-
-/* LOGIN MESSAGE */
-#message {
-  color: #b00000;
-  font-weight: 600;
-}
-
-/* HORIZONTAL LINE */
 hr {
   border: 0;
-  border-top: 1px solid #e5e5e5;
-  margin: 20px 0;
+  border-top: 1px solid var(--border);
+  margin: 22px 0;
 }
 
-/* MOBILE RESPONSIVE */
-@media (max-width: 600px) {
+@media(max-width:700px) {
   body {
-    padding: 8px;
+    padding: 7px;
   }
 
   .container {
-    padding: 14px;
-    margin: 10px auto;
+    padding: 13px;
+    margin: 6px auto;
   }
 
-  th, td {
-    padding: 8px;
-    font-size: 12px;
+  .container > div:first-child {
+    padding: 13px !important;
+  }
+
+  .container > div:first-child img {
+    width: 76px !important;
+    height: 76px !important;
+  }
+
+  .container > div:first-child h1 {
+    font-size: 21px !important;
   }
 
   button {
-    padding: 9px 12px;
+    padding: 9px 11px;
     font-size: 12px;
   }
-}
 
-/* ===== PROFESSIONAL ADMIN DASHBOARD THEME ===== */
-:root{
-  --brand-red:#b00020;
-  --brand-red-dark:#850018;
-  --navy:#14243b;
-  --navy-soft:#203653;
-  --page:#f3f6fb;
-  --line:#e5eaf2;
-  --muted:#64748b;
+  #branchManagementSection {
+    padding: 12px;
+  }
 }
-*{box-sizing:border-box}
-body{
-  font-family:Inter,Arial,sans-serif!important;
-  background:linear-gradient(135deg,#f3f6fb 0%,#edf1f7 100%)!important;
-  color:#243247!important;
-  padding:18px!important;
-}
-.container{
-  max-width:1440px!important;
-  margin:18px auto!important;
-  padding:28px!important;
-  border:1px solid #e8edf4;
-  border-radius:20px!important;
-  box-shadow:0 12px 40px rgba(20,36,59,.08)!important;
-}
-.container > div:first-child{
-  background:linear-gradient(120deg,#fff 0%,#fff7f8 100%)!important;
-  border:1px solid #f0d9de!important;
-  border-top:5px solid var(--brand-red)!important;
-  border-bottom:2px solid #e9edf4!important;
-  border-radius:18px!important;
-  padding:22px!important;
-  gap:20px!important;
-}
-.container > div:first-child img{
-  width:100px!important;height:100px!important;
-  background:#fff;border-radius:16px;padding:6px;
-  box-shadow:0 5px 18px rgba(20,36,59,.10);
-}
-.container > div:first-child h1{
-  font-size:clamp(22px,3vw,32px)!important;
-  letter-spacing:.5px!important;
-}
-h2{color:var(--navy)!important;font-size:26px!important;margin:20px 0 10px}
-h3{
-  color:var(--navy)!important;
-  font-size:20px!important;
-  border-bottom:1px solid var(--line)!important;
-  padding:0 0 12px!important;
-  margin:22px 0 16px!important;
-}
-h4{color:var(--navy)!important;font-size:15px}
-#login{
-  max-width:480px;margin:0 auto 18px;
-  padding:24px;background:#fff;border:1px solid var(--line);
-  border-radius:16px;box-shadow:0 8px 24px rgba(20,36,59,.06);
-}
-#loginForm{display:grid;gap:10px}
-input,select,textarea{
-  border:1px solid #dbe2ec!important;
-  border-radius:10px!important;
-  padding:13px 14px!important;
-  background:#fff!important;
-  color:#243247!important;
-  font-size:14px!important;
-  margin:6px 0!important;
-}
-input:focus,select:focus,textarea:focus{
-  border-color:var(--brand-red)!important;
-  box-shadow:0 0 0 3px rgba(176,0,32,.10)!important;
-}
-button{
-  background:var(--brand-red)!important;
-  color:#fff!important;border:0!important;
-  border-radius:9px!important;padding:11px 16px!important;
-  font-size:13px!important;font-weight:700!important;
-  box-shadow:0 3px 8px rgba(176,0,32,.13);
-  transition:transform .15s ease,background .15s ease,box-shadow .15s ease;
-}
-button:hover{
-  background:var(--brand-red-dark)!important;
-  transform:translateY(-1px);
-  box-shadow:0 5px 12px rgba(176,0,32,.18);
-}
-#refresh{background:var(--navy)!important}
-#refresh:hover{background:#0b1728!important}
-#logout{background:#64748b!important}
-#logout:hover{background:#475569!important}
-#message,#branchMessage{padding:8px 0;color:var(--brand-red);font-weight:600}
-#dashboard{margin-top:16px}
-#dashboardTitle{font-size:25px!important}
-#branchManagementSection{
-  background:#fff!important;border:1px solid #f0d9a6!important;
-  border-radius:16px!important;padding:20px!important;
-  box-shadow:0 5px 18px rgba(20,36,59,.04)!important;
-}
-#branchManagementSection h3{
-  background:#fff5d9!important;color:#805500!important;
-  border:0!important;border-left:4px solid #e5a800!important;
-  border-radius:8px!important;padding:12px 14px!important;
-}
-#branchManagementSection input{max-width:360px}
-#dashboard > div[style*="background:#e3f2fd"]{
-  background:transparent!important;padding:0!important;
-}
-#dashboard > div[style*="background:#e3f2fd"] table{
-  border-collapse:separate!important;border-spacing:12px!important;
-  margin:4px -12px 18px!important;
-}
-#dashboard > div[style*="background:#e3f2fd"] tbody tr{
-  background:#fff!important;
-  box-shadow:0 4px 16px rgba(20,36,59,.06);
-}
-#dashboard > div[style*="background:#e3f2fd"] td{
-  border:1px solid var(--line)!important;padding:17px!important;
-  font-weight:700;color:var(--navy)!important;
-}
-#dashboard > div[style*="background:#e3f2fd"] td:last-child{
-  color:var(--brand-red)!important;text-align:center;
-  font-size:19px!important;font-weight:800;
-}
-table{
-  width:100%;border-collapse:separate!important;border-spacing:0;
-  background:#fff;border-radius:12px;overflow:hidden;
-  box-shadow:0 4px 18px rgba(20,36,59,.05);
-}
-th{
-  background:var(--navy)!important;color:#fff!important;
-  border:0!important;padding:13px 12px!important;
-  white-space:nowrap;font-size:12px!important;letter-spacing:.25px;
-}
-td{
-  border:0!important;border-bottom:1px solid #edf0f5!important;
-  padding:12px!important;font-size:13px!important;vertical-align:middle;
-}
-tr:nth-child(even){background:#f8fafd!important}
-tr:hover{background:#fff5f6!important}
-td button{margin:3px!important;white-space:nowrap}
-td select{min-width:105px}
-#studentSearch{
-  width:min(100%,420px)!important;
-  margin:0 0 12px!important;
-  background:#fff!important;
-}
-#studentTableWrap{overflow-x:auto;border-radius:12px}
-#studentTableWrap table{min-width:1050px}
-#studentList img{border:2px solid #fff;box-shadow:0 2px 7px rgba(0,0,0,.15)}
-hr{border-top:1px solid var(--line)!important;margin:22px 0!important}
-@media(max-width:700px){
-  body{padding:7px!important}
-  .container{padding:14px!important;margin:6px auto!important;border-radius:14px!important}
-  .container > div:first-child{padding:14px!important}
-  .container > div:first-child img{width:76px!important;height:76px!important}
-  .container > div:first-child h1{font-size:21px!important}
-  .container > div:first-child p{font-size:12px!important}
-  h2{font-size:21px!important}
-  h3{font-size:18px!important}
-  #login{padding:16px}
-  #branchManagementSection{padding:13px!important}
-  button{padding:10px 12px!important;font-size:12px!important}
-  #dashboard > div[style*="background:#e3f2fd"] table{border-spacing:5px!important;margin:0 -5px 12px!important}
-  #dashboard > div[style*="background:#e3f2fd"] td{padding:11px!important;font-size:12px!important}
-}
-
 </style>
 </head>
+
 <body>
 
 <div class="container">
-<div style="display:flex; align-items:center; justify-content:center; gap:25px; flex-wrap:wrap; background:#ffffff; padding:25px 15px; border-radius:12px; border-top:5px solid #b00000; border-bottom:3px solid #ffcc33; margin-bottom:25px; box-shadow:0 3px 12px rgba(0,0,0,0.08);">
 
-  <img src="logo%20original.jpg" alt="Master Computer Academy Logo" style="width:115px; height:115px; object-fit:contain;">
+  <div style="display:flex;align-items:center;justify-content:center;gap:25px;flex-wrap:wrap;background:#fff;padding:22px 15px;border-radius:12px;border-top:5px solid #b00000;border-bottom:3px solid #ffcc33;margin-bottom:25px;box-shadow:0 3px 12px rgba(0,0,0,0.08);">
 
-  <div style="text-align:center;">
-    <h1 style="color:#b00000; font-size:30px; font-weight:800; margin:0; letter-spacing:1px;">
-      MASTER COMPUTER ACADEMY
-    </h1>
-    <p style="color:#555; font-size:16px; font-weight:600; margin:10px 0 5px;">
-      Learn Today, Lead Tomorrow
-    </p>
-    <p style="color:#999; font-size:13px; margin:0;">
-      Computer Education • Skills • Success
-    </p>
+    <img src="logo%20original.jpg"
+         alt="Master Computer Academy Logo"
+         style="width:105px;height:105px;object-fit:contain;">
+
+    <div style="text-align:center;">
+      <h1 style="color:#b00000;font-size:30px;font-weight:800;margin:0;letter-spacing:1px;">
+        MASTER COMPUTER ACADEMY
+      </h1>
+      <p style="color:#555;font-size:16px;font-weight:600;margin:10px 0 5px;">
+        Learn Today, Lead Tomorrow
+      </p>
+      <p style="color:#999;font-size:13px;margin:0;">
+        Computer Education • Skills • Success
+      </p>
+    </div>
+
   </div>
 
-</div>
-<h2 id="mainHeading">Master Computer Academy</h2>
-<h3>Login</h3>
+  <h2 id="mainHeading">Master Computer Academy</h2>
+  <h3>Login</h3>
 
-<div id="login">
-<form id="loginForm">
-<input type="email" id="email" placeholder="Admin Email" required>
-<input type="password" id="password" placeholder="Password" required>
-<button type="submit">Login</button>
-</form>
-</div>
+  <div id="login">
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Admin Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
 
-<p id="message"></p>
+  <p id="message"></p>
 
-<div id="dashboard">
-<h3 id="dashboardTitle">Dashboard</h3>
-  <hr>
-<div id="managementHome" style="text-align:center; padding:25px;">
+  <div id="dashboard">
 
-  <button id="logout">
-  Logout
-</button>
-  <h2>Welcome to Admin Panel</h2>
-  <p>Select Management Section</p>
+    <h3 id="dashboardTitle">Dashboard</h3>
+    <hr>
 
-  <button id="openStudentsManagement">
-    Students Management
-  </button>
+    <div id="managementHome" style="text-align:center;padding:25px;">
 
-  <button id="openBranchManagement">
-    Branch Management
-  </button>
+      <button id="logout">Logout</button>
 
-</div>
-<div id="branchManagementSection" style="display:none; background:#fff9c4; padding:20px; border-radius:10px; margin:15px 0;">
-<button id="backToDashboard2">
-  Back to Dashboard
-</button>
-<h3 style="background:#ffeb3b; padding:12px; border-radius:6px;">Branch Management</h3>
+      <h2>Welcome to Admin Panel</h2>
+      <p>Select Management Section</p>
 
-<h4>Add New Branch</h4>
+      <button id="openStudentsManagement">
+        Students Management
+      </button>
 
-<input type="text" id="branchName" placeholder="Branch Name">
+      <button id="openBranchManagement">
+        Branch Management
+      </button>
 
-<input type="text" id="branchCode" placeholder="Branch Code">
+    </div>
 
-<button id="addBranch">Add Branch</button>
+    <!-- BRANCH MANAGEMENT -->
 
-<p id="branchMessage"></p>
+    <div id="branchManagementSection">
 
-<h4>All Branches</h4>
+      <button id="backToDashboard2">Back to Dashboard</button>
 
-<div style="overflow-x:auto">
-<table>
-<thead>
-<tr>
-<th>Branch Name</th>
-<th>Branch Code</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody id="branchList"></tbody>
-</table>
-</div>
-</div>
-  
-<hr>
-<div id="studentsManagementSection" style="display:none;">
-<button id="backToDashboard1">
-  Back to Dashboard
-</button>
-<p id="welcome"></p>
-<button id="refresh">Refresh Students</button>
+      <h3>Branch Management</h3>
 
-<h3>Student Registrations</h3>
- <div style="background:#e3f2fd; padding:15px; border-radius:8px;">
-<table style="width:100%; border-collapse:collapse; margin:15px 0;">
-  <thead>
-    <tr style="background:#b00000; color:#ffffff;">
-      <th style="padding:12px; color:white !important;">Details</th>
-      <th style="padding:12px; color:white !important;">Count</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Total Students</td>
-      <td id="totalStudents">0</td>
-    </tr>
-    <tr>
-      <td>Approved</td>
-      <td id="approvedStudents">0</td>
-    </tr>
-    <tr>
-      <td>New</td>
-      <td id="newStudents">0</td>
-    </tr>
-    <tr>
-      <td>Rejected</td>
-      <td id="rejectedStudents">0</td>
-    </tr>
-  </tbody>
-</table>
- </div>
-<input type="search" id="studentSearch" placeholder="Search by student name, mobile, course or enrollment number...">
-<div id="studentTableWrap" style="overflow-x:auto">
-<table>
-<thead>
-<tr>
-<th>S.No.</th>
-<th>Photo</th>
-<th>Name</th>
-<th>Father Name</th>
-<th>Mobile</th>
-<th>Date of Birth</th>
-<th>Admission Date</th>
-<th>Course</th>
-<th>Enrollment No.</th>
-<th>Registration No.</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody id="studentList"></tbody>
-</table>
-</div>
-</div>
-</div>
+      <h4>Add New Branch</h4>
+
+      <input type="text" id="branchName" placeholder="Branch Name">
+      <input type="text" id="branchCode" placeholder="Branch Code">
+
+      <button id="addBranch">Add Branch</button>
+
+      <p id="branchMessage"></p>
+
+      <h4>All Branches</h4>
+
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Branch Name</th>
+              <th>Branch Code</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="branchList"></tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- STUDENTS MANAGEMENT -->
+
+    <div id="studentsManagementSection">
+
+      <button id="backToDashboard1">Back to Dashboard</button>
+
+      <p id="welcome"></p>
+
+      <button id="refresh">Refresh Students</button>
+
+      <h3>Student Registrations</h3>
+
+      <div style="background:#f5f7fa;padding:12px;border-radius:8px;">
+
+        <table style="width:100%;border-collapse:collapse;margin:10px 0;">
+          <thead>
+            <tr>
+              <th>Details</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Total Students</td>
+              <td id="totalStudents">0</td>
+            </tr>
+            <tr>
+              <td>Approved</td>
+              <td id="approvedStudents">0</td>
+            </tr>
+            <tr>
+              <td>New</td>
+              <td id="newStudents">0</td>
+            </tr>
+            <tr>
+              <td>Rejected</td>
+              <td id="rejectedStudents">0</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <input type="search"
+             id="studentSearch"
+             placeholder="Search by student name, mobile, course or enrollment number...">
+
+      <div id="studentTableWrap">
+
+        <table>
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Father Name</th>
+              <th>Mobile</th>
+              <th>Date of Birth</th>
+              <th>Admission Date</th>
+              <th>Branch Name</th>
+              <th>Branch Code</th>
+              <th>Course</th>
+              <th>Enrollment No.</th>
+              <th>Registration No.</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="studentList"></tbody>
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
 </div>
 
 <script>
@@ -640,14 +534,19 @@ const db = window.supabase.createClient(
 
 const message = document.getElementById("message");
 let currentProfile = null;
-// ADMIN LOGIN
+
+
+// ==============================
+// LOGIN
+// ==============================
+
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   message.textContent = "Checking login...";
 
   const { data, error } = await db.auth.signInWithPassword({
-    email: document.getElementById("email").value,
+    email: document.getElementById("email").value.trim(),
     password: document.getElementById("password").value
   });
 
@@ -662,43 +561,52 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     .eq("id", data.user.id)
     .single();
 
- if (
-  profileError ||
-  !profile ||
-  !["admin", "branch"].includes(profile.role) ||
-  (profile.role === "branch" && !profile.branch_id)
-) {
-  message.textContent = "Admin access denied.";
-  await db.auth.signOut();
-  return;
-}
+  if (
+    profileError ||
+    !profile ||
+    !["admin", "branch"].includes(profile.role) ||
+    (profile.role === "branch" && !profile.branch_id)
+  ) {
+    message.textContent = "Admin access denied.";
+    await db.auth.signOut();
+    return;
+  }
 
-currentProfile = profile;
+  currentProfile = profile;
+
   document.getElementById("login").style.display = "none";
-document.getElementById("dashboard").style.display = "block";
-document.getElementById("mainHeading").textContent =
-  currentProfile.role === "branch"
-    ? "Welcome to Master Computer Academy " + currentProfile.full_name
-    : "Master Computer Academy";
-message.textContent = "";
+  document.getElementById("dashboard").style.display = "block";
+
+  document.getElementById("mainHeading").textContent =
+    currentProfile.role === "branch"
+      ? "Welcome to Master Computer Academy " + currentProfile.full_name
+      : "Master Computer Academy";
+
   document.getElementById("dashboardTitle").textContent =
-  currentProfile.role === "admin" ? "Admin Dashboard" : "Branch Dashboard";
-document.getElementById("managementHome").style.display = "block";
+    currentProfile.role === "admin"
+      ? "Admin Dashboard"
+      : "Branch Dashboard";
 
-document.getElementById("studentsManagementSection").style.display = "none";
-document.getElementById("branchManagementSection").style.display = "none";
+  document.getElementById("managementHome").style.display = "block";
+  document.getElementById("studentsManagementSection").style.display = "none";
+  document.getElementById("branchManagementSection").style.display = "none";
 
-if (currentProfile.role === "branch") {
-  document.getElementById("openBranchManagement").style.display = "none";
-} else {
-  document.getElementById("openBranchManagement").style.display = "inline-block";
-}
+  if (currentProfile.role === "branch") {
+    document.getElementById("openBranchManagement").style.display = "none";
+  } else {
+    document.getElementById("openBranchManagement").style.display = "inline-block";
+  }
 
+  message.textContent = "";
 });
 
-// MANAGEMENT SCREEN NAVIGATION
+
+// ==============================
+// DASHBOARD NAVIGATION
+// ==============================
 
 document.getElementById("openStudentsManagement").addEventListener("click", function () {
+
   document.getElementById("managementHome").style.display = "none";
   document.getElementById("branchManagementSection").style.display = "none";
   document.getElementById("studentsManagementSection").style.display = "block";
@@ -707,6 +615,7 @@ document.getElementById("openStudentsManagement").addEventListener("click", func
 });
 
 document.getElementById("openBranchManagement").addEventListener("click", function () {
+
   document.getElementById("managementHome").style.display = "none";
   document.getElementById("studentsManagementSection").style.display = "none";
   document.getElementById("branchManagementSection").style.display = "block";
@@ -715,17 +624,24 @@ document.getElementById("openBranchManagement").addEventListener("click", functi
 });
 
 document.getElementById("backToDashboard1").addEventListener("click", function () {
+
   document.getElementById("studentsManagementSection").style.display = "none";
   document.getElementById("managementHome").style.display = "block";
 });
 
 document.getElementById("backToDashboard2").addEventListener("click", function () {
+
   document.getElementById("branchManagementSection").style.display = "none";
   document.getElementById("managementHome").style.display = "block";
 });
+
+
+// ==============================
 // BRANCH MANAGEMENT
+// ==============================
 
 async function loadBranches() {
+
   const { data, error } = await db
     .from("branches")
     .select("id, name, code")
@@ -741,6 +657,7 @@ async function loadBranches() {
   }
 
   (data || []).forEach(branch => {
+
     const tr = document.createElement("tr");
 
     const nameTd = document.createElement("td");
@@ -751,11 +668,15 @@ async function loadBranches() {
 
     const actionTd = document.createElement("td");
 
-    // EDIT BRANCH BUTTON
+    // EDIT BRANCH
+
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
+    editBtn.style.background = "#e5f6eb";
+    editBtn.style.color = "#247443";
 
     editBtn.onclick = async () => {
+
       const newName = prompt("Branch Name:", branch.name);
       if (newName === null) return;
 
@@ -783,14 +704,13 @@ async function loadBranches() {
       }
     };
 
-    // BRANCH LOGIN SETUP BUTTON
+    // BRANCH LOGIN SETUP
+
     const loginBtn = document.createElement("button");
     loginBtn.textContent = "Login Setup";
-    loginBtn.style.background = "#b00000";
-    loginBtn.style.color = "#ffffff";
-    loginBtn.style.marginLeft = "6px";
 
     loginBtn.onclick = async () => {
+
       const action = prompt(
         "Choose Login Action:\n\nType CREATE for a new branch login\nType UPDATE to change an existing login"
       );
@@ -810,6 +730,7 @@ async function loadBranches() {
       let password = "";
 
       if (selectedAction === "create") {
+
         password = prompt("Enter New Password (minimum 8 characters):");
 
         if (password === null) return;
@@ -818,7 +739,9 @@ async function loadBranches() {
           alert("Password must be at least 8 characters.");
           return;
         }
+
       } else {
+
         password = prompt(
           "Enter New Password (leave blank to keep current password):"
         );
@@ -835,6 +758,7 @@ async function loadBranches() {
       loginBtn.textContent = "Please wait...";
 
       try {
+
         const { data, error } = await db.functions.invoke(
           "branch-user-management",
           {
@@ -861,9 +785,11 @@ async function loadBranches() {
         alert(data?.message || "Branch Login Setup Successful!");
 
       } catch (err) {
+
         alert("Login Setup Failed: " + err.message);
 
       } finally {
+
         loginBtn.disabled = false;
         loginBtn.textContent = "Login Setup";
       }
@@ -874,9 +800,12 @@ async function loadBranches() {
     list.appendChild(tr);
   });
 }
+
+
 // ADD NEW BRANCH
 
 document.getElementById("addBranch").onclick = async () => {
+
   const name = document.getElementById("branchName").value.trim();
   const code = document.getElementById("branchCode").value.trim().toLowerCase();
 
@@ -900,21 +829,46 @@ document.getElementById("addBranch").onclick = async () => {
   document.getElementById("branchCode").value = "";
 
   branchMessage.textContent = "Branch Added Successfully!";
+
   loadBranches();
 };
+
+
+// ==============================
 // LOAD STUDENTS
+// ==============================
+
 async function loadStudents() {
 
+  message.textContent = "Loading students...";
+
   let query = db
-  .from("students")
-  .select("id, student_name, father_name, mother_name, mobile, email, course_name, status, photo_path, enrollment_no, registration_no, dob, admission_date")
+    .from("students")
+    .select(`
+      id,
+      student_name,
+      father_name,
+      mother_name,
+      mobile,
+      email,
+      course_name,
+      status,
+      photo_path,
+      enrollment_no,
+      registration_no,
+      dob,
+      admission_date,
+      branch_id,
+      created_at
+    `);
 
-if (currentProfile?.role === "branch") {
-  query = query.eq("branch_id", currentProfile.branch_id);
-}
+  if (currentProfile?.role === "branch") {
+    query = query.eq("branch_id", currentProfile.branch_id);
+  }
 
-const { data, error } = await query
-  .order("created_at", { ascending: false });
+  const { data, error } = await query.order("created_at", {
+    ascending: false
+  });
 
   const list = document.getElementById("studentList");
   list.replaceChildren();
@@ -923,483 +877,571 @@ const { data, error } = await query
     message.textContent = "Unable to load students: " + error.message;
     return;
   }
-// STUDENT COUNTING
 
-document.getElementById("totalStudents").textContent = data.length;
+  const students = data || [];
 
-document.getElementById("approvedStudents").textContent =
-  data.filter(s => s.status === "Approved").length;
+  // GET BRANCH NAME AND CODE
 
-document.getElementById("newStudents").textContent =
-  data.filter(s => s.status === "New").length;
+  const { data: branches, error: branchError } = await db
+    .from("branches")
+    .select("id, name, code");
 
-document.getElementById("rejectedStudents").textContent =
-  data.filter(s => s.status === "Rejected").length;
+  if (branchError) {
+    console.error("Branch details loading error:", branchError);
+  }
+
+  const branchMap = new Map(
+    (branches || []).map(branch => [
+      branch.id,
+      {
+        name: branch.name,
+        code: branch.code
+      }
+    ])
+  );
+
+  // STUDENT COUNTS
+
+  document.getElementById("totalStudents").textContent = students.length;
+
+  document.getElementById("approvedStudents").textContent =
+    students.filter(s => s.status === "Approved").length;
+
+  document.getElementById("newStudents").textContent =
+    students.filter(s => s.status === "New").length;
+
+  document.getElementById("rejectedStudents").textContent =
+    students.filter(s => s.status === "Rejected").length;
+
   let serialNumber = 1;
-  for (const student of data) {
+
+  for (const student of students) {
 
     const tr = document.createElement("tr");
+
+    // SERIAL NUMBER
+
     const serialCell = document.createElement("td");
-serialCell.textContent = serialNumber++;
-tr.appendChild(serialCell);
-const photoCell = document.createElement("td");
+    serialCell.textContent = serialNumber++;
+    tr.appendChild(serialCell);
 
-if (student.photo_path) {
-  const { data: photoData, error: photoError } = await db
-    .storage
-    .from("student-photos")
-    .createSignedUrl(student.photo_path, 3600);
+    // PHOTO
 
-  if (photoData && !photoError) {
-    const img = document.createElement("img");
-    img.src = photoData.signedUrl;
-    img.width = 50;
-    img.height = 50;
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "5px";
-    photoCell.appendChild(img);
-  } else {
-    photoCell.textContent = "No Photo";
-  }
-} else {
-  photoCell.textContent = "No Photo";
-}
+    const photoCell = document.createElement("td");
 
-tr.appendChild(photoCell);
+    if (student.photo_path) {
 
-let statusCell = null;
+      const { data: photoData, error: photoError } = await db
+        .storage
+        .from("student-photos")
+        .createSignedUrl(student.photo_path, 3600);
 
-[
-  student.student_name,
-  student.father_name,
-  student.mobile,
-  student.dob,
-  student.admission_date,
-  student.course_name,
-  student.enrollment_no,
-  student.registration_no,
-  student.status
-].forEach((value, index) => {
-  const td = document.createElement("td");
-  td.textContent = value || "-";
+      if (photoData && !photoError) {
 
-  if (index === 8) {
-    statusCell = td;
-  }
+        const img = document.createElement("img");
+        img.src = photoData.signedUrl;
+        img.width = 50;
+        img.height = 50;
+        img.style.objectFit = "cover";
+        img.style.borderRadius = "5px";
 
-  tr.appendChild(td);
-});
-  
+        photoCell.appendChild(img);
+
+      } else {
+
+        photoCell.textContent = "No Photo";
+      }
+
+    } else {
+
+      photoCell.textContent = "No Photo";
+    }
+
+    tr.appendChild(photoCell);
+
+    // BRANCH DETAILS
+
+    const studentBranch = branchMap.get(student.branch_id);
+
+    // STUDENT DETAILS
+
+    let statusCell = null;
+
+    [
+      student.student_name,
+      student.father_name,
+      student.mobile,
+      student.dob,
+      student.admission_date,
+      studentBranch?.name || "-",
+      studentBranch?.code || "-",
+      student.course_name,
+      student.enrollment_no,
+      student.registration_no,
+      student.status
+    ].forEach((value, index) => {
+
+      const td = document.createElement("td");
+      td.textContent = value || "-";
+
+      if (index === 10) {
+        statusCell = td;
+      }
+
+      tr.appendChild(td);
+    });
+
+    // ACTION CELL
+
     const actionTd = document.createElement("td");
 
-
     // VIEW BUTTON
+
     const viewBtn = document.createElement("button");
     viewBtn.textContent = "View";
-    viewBtn.style.background = "blue";
+    viewBtn.className = "action-view";
 
     viewBtn.onclick = async () => {
 
-  let photoUrl = null;
+      let photoUrl = null;
 
-  if (student.photo_path) {
-    const { data, error } = await db
-      .storage
-      .from("student-photos")
-      .createSignedUrl(student.photo_path, 3600);
+      if (student.photo_path) {
 
-    if (error) {
-      alert("Photo loading failed: " + error.message);
-    } else {
-      photoUrl = data.signedUrl;
-    }
-  }
+        const { data, error } = await db
+          .storage
+          .from("student-photos")
+          .createSignedUrl(student.photo_path, 3600);
 
-  const modal = document.createElement("div");
-
-  modal.style.cssText = `
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.7);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-    padding:20px;
-  `;
-
-  const box = document.createElement("div");
-
-  box.style.cssText = `
-    background:white;
-    color:black;
-    padding:20px;
-    border-radius:12px;
-    max-width:450px;
-    width:100%;
-    max-height:90vh;
-    overflow:auto;
-  `;
-
-  if (photoUrl) {
-    const img = document.createElement("img");
-    img.src = photoUrl;
-    img.style.cssText = `
-      width:130px;
-      height:130px;
-      object-fit:cover;
-      border-radius:10px;
-      display:block;
-      margin:0 auto 15px;
-    `;
-    box.appendChild(img);
-  } else {
-    const noPhoto = document.createElement("p");
-    noPhoto.textContent = "No Student Photo Available";
-    box.appendChild(noPhoto);
-  }
-
-  const details = document.createElement("pre");
-
-  details.style.cssText = `
-    white-space:pre-wrap;
-    font-family:Arial;
-    line-height:1.7;
-  `;
-
-  details.textContent =
-    "Student Name: " + student.student_name +
-    "\nFather Name: " + student.father_name +
-    "\nMother Name: " + (student.mother_name || "") +
-    "\nMobile: " + student.mobile +
-    "\nEmail: " + (student.email || "") +
-    "\nCourse: " + student.course_name +
-    "\nStatus: " + student.status;
-
-  box.appendChild(details);
-
-  const closeBtn = document.createElement("button");
-  closeBtn.textContent = "Close";
-  closeBtn.onclick = () => modal.remove();
-
-  box.appendChild(closeBtn);
-  modal.appendChild(box);
-  document.body.appendChild(modal);
-};
-    actionTd.appendChild(viewBtn);
-
-
-  // EDIT BUTTON
-const editBtn = document.createElement("button");
-editBtn.textContent = "Edit";
-editBtn.style.background = "green";
-
-editBtn.onclick = async () => {
-
-  let oldPhotoPath = student.photo_path || null;
-  let newPhotoFile = null;
-
-  const modal = document.createElement("div");
-  modal.style.cssText = `
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.7);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
-    padding:15px;
-  `;
-
-  const box = document.createElement("div");
-  box.style.cssText = `
-    background:white;
-    color:black;
-    padding:20px;
-    border-radius:12px;
-    width:100%;
-    max-width:450px;
-    max-height:90vh;
-    overflow:auto;
-  `;
-
-  const heading = document.createElement("h2");
-  heading.textContent = "Edit Student Details";
-  box.appendChild(heading);
-
-  const photoTitle = document.createElement("p");
-  photoTitle.textContent = "Current Student Photo";
-  box.appendChild(photoTitle);
-
-  const img = document.createElement("img");
-  img.style.cssText = `
-    width:120px;
-    height:120px;
-    object-fit:cover;
-    border-radius:10px;
-    display:block;
-    margin-bottom:12px;
-  `;
-
-  if (oldPhotoPath) {
-    const { data, error } = await db.storage
-      .from("student-photos")
-      .createSignedUrl(oldPhotoPath, 3600);
-
-    if (!error) {
-      img.src = data.signedUrl;
-      box.appendChild(img);
-    } else {
-      photoTitle.textContent = "Current photo could not be loaded.";
-    }
-  } else {
-    photoTitle.textContent = "No current photo available.";
-  }
-
-  function makeInput(labelText, value) {
-    const label = document.createElement("label");
-    label.textContent = labelText;
-    label.style.display = "block";
-    label.style.marginTop = "12px";
-
-    const input = document.createElement("input");
-    input.type = "text";
-    input.value = value || "";
-    input.style.cssText = `
-      width:100%;
-      padding:9px;
-      box-sizing:border-box;
-      margin-top:5px;
-    `;
-
-    box.appendChild(label);
-    box.appendChild(input);
-    return input;
-  }
-
-  const nameInput = makeInput("Student Name", student.student_name);
-  const fatherInput = makeInput("Father Name", student.father_name);
-  const mobileInput = makeInput("Mobile Number", student.mobile);
-  const emailInput = makeInput("Email", student.email);
-  const courseInput = makeInput("Course", student.course_name);
-
-  const photoLabel = document.createElement("p");
-  photoLabel.textContent = "Choose New Photo (Optional)";
-  photoLabel.style.marginTop = "15px";
-  box.appendChild(photoLabel);
-
-  const fileInput = document.createElement("input");
-  fileInput.type = "file";
-  fileInput.accept = "image/jpeg,image/png,image/webp";
-  box.appendChild(fileInput);
-
-  fileInput.onchange = () => {
-    newPhotoFile = fileInput.files[0] || null;
-
-    if (newPhotoFile) {
-      img.src = URL.createObjectURL(newPhotoFile);
-
-      if (!box.contains(img)) {
-        box.insertBefore(img, photoLabel);
-      }
-    }
-  };
-
-  const saveBtn = document.createElement("button");
-  saveBtn.textContent = "Save Changes";
-  saveBtn.style.cssText = `
-    background:green;
-    color:white;
-    padding:10px 15px;
-    margin-top:20px;
-    border:0;
-    cursor:pointer;
-  `;
-
-  const cancelBtn = document.createElement("button");
-  cancelBtn.textContent = "Cancel";
-  cancelBtn.style.cssText = `
-    background:gray;
-    color:white;
-    padding:10px 15px;
-    margin:20px 0 0 10px;
-    border:0;
-    cursor:pointer;
-  `;
-
-  cancelBtn.onclick = () => modal.remove();
-
-  saveBtn.onclick = async () => {
-
-    const newName = nameInput.value.trim();
-    const newFather = fatherInput.value.trim();
-    const newMobile = mobileInput.value.trim();
-    const newEmail = emailInput.value.trim();
-    const newCourse = courseInput.value.trim();
-
-    if (!newName || !newFather || !newMobile || !newCourse) {
-      alert("Please fill all required details.");
-      return;
-    }
-
-    if (newPhotoFile) {
-      if (!["image/jpeg", "image/png", "image/webp"].includes(newPhotoFile.type)) {
-        alert("Please select JPG, PNG or WEBP photo.");
-        return;
+        if (error) {
+          alert("Photo loading failed: " + error.message);
+        } else {
+          photoUrl = data.signedUrl;
+        }
       }
 
-      if (newPhotoFile.size > 5 * 1024 * 1024) {
-        alert("Photo size must be less than 5 MB.");
-        return;
+      const modal = document.createElement("div");
+
+      modal.style.cssText = `
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,0.7);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        z-index:9999;
+        padding:20px;
+      `;
+
+      const box = document.createElement("div");
+
+      box.style.cssText = `
+        background:white;
+        color:black;
+        padding:20px;
+        border-radius:12px;
+        max-width:450px;
+        width:100%;
+        max-height:90vh;
+        overflow:auto;
+      `;
+
+      if (photoUrl) {
+
+        const img = document.createElement("img");
+        img.src = photoUrl;
+
+        img.style.cssText = `
+          width:130px;
+          height:130px;
+          object-fit:cover;
+          border-radius:10px;
+          display:block;
+          margin:0 auto 15px;
+        `;
+
+        box.appendChild(img);
+
+      } else {
+
+        const noPhoto = document.createElement("p");
+        noPhoto.textContent = "No Student Photo Available";
+        box.appendChild(noPhoto);
       }
-    }
 
-    saveBtn.disabled = true;
-    saveBtn.textContent = "Saving...";
+      const details = document.createElement("pre");
 
-    let newPhotoPath = oldPhotoPath;
+      details.style.cssText = `
+        white-space:pre-wrap;
+        font-family:Arial;
+        line-height:1.7;
+      `;
 
-    if (newPhotoFile) {
-      const extension = newPhotoFile.name.split(".").pop().toLowerCase();
-      newPhotoPath = crypto.randomUUID() + "." + extension;
+      details.textContent =
+        "Student Name: " + (student.student_name || "") +
+        "\nFather Name: " + (student.father_name || "") +
+        "\nMother Name: " + (student.mother_name || "") +
+        "\nMobile: " + (student.mobile || "") +
+        "\nEmail: " + (student.email || "") +
+        "\nDate of Birth: " + (student.dob || "") +
+        "\nAdmission Date: " + (student.admission_date || "") +
+        "\nBranch Name: " + (studentBranch?.name || "-") +
+        "\nBranch Code: " + (studentBranch?.code || "-") +
+        "\nCourse: " + (student.course_name || "") +
+        "\nEnrollment No.: " + (student.enrollment_no || "") +
+        "\nRegistration No.: " + (student.registration_no || "") +
+        "\nStatus: " + (student.status || "");
 
-      const { error: uploadError } = await db.storage
-        .from("student-photos")
-        .upload(newPhotoPath, newPhotoFile, {
-          cacheControl: "3600",
-          upsert: false,
-          contentType: newPhotoFile.type
-        });
+      box.appendChild(details);
 
-      if (uploadError) {
-        alert("Photo Upload Failed: " + uploadError.message);
-        saveBtn.disabled = false;
-        saveBtn.textContent = "Save Changes";
-        return;
+      const closeBtn = document.createElement("button");
+      closeBtn.textContent = "Close";
+      closeBtn.onclick = () => modal.remove();
+
+      box.appendChild(closeBtn);
+      modal.appendChild(box);
+      document.body.appendChild(modal);
+    };
+
+    // EDIT BUTTON
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.className = "action-edit";
+
+    editBtn.onclick = async () => {
+
+      let oldPhotoPath = student.photo_path || null;
+      let newPhotoFile = null;
+
+      const modal = document.createElement("div");
+
+      modal.style.cssText = `
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,0.7);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        z-index:9999;
+        padding:15px;
+      `;
+
+      const box = document.createElement("div");
+
+      box.style.cssText = `
+        background:white;
+        color:black;
+        padding:20px;
+        border-radius:12px;
+        width:100%;
+        max-width:450px;
+        max-height:90vh;
+        overflow:auto;
+      `;
+
+      const heading = document.createElement("h2");
+      heading.textContent = "Edit Student Details";
+      box.appendChild(heading);
+
+      const photoTitle = document.createElement("p");
+      photoTitle.textContent = "Current Student Photo";
+      box.appendChild(photoTitle);
+
+      const img = document.createElement("img");
+
+      img.style.cssText = `
+        width:120px;
+        height:120px;
+        object-fit:cover;
+        border-radius:10px;
+        display:block;
+        margin-bottom:12px;
+      `;
+
+      if (oldPhotoPath) {
+
+        const { data, error } = await db.storage
+          .from("student-photos")
+          .createSignedUrl(oldPhotoPath, 3600);
+
+        if (!error) {
+          img.src = data.signedUrl;
+          box.appendChild(img);
+        } else {
+          photoTitle.textContent = "Current photo could not be loaded.";
+        }
+
+      } else {
+
+        photoTitle.textContent = "No current photo available.";
       }
-    }
 
-    const { error } = await db
-      .from("students")
-      .update({
-        student_name: newName,
-        father_name: newFather,
-        mobile: newMobile,
-        email: newEmail,
-        course_name: newCourse,
-        photo_path: newPhotoPath
-      })
-      .eq("id", student.id);
+      function makeInput(labelText, value) {
 
-    if (error) {
-      if (newPhotoFile && newPhotoPath) {
-        await db.storage.from("student-photos").remove([newPhotoPath]);
+        const label = document.createElement("label");
+        label.textContent = labelText;
+        label.style.display = "block";
+        label.style.marginTop = "12px";
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = value || "";
+
+        input.style.cssText = `
+          width:100%;
+          padding:9px;
+          box-sizing:border-box;
+          margin-top:5px;
+        `;
+
+        box.appendChild(label);
+        box.appendChild(input);
+
+        return input;
       }
 
-      alert("Update Failed: " + error.message);
-      saveBtn.disabled = false;
+      const nameInput = makeInput("Student Name", student.student_name);
+      const fatherInput = makeInput("Father Name", student.father_name);
+      const mobileInput = makeInput("Mobile Number", student.mobile);
+      const emailInput = makeInput("Email", student.email);
+      const courseInput = makeInput("Course", student.course_name);
+
+      const photoLabel = document.createElement("p");
+      photoLabel.textContent = "Choose New Photo (Optional)";
+      photoLabel.style.marginTop = "15px";
+      box.appendChild(photoLabel);
+
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.accept = "image/jpeg,image/png,image/webp";
+      box.appendChild(fileInput);
+
+      fileInput.onchange = () => {
+
+        newPhotoFile = fileInput.files[0] || null;
+
+        if (newPhotoFile) {
+
+          img.src = URL.createObjectURL(newPhotoFile);
+
+          if (!box.contains(img)) {
+            box.insertBefore(img, photoLabel);
+          }
+        }
+      };
+
+      const saveBtn = document.createElement("button");
       saveBtn.textContent = "Save Changes";
-      return;
-    }
 
-    if (newPhotoFile && oldPhotoPath) {
-      const { error: deleteError } = await db.storage
-        .from("student-photos")
-        .remove([oldPhotoPath]);
+      saveBtn.style.cssText = `
+        background:green;
+        color:white;
+        padding:10px 15px;
+        margin-top:20px;
+      `;
 
-      if (deleteError) {
-        alert("Details updated, but old photo could not be deleted: " + deleteError.message);
-      }
-    }
+      const cancelBtn = document.createElement("button");
+      cancelBtn.textContent = "Cancel";
 
-    URL.revokeObjectURL(img.src);
-    modal.remove();
+      cancelBtn.style.cssText = `
+        background:gray;
+        color:white;
+        padding:10px 15px;
+        margin:20px 0 0 10px;
+      `;
 
-    alert("Student Details Updated Successfully!");
-    loadStudents();
-  };
+      cancelBtn.onclick = () => {
+        if (img.src.startsWith("blob:")) {
+          URL.revokeObjectURL(img.src);
+        }
+        modal.remove();
+      };
 
-  box.appendChild(saveBtn);
-  box.appendChild(cancelBtn);
-  modal.appendChild(box);
-  document.body.appendChild(modal);
-};
+      saveBtn.onclick = async () => {
 
-actionTd.appendChild(editBtn);
+        const newName = nameInput.value.trim();
+        const newFather = fatherInput.value.trim();
+        const newMobile = mobileInput.value.trim();
+        const newEmail = emailInput.value.trim();
+        const newCourse = courseInput.value.trim();
 
+        if (!newName || !newFather || !newMobile || !newCourse) {
+          alert("Please fill all required details.");
+          return;
+        }
+
+        if (newPhotoFile) {
+
+          if (!["image/jpeg", "image/png", "image/webp"].includes(newPhotoFile.type)) {
+            alert("Please select JPG, PNG or WEBP photo.");
+            return;
+          }
+
+          if (newPhotoFile.size > 5 * 1024 * 1024) {
+            alert("Photo size must be less than 5 MB.");
+            return;
+          }
+        }
+
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Saving...";
+
+        let newPhotoPath = oldPhotoPath;
+
+        if (newPhotoFile) {
+
+          const extension = newPhotoFile.name.split(".").pop().toLowerCase();
+          newPhotoPath = crypto.randomUUID() + "." + extension;
+
+          const { error: uploadError } = await db.storage
+            .from("student-photos")
+            .upload(newPhotoPath, newPhotoFile, {
+              cacheControl: "3600",
+              upsert: false,
+              contentType: newPhotoFile.type
+            });
+
+          if (uploadError) {
+
+            alert("Photo Upload Failed: " + uploadError.message);
+
+            saveBtn.disabled = false;
+            saveBtn.textContent = "Save Changes";
+
+            return;
+          }
+        }
+
+        const { error } = await db
+          .from("students")
+          .update({
+            student_name: newName,
+            father_name: newFather,
+            mobile: newMobile,
+            email: newEmail,
+            course_name: newCourse,
+            photo_path: newPhotoPath
+          })
+          .eq("id", student.id);
+
+        if (error) {
+
+          if (newPhotoFile && newPhotoPath) {
+            await db.storage
+              .from("student-photos")
+              .remove([newPhotoPath]);
+          }
+
+          alert("Update Failed: " + error.message);
+
+          saveBtn.disabled = false;
+          saveBtn.textContent = "Save Changes";
+
+          return;
+        }
+
+        if (newPhotoFile && oldPhotoPath) {
+
+          const { error: deleteError } = await db.storage
+            .from("student-photos")
+            .remove([oldPhotoPath]);
+
+          if (deleteError) {
+            alert("Details updated, but old photo could not be deleted: " + deleteError.message);
+          }
+        }
+
+        if (img.src.startsWith("blob:")) {
+          URL.revokeObjectURL(img.src);
+        }
+
+        modal.remove();
+
+        alert("Student Details Updated Successfully!");
+
+        loadStudents();
+      };
+
+      box.appendChild(saveBtn);
+      box.appendChild(cancelBtn);
+
+      modal.appendChild(box);
+      document.body.appendChild(modal);
+    };
 
     // STATUS DROPDOWN
-const statusSelect = document.createElement("select");
 
-["New", "Approved", "Rejected"].forEach(status => {
-  const option = document.createElement("option");
-  option.value = status;
-  option.textContent = status;
-  statusSelect.appendChild(option);
-});
+    const statusSelect = document.createElement("select");
 
-statusSelect.value = student.status || "New";
+    ["New", "Approved", "Rejected"].forEach(status => {
 
-// STATUS COLOR FUNCTION
-function updateStatusColor() {
-  let bg, txt, border;
+      const option = document.createElement("option");
+      option.value = status;
+      option.textContent = status;
 
-  if (statusSelect.value === "Approved") {
-    bg = "#dcfce7";
-    txt = "#166534";
-    border = "#86efac";
-  } 
-  else if (statusSelect.value === "Rejected") {
-    bg = "#fee2e2";
-    txt = "#991b1b";
-    border = "#fca5a5";
-  } 
-  else {
-    bg = "#dbeafe";
-    txt = "#1e40af";
-    border = "#93c5fd";
-  }
+      statusSelect.appendChild(option);
+    });
 
-  statusSelect.style.setProperty("background-color", bg, "important");
-  statusSelect.style.setProperty("color", txt, "important");
-  statusSelect.style.setProperty("border", "2px solid " + border, "important");
-}
-// APPLY INITIAL COLOR
-updateStatusColor();
+    statusSelect.value = student.status || "New";
 
-statusSelect.onchange = async () => {
-  
-  const oldStatus = student.status;
-  const newStatus = statusSelect.value;
-  
-  statusSelect.disabled = true;
+    function updateStatusColor() {
 
-  const { data: updatedRows, error } = await db
-  .from("students")
-  .update({ status: newStatus })
-  .eq("id", student.id)
-  .select("id, status");
-  
-  if (error) {
-    message.textContent = "Status Update Failed: " + error.message;
-    statusSelect.value = oldStatus || "New";
-  } else {
-    student.status = newStatus;
-    message.textContent = "Student Status Updated Successfully!";
-    statusCell.textContent = newStatus;
-  }
+      let bg, txt, border;
 
-  updateStatusColor();
-  statusSelect.disabled = false;
-};
+      if (statusSelect.value === "Approved") {
+        bg = "#dcfce7";
+        txt = "#166534";
+        border = "#86efac";
+      } else if (statusSelect.value === "Rejected") {
+        bg = "#fee2e2";
+        txt = "#991b1b";
+        border = "#fca5a5";
+      } else {
+        bg = "#dbeafe";
+        txt = "#1e40af";
+        border = "#93c5fd";
+      }
 
-actionTd.appendChild(statusSelect);
+      statusSelect.style.setProperty("background-color", bg, "important");
+      statusSelect.style.setProperty("color", txt, "important");
+      statusSelect.style.setProperty("border", "2px solid " + border, "important");
+    }
 
+    updateStatusColor();
+
+    statusSelect.onchange = async () => {
+
+      const oldStatus = student.status;
+      const newStatus = statusSelect.value;
+
+      statusSelect.disabled = true;
+
+      const { error } = await db
+        .from("students")
+        .update({ status: newStatus })
+        .eq("id", student.id);
+
+      if (error) {
+
+        message.textContent = "Status Update Failed: " + error.message;
+        statusSelect.value = oldStatus || "New";
+
+      } else {
+
+        student.status = newStatus;
+        message.textContent = "Student Status Updated Successfully!";
+        statusCell.textContent = newStatus;
+      }
+
+      updateStatusColor();
+      statusSelect.disabled = false;
+    };
 
     // DELETE BUTTON
+
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";
-    deleteBtn.style.background = "red";
+    deleteBtn.className = "action-delete";
 
     deleteBtn.onclick = async () => {
 
@@ -1418,35 +1460,53 @@ actionTd.appendChild(statusSelect);
       }
 
       alert("Student Deleted Successfully!");
+
       loadStudents();
     };
 
-    actionTd.appendChild(deleteBtn);
-    actionTd.insertBefore(deleteBtn, viewBtn);
-    
+    // BUTTON ORDER: VIEW, EDIT, DELETE
+
+    actionTd.append(viewBtn, editBtn, deleteBtn, statusSelect);
+
     tr.appendChild(actionTd);
     list.appendChild(tr);
+  }
 
-   }
-
-  message.textContent = "Total Students: " + data.length;
+  message.textContent = "Total Students: " + students.length;
 }
 
 
+// ==============================
 // STUDENT SEARCH
+// ==============================
+
 document.getElementById("studentSearch").addEventListener("input", (e) => {
+
   const term = e.target.value.trim().toLowerCase();
+
   document.querySelectorAll("#studentList tr").forEach(row => {
-    row.style.display = row.textContent.toLowerCase().includes(term) ? "" : "none";
+
+    row.style.display =
+      row.textContent.toLowerCase().includes(term) ? "" : "none";
   });
 });
 
-// REFRESH
+
+// ==============================
+// REFRESH STUDENTS
+// ==============================
+
 document.getElementById("refresh").onclick = loadStudents;
 
+
+// ==============================
 // LOGOUT
+// ==============================
+
 document.getElementById("logout").onclick = async () => {
+
   await db.auth.signOut();
+
   window.location.href = "index.html";
 };
 
