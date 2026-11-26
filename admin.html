@@ -187,74 +187,83 @@ tr:hover {
 }
 
 #studentTableWrap table {
-  min-width: 1900px;
+  min-width: 1680px;
   table-layout: fixed;
   border-spacing: 0;
 }
 
 #studentTableWrap th,
 #studentTableWrap td {
-  padding: 12px 10px;
+  padding: 10px 8px;
+  overflow-wrap: anywhere;
 }
 
 #studentTableWrap th:nth-child(1),
-#studentTableWrap td:nth-child(1) { width: 55px; }
+#studentTableWrap td:nth-child(1) { width: 50px; }
 
 #studentTableWrap th:nth-child(2),
-#studentTableWrap td:nth-child(2) { width: 80px; }
+#studentTableWrap td:nth-child(2) { width: 70px; }
 
 #studentTableWrap th:nth-child(3),
-#studentTableWrap td:nth-child(3),
+#studentTableWrap td:nth-child(3) { width: 125px; }
+
 #studentTableWrap th:nth-child(4),
-#studentTableWrap td:nth-child(4) { width: 145px; }
+#studentTableWrap td:nth-child(4) { width: 120px; }
 
 #studentTableWrap th:nth-child(5),
-#studentTableWrap td:nth-child(5) { width: 120px; }
+#studentTableWrap td:nth-child(5) { width: 105px; }
 
 #studentTableWrap th:nth-child(6),
-#studentTableWrap td:nth-child(6),
+#studentTableWrap td:nth-child(6) { width: 100px; }
+
 #studentTableWrap th:nth-child(7),
-#studentTableWrap td:nth-child(7) { width: 115px; }
+#studentTableWrap td:nth-child(7) { width: 105px; }
 
 #studentTableWrap th:nth-child(8),
-#studentTableWrap td:nth-child(8) { width: 155px; }
+#studentTableWrap td:nth-child(8) { width: 120px; }
 
 #studentTableWrap th:nth-child(9),
-#studentTableWrap td:nth-child(9) { width: 110px; }
+#studentTableWrap td:nth-child(9) { width: 85px; }
 
 #studentTableWrap th:nth-child(10),
-#studentTableWrap td:nth-child(10) { width: 110px; }
+#studentTableWrap td:nth-child(10) {
+  width: 220px;
+  white-space: normal;
+  line-height: 1.4;
+}
 
 #studentTableWrap th:nth-child(11),
-#studentTableWrap td:nth-child(11) { width: 270px; }
+#studentTableWrap td:nth-child(11) { width: 125px; }
 
 #studentTableWrap th:nth-child(12),
-#studentTableWrap td:nth-child(12) { width: 145px; }
+#studentTableWrap td:nth-child(12) { width: 115px; }
 
 #studentTableWrap th:nth-child(13),
-#studentTableWrap td:nth-child(13) { width: 150px; }
+#studentTableWrap td:nth-child(13) { width: 90px; }
 
 #studentTableWrap th:nth-child(14),
-#studentTableWrap td:nth-child(14) { width: 110px; }
-
-#studentTableWrap th:nth-child(15),
-#studentTableWrap td:nth-child(15) { width: 230px; }
-
-#studentList td:nth-child(11) {
-  white-space: normal;
-  line-height: 1.5;
-}
+#studentTableWrap td:nth-child(14) { width: 250px; }
 
 #studentList td:last-child {
   white-space: nowrap;
-  min-width: 230px;
+  min-width: 250px;
 }
 
 #studentList td:last-child button {
-  padding: 7px 10px;
+  display: inline-block;
+  padding: 7px 9px;
   margin: 2px;
   font-size: 11px;
+  white-space: nowrap;
   box-shadow: none;
+}
+
+#studentList td:last-child select {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  padding: 8px;
+  font-size: 12px;
 }
 
 .action-view {
@@ -270,14 +279,6 @@ tr:hover {
 .action-delete {
   background: #fde9eb;
   color: #b42335;
-}
-
-#studentList td:last-child select {
-  display: block;
-  width: 100%;
-  margin-top: 7px;
-  padding: 8px;
-  font-size: 12px;
 }
 
 #dashboard > div[style*="background:#e3f2fd"] {
