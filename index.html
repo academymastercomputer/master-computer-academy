@@ -1014,6 +1014,10 @@ cursor:pointer;
     <option value="" disabled selected>Loading branches...</option>
   </select>
 </div>
+<div class="form-group full">
+  <label>Branch Code</label>
+  <input type="text" id="branchCodeDisplay" placeholder="Branch code will appear here" readonly>
+</div>
     <form id="studentRegistrationForm">
    
       <div class="form-group">
@@ -1200,7 +1204,7 @@ const form = document.getElementById("studentRegistrationForm");
 async function loadBranches() {
   const { data, error } = await supabaseClient
     .from("branches")
-    .select("id, name")
+    .select("id, name, code")
     .order("name");
 
   if (error) {
@@ -1217,6 +1221,7 @@ async function loadBranches() {
     const option = document.createElement("option");
     option.value = branch.id;
     option.textContent = branch.name;
+    option.dataset.code = branch.code || "";
     branchSelect.appendChild(option);
   });
 }
@@ -1226,6 +1231,11 @@ loadBranches();
 // Form ko shuru mein lock rakhein
 function toggleRegistrationForm(){
   const isBranchSelected = branchSelect.value !== "";
+  const branchCodeDisplay = document.getElementById("branchCodeDisplay");
+
+  branchCodeDisplay.value = isBranchSelected
+    ? (branchSelect.selectedOptions[0]?.dataset.code || "")
+    : "";
 
   form.querySelectorAll("input, select, button").forEach(element => {
     element.disabled = !isBranchSelected;
