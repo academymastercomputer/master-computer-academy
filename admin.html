@@ -827,11 +827,10 @@ async function loadBranches() {
       loginBtn.disabled = false;
       loginBtn.textContent = "Login Setup";
 
-      if (error) {
-        alert("Login Update Failed: " + error.message);
+     if (error) {
+        alert("Login Setup Failed:\n" + JSON.stringify(error, null, 2));
         return;
       }
-
       if (data?.error) {
         alert("Login Update Failed: " + data.error);
         return;
