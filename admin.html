@@ -751,6 +751,7 @@ async function loadBranches() {
 
     const actionTd = document.createElement("td");
 
+    // EDIT BRANCH BUTTON
     const editBtn = document.createElement("button");
     editBtn.textContent = "Edit";
 
@@ -782,12 +783,74 @@ async function loadBranches() {
       }
     };
 
-    actionTd.appendChild(editBtn);
+    // BRANCH LOGIN SETUP BUTTON
+    const loginBtn = document.createElement("button");
+    loginBtn.textContent = "Login Setup";
+    loginBtn.style.background = "#b00000";
+    loginBtn.style.color = "#ffffff";
+    loginBtn.style.marginLeft = "6px";
+
+    loginBtn.onclick = async () => {
+      const email = prompt(
+        "Enter Branch Login Email (if unchanged, enter the current email):"
+      );
+
+      if (email === null || !email.trim()) return;
+
+      const password = prompt(
+        "Enter New Password (leave blank to keep the current password):"
+      );
+
+      if (password === null) return;
+
+      if (password && password.length < 8) {
+        alert("Password must be at least 8 characters.");
+        return;
+      }
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Please wait...";
+
+      const { data, error } = await db.functions.invoke(
+        "branch-user-management",
+        {
+          body: {
+            action: "update",
+            branch_id: branch.id,
+            email: email.trim(),
+            password: password || undefined,
+            full_name: branch.name
+          }
+        }
+      );
+
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login Setup";
+
+      if (error) {
+        alert("Login Update Failed: " + error.message);
+        return;
+      }
+
+      if (data?.error) {
+        alert("Login Update Failed: " + data.error);
+        return;
+      }
+
+      alert(data?.message || "Branch Login Updated Successfully!");
+    };
+
+    actionTd.append(editBtn, loginBtn);
     tr.append(nameTd, codeTd, actionTd);
     list.appendChild(tr);
   });
 }
 
+    actionTd.append(editBtn, loginBtn);
+    tr.append(nameTd, codeTd, actionTd);
+    list.appendChild(tr);
+  });
+}
 
 // ADD NEW BRANCH
 
