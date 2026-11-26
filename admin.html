@@ -740,7 +740,7 @@ async function loadBranches() {
     return;
   }
 
-  data.forEach(branch => {
+  (data || []).forEach(branch => {
     const tr = document.createElement("tr");
 
     const nameTd = document.createElement("td");
@@ -791,52 +791,82 @@ async function loadBranches() {
     loginBtn.style.marginLeft = "6px";
 
     loginBtn.onclick = async () => {
-      const email = prompt(
-        "Enter Branch Login Email (if unchanged, enter the current email):"
+      const action = prompt(
+        "Choose Login Action:\n\nType CREATE for a new branch login\nType UPDATE to change an existing login"
       );
 
+      if (action === null) return;
+
+      const selectedAction = action.trim().toLowerCase();
+
+      if (selectedAction !== "create" && selectedAction !== "update") {
+        alert("Please type CREATE or UPDATE.");
+        return;
+      }
+
+      const email = prompt("Enter Branch Login Email:");
       if (email === null || !email.trim()) return;
 
-      const password = prompt(
-        "Enter New Password (leave blank to keep the current password):"
-      );
+      let password = "";
 
-      if (password === null) return;
+      if (selectedAction === "create") {
+        password = prompt("Enter New Password (minimum 8 characters):");
 
-      if (password && password.length < 8) {
-        alert("Password must be at least 8 characters.");
-        return;
+        if (password === null) return;
+
+        if (password.length < 8) {
+          alert("Password must be at least 8 characters.");
+          return;
+        }
+      } else {
+        password = prompt(
+          "Enter New Password (leave blank to keep current password):"
+        );
+
+        if (password === null) return;
+
+        if (password && password.length < 8) {
+          alert("Password must be at least 8 characters.");
+          return;
+        }
       }
 
       loginBtn.disabled = true;
       loginBtn.textContent = "Please wait...";
 
-      const { data, error } = await db.functions.invoke(
-        "branch-user-management",
-        {
-          body: {
-           action: selectedAction,
-            branch_id: branch.id,
-            email: email.trim(),
-            password: password || undefined,
-            full_name: branch.name
+      try {
+        const { data, error } = await db.functions.invoke(
+          "branch-user-management",
+          {
+            body: {
+              action: selectedAction,
+              branch_id: branch.id,
+              email: email.trim(),
+              password: password || undefined,
+              full_name: branch.name
+            }
           }
+        );
+
+        if (error) {
+          alert("Login Setup Failed:\n" + JSON.stringify(error, null, 2));
+          return;
         }
-      );
 
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Login Setup";
+        if (data?.error) {
+          alert("Login Setup Failed: " + data.error);
+          return;
+        }
 
-     if (error) {
-        alert("Login Setup Failed:\n" + JSON.stringify(error, null, 2));
-        return;
+        alert(data?.message || "Branch Login Setup Successful!");
+
+      } catch (err) {
+        alert("Login Setup Failed: " + err.message);
+
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Login Setup";
       }
-      if (data?.error) {
-        alert("Login Update Failed: " + data.error);
-        return;
-      }
-
-      alert(data?.message || "Branch Login Updated Successfully!");
     };
 
     actionTd.append(editBtn, loginBtn);
@@ -844,7 +874,6 @@ async function loadBranches() {
     list.appendChild(tr);
   });
 }
-
 // ADD NEW BRANCH
 
 document.getElementById("addBranch").onclick = async () => {
