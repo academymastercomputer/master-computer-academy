@@ -866,28 +866,159 @@ document.getElementById("backToDashboard2").addEventListener("click", function (
 // BRANCH MANAGEMENT
 // ==============================
 
+// ==============================
+// BRANCH MANAGEMENT
+// ==============================
+
 async function loadBranches() {
 
-  const { data, error } = await db
+  const list = document.getElementById("branchList");
+  const branchMessage = document.getElementById("branchMessage");
+
+  list.replaceChildren();
+  branchMessage.textContent = "Loading branches...";
+
+  // LOAD BRANCHES
+  const { data: branches, error: branchError } = await db
     .from("branches")
     .select("id, name, code")
     .order("name");
 
-  // LOAD BRANCH LOGIN EMAILS
-const { data: loginData, error: loginError } =
-  await db.functions.invoke("branch-user-management", {
-    body: { action: "list" }
-  });
-
-const branchLogins = loginData?.logins || [];
-  const list = document.getElementById("branchList");
-  list.replaceChildren();
-
-  if (error) {
-    document.getElementById("branchMessage").textContent =
-      "Unable to load branches: " + error.message;
+  if (branchError) {
+    branchMessage.textContent =
+      "Unable to load branches: " + branchError.message;
     return;
   }
+
+  // LOAD BRANCH LOGIN EMAILS
+  const { data: loginData, error: loginError } =
+    await db.functions.invoke("branch-user-management", {
+      body: { action: "list" }
+    });
+
+  const branchLogins = loginData?.logins || [];
+
+  if (loginError || loginData?.error) {
+    branchMessage.textContent =
+      "Login details loading failed: " +
+      (loginError?.message || loginData?.error);
+  } else {
+    branchMessage.textContent = "";
+  }
+
+  // DISPLAY BRANCHES
+  (branches || []).forEach(branch => {
+
+    const tr = document.createElement("tr");
+
+    // BRANCH NAME
+    const nameTd = document.createElement("td");
+    nameTd.textContent = branch.name;
+
+    // BRANCH CODE
+    const codeTd = document.createElement("td");
+    codeTd.textContent = branch.code;
+
+    // BRANCH ID
+    const idTd = document.createElement("td");
+    idTd.textContent = branch.id;
+    idTd.className = "branch-id";
+
+    // FIND BRANCH LOGIN
+    const branchLogin = branchLogins.find(
+      login => login.branch_id === branch.id
+    );
+
+    // LOGIN EMAIL
+    const emailTd = document.createElement("td");
+
+    emailTd.textContent = loginError
+      ? "Unable to load"
+      : (branchLogin?.email || "Not Set");
+
+    emailTd.className = "branch-login-email";
+
+    // PASSWORD STATUS
+    const passwordTd = document.createElement("td");
+
+    if (loginError || loginData?.error) {
+      passwordTd.textContent = "Unavailable";
+      passwordTd.style.color = "#999";
+    } else if (branchLogin?.email) {
+      passwordTd.textContent = "Set / Change";
+      passwordTd.style.color = "#247443";
+    } else {
+      passwordTd.textContent = "Not Set";
+      passwordTd.style.color = "#999";
+    }
+
+    // ACTION
+    const actionTd = document.createElement("td");
+
+    // EDIT BRANCH
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "Edit";
+    editBtn.className = "branch-action-btn branch-edit-btn";
+
+    editBtn.onclick = async () => {
+
+      const newName = prompt("Branch Name:", branch.name);
+      if (newName === null) return;
+
+      const newCode = prompt("Branch Code:", branch.code);
+      if (newCode === null) return;
+
+      if (!newName.trim() || !newCode.trim()) {
+        alert("Please enter Branch Name and Code.");
+        return;
+      }
+
+      const { error } = await db
+        .from("branches")
+        .update({
+          name: newName.trim(),
+          code: newCode.trim().toLowerCase()
+        })
+        .eq("id", branch.id);
+
+      if (error) {
+        alert("Update Failed: " + error.message);
+      } else {
+        alert("Branch Updated Successfully!");
+        loadBranches();
+      }
+    };
+
+    // BRANCH LOGIN SETUP
+    const loginBtn = document.createElement("button");
+    loginBtn.textContent = "Login Setup";
+    loginBtn.className = "branch-action-btn branch-login-btn";
+
+    loginBtn.onclick = () => {
+      openBranchLogin(branch);
+    };
+
+    // ADD BUTTONS
+    actionTd.append(editBtn, loginBtn);
+
+    // ADD ALL SIX COLUMNS
+    tr.append(
+      nameTd,
+      codeTd,
+      idTd,
+      emailTd,
+      passwordTd,
+      actionTd
+    );
+
+    list.appendChild(tr);
+  });
+
+  if (!loginError && !loginData?.error) {
+    branchMessage.textContent =
+      "Total Branches: " + (branches || []).length;
+  }
+}
 
   (data || []).forEach(branch => {
 
