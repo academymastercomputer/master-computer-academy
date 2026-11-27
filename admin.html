@@ -916,16 +916,27 @@ if (branchLogin?.email) {
   passwordTd.style.color = "#999";
 }
 
+const emailTd = document.createElement("td");
+
 const branchLogin = branchLogins.find(
   login => login.branch_id === branch.id
 );
 
 emailTd.textContent = branchLogin?.email || "Not Set";
 emailTd.className = "branch-login-email";
-    idTd.textContent = branch.id;
-    idTd.className = "branch-id";
 
-    const actionTd = document.createElement("td");
+// PASSWORD STATUS
+const passwordTd = document.createElement("td");
+
+if (branchLogin?.email) {
+  passwordTd.textContent = "Set / Change";
+  passwordTd.style.color = "#247443";
+} else {
+  passwordTd.textContent = "Not Set";
+  passwordTd.style.color = "#999";
+}
+
+const actionTd = document.createElement("td");
 
     // EDIT BRANCH
 
