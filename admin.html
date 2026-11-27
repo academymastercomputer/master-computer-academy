@@ -1090,31 +1090,7 @@ const actionTd = document.createElement("td");
         loadBranches();
       }
     };
-      // BRANCH LOGIN SETUP
-
-const loginBtn = document.createElement("button");
-loginBtn.textContent = "Login Setup";
-loginBtn.className = "branch-action-btn branch-login-btn";
-
-loginBtn.onclick = () => {
-  openBranchLogin(branch);
-};
-
-editBtn.className = "branch-action-btn branch-edit-btn";
-
-actionTd.append(editBtn, loginBtn);
-       tr.append(
-  nameTd,
-  codeTd,
-  idTd,
-  emailTd,
-  passwordTd,
-  actionTd
-);
-    list.appendChild(tr);
-  });
-}
-
+     
 
 // ADD NEW BRANCH
 
