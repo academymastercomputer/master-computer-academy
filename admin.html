@@ -514,14 +514,16 @@ hr {
 
       <div style="overflow-x:auto;">
         <table>
-          <thead>
-          <tr>
-  <th>Branch Name</th>
-  <th>Branch Code</th>
-  <th>Branch ID</th>
-  <th>Action</th>
-</tr>
-          </thead>
+         <thead>
+  <tr>
+    <th>Branch Name</th>
+    <th>Branch Code</th>
+    <th>Branch ID</th>
+    <th>Login ID</th>
+    <th>Password</th>
+    <th>Action</th>
+  </tr>
+</thead>
           <tbody id="branchList"></tbody>
         </table>
       </div>
@@ -875,6 +877,13 @@ async function loadBranches() {
     .select("id, name, code")
     .order("name");
 
+  // LOAD BRANCH LOGIN EMAILS
+const { data: loginData, error: loginError } =
+  await db.functions.invoke("branch-user-management", {
+    body: { action: "list" }
+  });
+
+const branchLogins = loginData?.logins || [];
   const list = document.getElementById("branchList");
   list.replaceChildren();
 
@@ -894,6 +903,25 @@ async function loadBranches() {
     const codeTd = document.createElement("td");
     codeTd.textContent = branch.code;
     const idTd = document.createElement("td");
+    // BRANCH LOGIN EMAIL
+const emailTd = document.createElement("td");
+    // PASSWORD STATUS
+const passwordTd = document.createElement("td");
+
+if (branchLogin?.email) {
+  passwordTd.textContent = "Set / Change";
+  passwordTd.style.color = "#247443";
+} else {
+  passwordTd.textContent = "Not Set";
+  passwordTd.style.color = "#999";
+}
+
+const branchLogin = branchLogins.find(
+  login => login.branch_id === branch.id
+);
+
+emailTd.textContent = branchLogin?.email || "Not Set";
+emailTd.className = "branch-login-email";
     idTd.textContent = branch.id;
     idTd.className = "branch-id";
 
@@ -947,7 +975,14 @@ loginBtn.onclick = () => {
 editBtn.className = "branch-action-btn branch-edit-btn";
 
 actionTd.append(editBtn, loginBtn);
-       tr.append(nameTd, codeTd, idTd, actionTd);
+       tr.append(
+  nameTd,
+  codeTd,
+  idTd,
+  emailTd,
+  passwordTd,
+  actionTd
+);
     list.appendChild(tr);
   });
 }
