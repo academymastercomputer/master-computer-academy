@@ -687,14 +687,15 @@ document.getElementById("closeBranchLogin").addEventListener("click", function (
 
 // OPEN BRANCH LOGIN MODAL
 
-function openBranchLogin(branch) {
+function openBranchLogin(branch, existingLogin = null) {
   selectedBranchForLogin = branch;
 
   document.getElementById("loginBranchName").textContent = branch.name;
   document.getElementById("loginBranchId").textContent = branch.id;
 
-  document.getElementById("branchLoginAction").value = "create";
-  document.getElementById("branchLoginEmail").value = "";
+  // Existing branch login: open in Update mode and prefill its email.
+  document.getElementById("branchLoginAction").value = existingLogin?.email ? "update" : "create";
+  document.getElementById("branchLoginEmail").value = existingLogin?.email || ""; 
   document.getElementById("branchLoginPassword").value = "";
   document.getElementById("branchLoginPassword").type = "password";
   document.getElementById("toggleBranchPassword").textContent = "Show";
@@ -753,6 +754,7 @@ document.getElementById("saveBranchLogin").addEventListener("click", async funct
 
     document.getElementById("branchLoginModal").style.display = "none";
     document.getElementById("branchLoginPassword").value = "";
+    await loadBranches();
 
   } catch (err) {
     message.textContent = err.message || "Something went wrong.";
@@ -926,7 +928,7 @@ async function loadBranches() {
 
     // FIND BRANCH LOGIN
     const branchLogin = branchLogins.find(
-      login => login.branch_id === branch.id
+      login => String(login.branch_id) === String(branch.id)
     );
 
     // LOGIN EMAIL
@@ -995,7 +997,7 @@ async function loadBranches() {
     loginBtn.className = "branch-action-btn branch-login-btn";
 
     loginBtn.onclick = () => {
-      openBranchLogin(branch);
+      openBranchLogin(branch, branchLogin || null);
     };
 
     // ADD BUTTONS
@@ -1034,21 +1036,36 @@ document.getElementById("addBranch").onclick = async () => {
     return;
   }
 
-  const { error } = await db
-    .from("branches")
-    .insert([{ name: name, code: code }]);
+  const addButton = document.getElementById("addBranch");
+  addButton.disabled = true;
+  addButton.textContent = "Adding...";
 
-  if (error) {
-    branchMessage.textContent = "Add Branch Failed: " + error.message;
-    return;
+  try {
+    // Supabase creates the UUID automatically from the branches.id default.
+    // Returning the inserted row confirms the exact Branch ID created for this branch.
+    const { data: newBranch, error } = await db
+      .from("branches")
+      .insert([{ name, code }])
+      .select("id, name, code")
+      .single();
+
+    if (error) throw error;
+
+    document.getElementById("branchName").value = "";
+    document.getElementById("branchCode").value = "";
+
+    branchMessage.textContent =
+      "Branch Added Successfully! Branch ID: " + newBranch.id;
+    branchMessage.style.color = "#247443";
+
+    await loadBranches();
+  } catch (err) {
+    branchMessage.textContent = "Add Branch Failed: " + (err.message || "Unknown error");
+    branchMessage.style.color = "#b00020";
+  } finally {
+    addButton.disabled = false;
+    addButton.textContent = "Add Branch";
   }
-
-  document.getElementById("branchName").value = "";
-  document.getElementById("branchCode").value = "";
-
-  branchMessage.textContent = "Branch Added Successfully!";
-
-  loadBranches();
 };
 
 
