@@ -899,9 +899,17 @@ const branchLogins = loginData?.logins || [];
     const codeTd = document.createElement("td");
     codeTd.textContent = branch.code;
     const idTd = document.createElement("td");
-    // BRANCH LOGIN EMAIL
+    
+   // BRANCH LOGIN EMAIL
+const branchLogin = branchLogins.find(
+  login => login.branch_id === branch.id
+);
+
 const emailTd = document.createElement("td");
-    // PASSWORD STATUS
+emailTd.textContent = branchLogin?.email || "Not Set";
+emailTd.className = "branch-login-email";
+
+// PASSWORD STATUS
 const passwordTd = document.createElement("td");
 
 if (branchLogin?.email) {
@@ -911,18 +919,6 @@ if (branchLogin?.email) {
   passwordTd.textContent = "Not Set";
   passwordTd.style.color = "#999";
 }
-
-const branchLogin = branchLogins.find(
-  login => login.branch_id === branch.id
-);
-
-emailTd.textContent = branchLogin?.email || "Not Set";
-emailTd.className = "branch-login-email";
-
-// PASSWORD STATUS
-const passwordTd = document.createElement("td");
-
-if (branchLogin?.email) {
   passwordTd.textContent = "Set / Change";
   passwordTd.style.color = "#247443";
 } else {
