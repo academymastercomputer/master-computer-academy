@@ -658,6 +658,24 @@ cursor:pointer;
   background:#ffffff;
   color:#193b60;
 }
+
+/* Registration Terms & Conditions */
+.terms-box{
+  grid-column:1/-1;
+  background:#fff8f5;
+  border:1px solid #f0d4cc;
+  border-left:4px solid var(--red);
+  border-radius:12px;
+  padding:18px;
+  color:#39465a;
+}
+.terms-box h4{color:var(--red);margin-bottom:10px;font-size:16px;}
+.terms-box ul{padding-left:22px;margin-bottom:15px;line-height:1.8;font-size:14px;}
+.terms-accept{display:flex;align-items:flex-start;gap:10px;padding:12px;background:#fff;border:1px solid #e5e7eb;border-radius:9px;font-size:14px;font-weight:700;color:#193b60;}
+.terms-accept input{width:18px;height:18px;min-width:18px;margin-top:2px;accent-color:var(--red);cursor:pointer;}
+.terms-accept label{cursor:pointer;}
+@media(max-width:600px){.terms-box{grid-column:auto;padding:15px;}.terms-accept{font-size:13px;}}
+
 /* Registration Security Note */
 .form-security-note{
   grid-column:1/-1;
@@ -1087,6 +1105,22 @@ cursor:pointer;
         <input type="file" name="photo" accept="image/jpeg,image/png,image/webp">
       </div>
 
+
+      <div class="terms-box">
+        <h4>Terms &amp; Conditions</h4>
+        <ul>
+          <li>Student must provide correct and complete information in the registration form.</li>
+          <li>Registration details may be used by Master Computer Academy to contact the student regarding courses, admission and related services.</li>
+          <li>Students are expected to follow the Academy's rules, instructions and discipline during their course.</li>
+          <li>Course fees, duration and other admission-related details will be communicated by the Academy.</li>
+          <li>Submitting this form is a registration enquiry and does not by itself guarantee admission.</li>
+        </ul>
+        <div class="terms-accept">
+          <input type="checkbox" id="acceptTerms" name="accept_terms" value="yes" required>
+          <label for="acceptTerms">I have read and accept the Terms &amp; Conditions.</label>
+        </div>
+      </div>
+
       <button type="submit">Submit Registration</button>
     </form>
     <div class="form-security-note">
@@ -1249,6 +1283,12 @@ branchSelect.addEventListener("change", toggleRegistrationForm);
 if (form) {
   form.addEventListener("submit", async function(event) {
     event.preventDefault();
+
+    const termsCheckbox = document.getElementById("acceptTerms");
+    if (!termsCheckbox || !termsCheckbox.checked) {
+      alert("Please accept the Terms & Conditions before submitting the registration form.");
+      return;
+    }
 
     const submitButton = form.querySelector('button[type="submit"]');
     submitButton.disabled = true;
